@@ -1,17 +1,38 @@
+import users from "config/mongoCollections.js";
+import {ObjectId} from 'mongodb';
+
 let vehicleTypes = ['Bike', 'Scooter', 'Skateboard']
 let vehicleTags = ['Electric', 'Gas', 'Hybrid', '2 Wheeler', '3 Wheeler', '4 Wheeler', 'Off Road', 'City']
 
-const checkStringIsGood = (str, strName) => {
+const checkStringIsGood = (str, strName) => {//can't we merge this and the function below? Why would they be separate? (implmented this as just checkString)
     if (str === undefined) throw `${strName || 'String'} is undefined`
     if (typeof str !== 'string') throw `${strName || 'String'} is not a string`
     if (str.length === 0) throw `${strName || 'String'} is empty`
 }
-const checkForNonSpace = (str, strName) => {
+const checkForNonSpace = (str, strName) => {//can't we merge this and the function above? Why would they be separate? (implmented this as just checkString)
     if (str.trim().length === 0) throw `${strName || 'String'} is just empty spaces`
 }
 const checkExists = (vari) => {
     if (vari == undefined) throw `All fields need to have valid values`
 }
+
+const checkString = (strVal, varName) => { //this does general string checking and trimming
+    if (!strVal) throw `Error: You must supply a ${varName}!`;
+    if (typeof strVal !== 'string') throw `Error: ${varName} must be a string!`;
+    strVal = strVal.trim();
+    if (strVal.length === 0)
+      throw `Error: ${varName} cannot be an empty string or string with just spaces`;
+    return strVal;
+  }
+const checkId = (id) => { //this does general mongodb _id checking
+        if (!id) throw 'Error: You must provide an id to search for';
+        if (typeof id !== 'string') throw 'Error: id must be a string';
+        id = id.trim();
+        if (id.length === 0)
+          throw 'Error: id cannot be an empty string or just spaces';
+        if (!ObjectId.isValid(id)) throw 'Error: invalid object ID';
+        return id;
+      }
 
 // HELPERS FOR VEHICLE POSTING
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,12 +90,26 @@ const checkAvailable = (currentlyAvailable) => {
     if (typeof currentlyAvailable !== 'boolean') throw `Currently Available must be a boolean`
     return currentlyAvailable
 }
-const checkPosterUsername = (posterUsername) => {
-    //TODO
+const checkPosterUsername = async (posterUsername) => { //checks if the username is available for account creation - no duplicates allowed
+    posterUsername = checkString(posterUsername);
+    const userCollection = await users();
+    const isTaken = await userCollection.findOne({username: `/^${posterUsername}$/i`});//This will hopefully do a case-insensitive search.
+    if(isTaken !== null){
+        throw "Username is already taken. Please choose another."
+    }
     return posterUsername
 }
-const checkPosterName = (posterName) => {
-    //TODO
+const checkPosterEmail = async (posterEmail) => { //checks if the email is available for account creation - no duplicates allowed - if it is a duplicate, we should ask them to enter another and give them a link to go to the login page to login with that email if they so choose
+    posterEmail = checkString(posterEmail);
+    const userCollection = await users();
+    const isTaken = await userCollection.findOne({email: `/^${posterEmail}$/i`});//This will hopefully do a case-insensitive search.
+    if(isTaken !== null){
+        throw "This email already has an account associated with it. Please enter another or login with this email and it's appropriate password."
+    }
+    return posterEmail
+}
+const checkPosterName = async (posterName) => { //checks if the name is available for account creation - it only has to be a non-trivial string so this functions is simple
+    posterName = checkString(posterName);
     return posterName
 }
 const checkMaxRental = (maxRentalHours, maxRentalDays) => {
@@ -82,7 +117,7 @@ const checkMaxRental = (maxRentalHours, maxRentalDays) => {
     checkExists(maxRentalDays)
     if (typeof maxRentalHours !== 'number') throw `Max Rental Hours must be a number`
     if (typeof maxRentalDays !== 'number') throw `Max Rental Days must be a number`
-    while (maxRentalHours > 24) {
+    while (maxRentalHours > 24) { //do we want to do this or just ask them to imput proper input?
         maxRentalHours -= 24
         maxRentalDays += 1
     }
@@ -111,5 +146,5 @@ const checkWhenAvailable= (whenAvailable) => {
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-export { checkStringIsGood, checkForNonSpace, checkExists, checkTitle, checkType, checkTags, checkCondition, checkAvailable, checkPosterUsername, 
+export { checkStringIsGood, checkForNonSpace, checkExists, checkString, checkId, checkTitle, checkType, checkTags, checkCondition, checkAvailable, checkPosterUsername, checkPosterEmail,
     checkPosterName, checkMaxRental, checkCost, checkImage, checkWhenAvailable } //Add more here
