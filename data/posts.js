@@ -60,11 +60,85 @@ const createPost = async (
     return thePost;
 }
 
-const getPostById = async (postId) =>{
+const getPostById = async (postId) => {
     checkId(postId);
     const postCollection = await posts();
     const thePost = await postCollection.findOne({_id: new ObjectId(postId)});
     if (thePost === null) throw 'No movie with that id'; //might want to throw a 404 or 500 here depending on how we use the function
     thePost._id = thePost._id.toString()
     return thePost;
+}
+
+// gets all of the posts in the 'posts' collection
+const getAllPosts = async () => {
+    const postCollection = await posts();
+    let postList = await postCollection.find({}).toArray();
+    if (!postList) {
+        throw new Error('getAllPosts: could not get all posts');
+    }
+
+    postList = postList.map(elem => {elem._id = elem._id.toString(); return elem;});
+    return postList;
+}
+
+// filters posts by the specified tags
+// allows for search for all of the tags combined, or posts containing at least one provided tag
+const filterPostsByTags = async (tags, filterType) => {
+    // if no tags were provided, just return all posts
+    if (!tags) {
+        getAllPosts();
+    } else {
+        // Input validation for tags
+        if (!Array.isArray(tags)) {
+            throw new Error('filterPostsByTags: provided list of tags must be an array');
+        }
+
+        // validate each tag passed and make it lowercase
+        tags = tags.map(tag => checkString(tag, `${tag}`).toLowerCase()); // Passing the `${tag}` as varName might not work
+        // validate filterType
+        if (typeof filterType !== 'string' || (filterType !== '$in' && filterType !== '$all')) {
+            throw new Error('filterPostsByTags: invalid operator for querying the db');
+        }
+
+        // build query based on provided filterType
+        //     $all to get posts that contain ALL of the tags provided
+        //     $in to get posts that contain AT LEAST ONE of the tags provided
+        const query = {
+            vehicleTags: {
+                [filterType]: tags
+            }
+        };
+
+        // look for posts with the specified tags
+        const postCollection = await posts();
+        const postsWithTags = await postCollection.find(query).toArray();
+
+        // return posts
+        return postsWithTags;
+    }
+}
+
+// finds posts based on matching their titles to the prefix provided
+const filterPostsByTitle = async (prefix) => {
+    // Input validation for prefix
+    if (!prefix || typeof prefix !== 'string') {
+        return [];
+    }
+    // get length of prefix
+    let prefixLength = prefix.trim().length;
+    // get posts
+    const allPosts = getAllPosts();
+    // filter posts based on whether their titles start with the provided prefix
+    const filteredPosts = allPosts.filter(
+        post => {
+            const postTitle = post.postTitle.toLowerCase();
+            if (postTitle.length < prefixLength) {
+                return false;
+            } else {
+                return postTitle.startsWith(prefix.trim().toLowerCase());
+            }
+        }
+    );
+    // return posts that have title prefix
+    return filteredPosts;
 }
