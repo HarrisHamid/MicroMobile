@@ -142,3 +142,5 @@ const filterPostsByTitle = async (prefix) => {
     // return posts that have title prefix
     return filteredPosts;
 }
+
+export default (createPost, getPostById, getAllPosts, filterPostsByTags, filterPostsByTitle)
