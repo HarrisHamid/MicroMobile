@@ -1,6 +1,8 @@
 import express from "express";
 import exphbs from "express-handlebars";
 import configRoutes from "./routes/index.js";
+import session from 'express-session';
+import middleware from "./middleware.js"
 
 const app = express();
 
@@ -9,6 +11,22 @@ app.set("view engine", "handlebars");
 
 app.use(express.json());
 app.use("/public", express.static("public"));
+
+app.use(
+  session({
+    name: 'AuthenticationState',
+    secret: 'We are the BEST transportation company',
+    saveUninitialized: false,
+    resave: false
+  })
+);
+
+app.use('/', middleware.progressChecker);
+
+app.use('/login', middleware.loginBlock);
+app.use('/register', middleware.registerBlock);
+app.use('/profile', middleware.unauthRedirect);
+
 configRoutes(app);
 
 app.listen(3000, () => {

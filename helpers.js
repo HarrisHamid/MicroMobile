@@ -80,7 +80,15 @@ const checkTags = (vehicleTags) => {
 
 const checkCondition = (vehicleCondition) => {
     checkExists(vehicleCondition)
-    if (typeof vehicleCondition !== 'number') throw `Vehicle Condition must be a number`
+    if (typeof vehicleCondition !== 'number') {
+        if(typeof vehicleCondition === 'string'){//this addition allows for string input too if there's a number within the string
+            vehicleCondition = Number(vehicleCondition.trim())
+        }
+        else{
+            throw `Vehicle Condition must be a number`
+        }
+    }
+    if(isNaN(vehicleCondition)){throw "Vehicle Condition must be a number"}
     if (vehicleCondition < 1.0 || vehicleCondition > 5.0) throw `Vehicle Condition must be between 1.0 and 5.0`
     vehicleCondition = Math.round(vehicleCondition * 10) / 10
     return vehicleCondition
@@ -115,23 +123,54 @@ const checkPosterName = async (posterName) => { //checks if the name is availabl
 const checkMaxRental = (maxRentalHours, maxRentalDays) => {
     checkExists(maxRentalHours)
     checkExists(maxRentalDays)
-    if (typeof maxRentalHours !== 'number') throw `Max Rental Hours must be a number`
-    if (typeof maxRentalDays !== 'number') throw `Max Rental Days must be a number`
-    while (maxRentalHours > 24) { //do we want to do this or just ask them to imput proper input?
-        maxRentalHours -= 24
-        maxRentalDays += 1
+    if (typeof maxRentalHours !== 'number') {
+        if(typeof maxRentalHours === 'string'){
+            maxRentalHours = Number(maxRentalHours.trim())
+        }
+        else{
+            throw `Max Rental Hours must be a number`
+        
+        }
     }
+    if (typeof maxRentalDays !== 'number')  {
+        if(typeof maxRentalDays === 'string'){
+            maxRentalDays = Number(maxRentalDays.trim())
+        }
+        else{
+            throw `Max Rental Days must be a number`
+        
+        }
+    }
+    if(maxRentalHours > 24 || maxRentalHours < 0) throw "Max Rental Hours must be between 0 and 24"
+    if(maxRentalDays > 365 || maxRentalDays < 0) throw "Max Rental Days must be between 0 and 365"
     if (maxRentalHours === 0 && maxRentalDays === 0) throw `Max Rental Hours and Max Rental Days cannot both be 0`
     return [maxRentalHours, maxRentalDays]
 }
 const checkCost = (hourlyCost, dailyCost) => {
     checkExists(hourlyCost)
     checkExists(dailyCost)
-    if (typeof hourlyCost !== 'number') throw `Hourly Cost must be a number`
-    if (typeof dailyCost !== 'number') throw `Daily Cost must be a number`
+    if (typeof hourlyCost !== 'number') {
+        if(typeof hourlyCost === 'string'){
+            hourlyCost = Number(hourlyCost.trim())
+        }
+        else{
+            throw `Hourly Cost must be a number`
+        
+        }
+    }
+    if (typeof dailyCost !== 'number') {
+        if(typeof dailyCost === 'string'){
+            dailyCost = Number(dailyCost.trim())
+        }
+        else{
+            throw `Daily Cost must be a number`
+        
+        }
+    }
     if (hourlyCost < 0) throw `Hourly Cost cannot be negative`
     if (dailyCost < 0) throw `Daily Cost cannot be negative`
-    if (hourlyCost > dailyCost) throw `Hourly Cost cannot be greater than Daily Cost`
+    //if (hourlyCost > dailyCost) throw `Hourly Cost cannot be greater than Daily Cost`
+    //^I decided to comment that out since what the user does isn't really our concern. If they don't want to rent it hourly but still will for a large amount of money, they might set the hourly cost to be more than the daily cost.
     if (hourlyCost === 0 && dailyCost === 0) throw `Hourly Cost and Daily Cost cannot both be 0`
     return [hourlyCost, dailyCost]
 }
