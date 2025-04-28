@@ -8,3 +8,97 @@ footer {
   text-align: center;
 }
 
+.landing-img {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+}
+
+.landing-wrapper {
+  padding-bottom: 2rem;
+}
+
+/* Login Page Styling */
+/* Login and Register Styling */
+form {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(22, 21, 21, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="color"],
+select {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #3db0d3;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #1a748f;
+}
+
+p a {
+  text-decoration: none;
+  color: #007bff;
+}
+p a:hover {
+  text-decoration: underline;
+}
+
+.text-danger {
+  color: red;
+  list-style-type: disc;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-link {
+  margin-top: 30px;
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  padding-top: 30px;
+}
+
+#errorImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+#errorImage img {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+}
