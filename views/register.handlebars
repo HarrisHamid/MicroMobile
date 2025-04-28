@@ -1,0 +1,51 @@
+<h1>Sign Up Form</h1>
+
+<form id="signup-form" name="signup-form" method="POST" action="/auth/register">
+
+  {{! error arry }}
+  <ul id="error-model" class="text-danger"></ul>
+
+  {{! First Name }}
+  <div class="form-group">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" required />
+  </div>
+
+  {{! Last Name }}
+  <div class="form-group">
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" required />
+  </div>
+
+  {{! UserId }}
+  <div class="form-group">
+    <label for="userId">User ID:</label>
+    <input type="text" id="userId" name="userId" required />
+  </div>
+
+  {{! Password }}
+  <div class="form-group">
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required />
+  </div>
+
+  {{! Confirm Password }}
+  <div class="form-group">
+    <label for="confirmPassword">Confirm Password:</label>
+    <input
+      type="password"
+      id="confirmPassword"
+      name="confirmPassword"
+      required
+    />
+  </div>
+
+  {{! Drop down for state: Extra feature}}
+
+  <div class="form-group">
+    <button id="submitButton" name="submitButton" type="submit">Sign Up</button>
+  </div>
+
+  {{! Link to signin }}
+  <p><a href="/auth/login">Already have an account? Click here to sign-in</a></p>
+</form>
