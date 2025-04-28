@@ -1,7 +1,7 @@
 import { checkStringIsGood, checkForNonSpace, checkExists, checkString, checkId, checkTitle, checkType, checkTags, checkCondition, checkAvailable, checkPosterUsername, checkPosterEmail,
     checkPosterName, checkMaxRental, checkCost, checkImage, checkWhenAvailable }
 from "../helpers.js"
-import posts from "../config/mongoCollections.js"
+import {posts} from "../config/mongoCollections.js"
 
 
 //TODO: import {posts} from '../config/mongoCollections.js'

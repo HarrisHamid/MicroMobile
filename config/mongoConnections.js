@@ -15,4 +15,3 @@ export const dbConnection = async () => {
 export const closeConnection = async () => {
   await _connection.close();
 };
-s

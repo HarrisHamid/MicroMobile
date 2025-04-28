@@ -28,3 +28,5 @@ let unauthorizedRedirect = (req, res, next) => {//this makes it so that you cann
     }
     next();
 }
+
+export default {progressChecker, loginBlock, registerBlock, unauthorizedRedirect}
