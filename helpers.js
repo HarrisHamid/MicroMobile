@@ -1,4 +1,4 @@
-import users from "config/mongoCollections.js";
+import {users} from "./config/mongoCollections.js";
 import {ObjectId} from 'mongodb';
 
 let vehicleTypes = ['Bike', 'Scooter', 'Skateboard']
@@ -185,5 +185,7 @@ const checkWhenAvailable= (whenAvailable) => {
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-export { checkStringIsGood, checkForNonSpace, checkExists, checkString, checkId, checkTitle, checkType, checkTags, checkCondition, checkAvailable, checkPosterUsername, checkPosterEmail,
+export  { checkStringIsGood, checkForNonSpace, checkExists, checkString, checkId, checkTitle, checkType, checkTags, checkCondition, checkAvailable, checkPosterUsername, checkPosterEmail,
     checkPosterName, checkMaxRental, checkCost, checkImage, checkWhenAvailable } //Add more here
+    export default { checkStringIsGood, checkForNonSpace, checkExists, checkString, checkId, checkTitle, checkType, checkTags, checkCondition, checkAvailable, checkPosterUsername, checkPosterEmail,
+        checkPosterName, checkMaxRental, checkCost, checkImage, checkWhenAvailable } //Add more here

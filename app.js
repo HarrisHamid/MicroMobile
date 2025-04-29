@@ -25,7 +25,7 @@ app.use('/', middleware.progressChecker);
 
 app.use('/login', middleware.loginBlock);
 app.use('/register', middleware.registerBlock);
-app.use('/profile', middleware.unauthRedirect);
+app.use('/profile', middleware.unauthorizedRedirect);
 
 configRoutes(app);
 
