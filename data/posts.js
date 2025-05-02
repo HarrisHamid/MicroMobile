@@ -2,9 +2,6 @@ import { checkStringIsGood, checkForNonSpace, checkExists, checkString, checkId,
     checkPosterName, checkMaxRental, checkCost, checkImage, checkWhenAvailable }
 from "../helpers.js"
 import {posts} from "../config/mongoCollections.js"
-
-
-//TODO: import {posts} from '../config/mongoCollections.js'
 import {ObjectId} from 'mongodb'
 
 const createPost = async (
@@ -18,7 +15,7 @@ const createPost = async (
     maxRentalDays,
     hourlyCost,
     dailyCost,
-    image,
+    image, // expects a path string
     whenAvailable
 ) => {
     // I believe many of these are called incorrectly - for example, checkPosterUsername currently only has one input... unless there's some sort of 496-esque overflow mechanic in JS so that the string will apply for a string check function within chckPosterUsername? 
@@ -31,8 +28,9 @@ const createPost = async (
     posterName = checkPosterName(posterName, 'Poster Name')
     [maxRentalHours, maxRentalDays] = checkMaxRental(maxRentalHours, maxRentalDays)
     [hourlyCost, dailyCost] = checkCost(hourlyCost, dailyCost)
-    image = checkImage(image, 'Image')
+    image = checkImage(image)
     whenAvailable = checkWhenAvailable(whenAvailable, 'When Available')
+
     let newPost = {
         postTitle: postTitle,
         vehicleType: vehicleType,
@@ -49,11 +47,13 @@ const createPost = async (
         image: image,
         whenAvailable: whenAvailable
     }
+    
     const postCollection = await posts();
     const insertInfo = await postCollection.insertOne(newPost);
 
-    if (!insertInfo.acknowledged || !insertInfo.insertedId)
-    throw 'Could not add post';
+    if (!insertInfo.acknowledged || !insertInfo.insertedId) {
+        throw 'Could not add post';
+    }
     
     const newId = insertInfo.insertedId.toString();
     const thePost = await getPostById(newId);
