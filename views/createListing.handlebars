@@ -10,6 +10,9 @@ registration handelbars
 <p id="hiddenP" hidden>test2</p>
 
 <form action="/createListing" method="POST" id="createListingForm">
+    {{!-- Error Array --}}
+    <ul id="login-error-model" class="text-danger"></ul>
+
     <label for="postTitle">Post Title</label>
     <input type="text" name="postTitle" id="postTitle" value="{{data.postTitle}}">
 
@@ -80,6 +83,9 @@ registration handelbars
 
     <label for="dailyCost">Cost Per Day</label>
     <input type="number" name="dailyCost" id="dailyCost" value="{{data.dailyCost}}">
+
+    <label for="image">Image</label>
+    <input type="file" id="image" accept="image/png, image/jpeg" value="{{data.image}}">
 
     {{!-- add usually availible bit here --}}
 
