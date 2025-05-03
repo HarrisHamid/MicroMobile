@@ -1,8 +1,7 @@
 import { checkStringIsGood, checkForNonSpace, checkExists, checkString, checkId, checkTitle, checkType, checkTags, checkCondition, checkAvailable, checkPosterUsername, checkPosterEmail,
-    checkPosterName, checkMaxRental, checkCost, checkImage, checkWhenAvailable }
-from "../helpers.js"
-import {posts} from "../config/mongoCollections.js"
-import {ObjectId} from 'mongodb'
+    checkPosterName, checkMaxRental, checkCost, checkImage, checkWhenAvailable } from "../helpers.js"
+import { posts } from "../config/mongoCollections.js"
+import { ObjectId } from 'mongodb'
 
 const createPost = async (
     postTitle,
@@ -202,7 +201,7 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
     //=======================
     // body validation
     //=======================
-    const body = body.trim();
+    body = body.trim();
     // Check if body is empty
     if (body.length === 0) {
       throw "Body cannot be empty";
@@ -236,4 +235,11 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
 
 }
 
-export default (createPost, getPostById, getAllPosts, filterPostsByTags, filterPostsByTitle, createComment)
+export default (
+    createPost,
+    getPostById,
+    getAllPosts,
+    filterPostsByTags,
+    filterPostsByTitle,
+    createComment
+)
