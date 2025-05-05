@@ -30,6 +30,7 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 } // max filesize 5MB
 });
 
+
 router.get("/vehcileListings", async (req, res) => {
   try {
     const allPosts = await posts.getAllPosts();
@@ -51,6 +52,7 @@ router
   res.render("createListing", { title: "Create Listing" });
 })
 .post("/createListing", upload.single('image'), async (req, res) => {
+  //console.log(req)
   try{
     if (!req.file) {
       throw "Image upload failed";
@@ -115,14 +117,16 @@ router
     ); //need to implement when availible array
 
     res.redirect(`/posts/${newPost._id}`); // redirect to the new post
+    //console.log("test");
   } catch(e) {
+    //console.log("test2");
     res.status(400).render("createListing", {
       title: "Create Listing",
       error: e.toString(),
       data: req.body
     });
   }
-  res.render("profile", { title: "Create Listing" }); //render their profile at the end so they can see their listings, including the newest one
+  // res.render("profile", { title: "Create Listing" }); //render their profile at the end so they can see their listings, including the newest one
 })
 ;
 
