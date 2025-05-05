@@ -40,7 +40,7 @@ let unauthorizedRedirect = (req, res, next) => {
   //this makes it so that you cannot access the profile page without being authorized
   if (req.method == "GET") {
     if (!req.session.user) {
-      return res.redirect("/auth/loginPage");
+      return res.redirect("/auth/login");
     }
   }
   next();
@@ -49,7 +49,7 @@ let unauthorizedRedirect = (req, res, next) => {
 let signoutBlock = (req, res, next) => {
   //this makes it so that you cannot access the profile page without being authorized
   if (!req.session.user) {
-    return res.redirect("/auth/loginPage");
+    return res.redirect("/auth/login");
   }
 
   next();

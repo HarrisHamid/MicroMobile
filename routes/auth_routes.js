@@ -265,7 +265,7 @@ router
 
       // Check if registration was successful
       if (newUser.registrationCompleted === true) {
-        return res.redirect("/auth/loginPage");
+        return res.redirect("/auth/login");
       } else {
         return res.status(400).render("register", {
           error: "Registration failed. Please try again.",
@@ -359,9 +359,10 @@ router
         inHoboken: user.inHoboken,
         state: user.state,
       };
-      return res.redirect("/landingPage");
+      return res.redirect("/");
     } catch (error) {
       res.status(400).render("loginPage", {
+        // render should be loginPage route should be login
         error: error.message,
       });
     }
