@@ -1,0 +1,34 @@
+{{#if error}}
+<p>{{error}}</p>
+{{/if}}
+
+<div class="vehicle-listings-container">
+    <h1 class="vehicle-lisitings-title">Available Vehicles</h1>
+    <div class="vehicle-listings-grid">
+        {{#each posts}}
+        <div class="vehicle-card">
+            <img src="{{this.image}}" class="vehicle-image" alt="{{this.postTitle}}">
+            <div class="vehicle-card-body">
+                <h5 class="vehicle-title">{{this.postTitle}}</h5>
+                <div class="vehicle-tags">
+                    <span class="vehicle-type">{{this.vehicleType}}</span>
+                    {{#each this.vehicleTags}}
+                        <span class="vehicle-tag">{{this}}</span>
+                    {{/each}}
+                </div>
+                <div class="vehicle-condition">
+                    <span class="condition-icon"></span>
+                    <span>Condition: {{this.vehicleCondition}}/5</span>
+                </div>
+                <div class="vehicle-pricing">
+                    <span><strong>${{this.hourlyCost}}/hr</strong></span>
+                    <span><strong>${{this.dailyCost}}/day</strong></span>
+                </div>
+            </div>
+            <div class="vehicle-card-footer">
+                <a href="/posts/{{this._id}}" class="view-details-button">View Details</a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>

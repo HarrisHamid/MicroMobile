@@ -31,7 +31,19 @@ const upload = multer({
 });
 
 router.get("/vehcileListings", async (req, res) => {
-  res.render("vehcileListings", { title: "Listing Page" });
+  try {
+    const allPosts = await posts.getAllPosts();
+    res.render("vehicleListings", {
+      title: "Vehicle Listings",
+      posts: allPosts
+      // User: req.session.user
+    });
+  } catch (e) {
+    res.status(500).render("error", {
+      title: "Error",
+      error: "Could not load vehicle listings"
+    });
+  }
 });
 
 router
