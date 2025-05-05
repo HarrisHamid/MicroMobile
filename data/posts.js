@@ -27,7 +27,7 @@ const createPost = async (
     posterName = checkPosterName(posterName, 'Poster Name')
     [maxRentalHours, maxRentalDays] = checkMaxRental(maxRentalHours, maxRentalDays)
     [hourlyCost, dailyCost] = checkCost(hourlyCost, dailyCost)
-    image = checkImage(image)
+    //image = checkImage(image)
     whenAvailable = checkWhenAvailable(whenAvailable, 'When Available')
 
     let newPost = {
@@ -56,8 +56,9 @@ const createPost = async (
     
     const newId = insertInfo.insertedId.toString();
     const thePost = await getPostById(newId);
+    console.log(thePost);
     return thePost;
-}
+};
 
 const getPostById = async (postId) => {
     checkId(postId);
@@ -66,7 +67,7 @@ const getPostById = async (postId) => {
     if (thePost === null) throw 'No post with that id'; //might want to throw a 404 or 500 here depending on how we use the function
     thePost._id = thePost._id.toString()
     return thePost;
-}
+};
 
 // gets all of the posts in the 'posts' collection
 const getAllPosts = async () => {
@@ -78,7 +79,7 @@ const getAllPosts = async () => {
 
     postList = postList.map(elem => {elem._id = elem._id.toString(); return elem;});
     return postList;
-}
+};
 
 // filters posts by the specified tags
 // allows for search for all of the tags combined, or posts containing at least one provided tag
@@ -115,7 +116,7 @@ const filterPostsByTags = async (tags, filterType) => {
         // return posts
         return postsWithTags;
     }
-}
+};
 
 // finds posts based on matching their titles to the prefix provided
 const filterPostsByTitle = async (prefix) => {
@@ -140,7 +141,7 @@ const filterPostsByTitle = async (prefix) => {
     );
     // return posts that have title prefix
     return filteredPosts;
-}
+};
 
 const createComment = async (postId, posterUsername, posterFirstName, posterLastName, body) => {
     // Input validation for posterUsername, posterName, and body
@@ -233,13 +234,13 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
     //not too sure what to return here, this can be changed
     return await getPostById(postId);
 
-}
+};
 
-export default (
+export default {
     createPost,
     getPostById,
     getAllPosts,
     filterPostsByTags,
     filterPostsByTitle,
     createComment
-)
+}

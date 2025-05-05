@@ -9,7 +9,7 @@ registration handelbars
 
 <p id="hiddenP" hidden>test2</p>
 
-<form action="/createListing" method="POST" id="createListingForm">
+<form action="/vehicleListings/createListing" method="POST" id="createListingForm">
     {{!-- Error Array --}}
     <ul id="login-error-model" class="text-danger"></ul>
 
@@ -88,6 +88,9 @@ registration handelbars
     <input type="file" id="image" accept="image/png, image/jpeg" value="{{data.image}}">
 
     {{!-- add usually availible bit here --}}
+
+    <label for="whenAvailable">When Available</label>
+    <button id="whenAvailable" onclick="alert('ButtonTest')">Click Me</button>
 
     <button type="submit" name="submitButton" id="submitButton">Register</button>
 </form>

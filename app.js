@@ -15,6 +15,8 @@ const app = express();
 app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
+app.use(express.urlencoded({ extended: true }));
+
 app.use(express.json());
 app.use("/public", express.static(path.join(__dirname, "public")));
 
@@ -32,7 +34,7 @@ app.use('/', middleware.progressChecker);
 app.use('/login', middleware.loginBlock);
 app.use('/register', middleware.registerBlock);
 app.use('/profile', middleware.unauthorizedRedirect);
-app.use('/vehicleListings', middleware.vehicleListingsAuth);
+//app.use('/vehicleListings', middleware.vehicleListingsAuth);
 
 // temporary for testing vehicle listings page
 app.get('/testListings', (req, res) => {
