@@ -1,4 +1,4 @@
-import { dbConnection, closeConnection } from "./config/mongoConnections";
+import { dbConnection, closeConnection } from "./config/mongoConnections.js";
 
 const seedDatabase = async () => {
     try {
@@ -69,7 +69,7 @@ const seedDatabase = async () => {
                 maxRentalDays: 2,
                 hourlyCost: 1.5,
                 dailyCost: 10,
-                image: "/images/koolboard.jpg",
+                image: "/public/uploads/seed1.png",
                 whenAvailable: [
                   [0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,1,0,0,0,0],
                   [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],
@@ -101,7 +101,7 @@ const seedDatabase = async () => {
                 maxRentalDays: 5,
                 hourlyCost: 0,
                 dailyCost: 15,
-                image: "/images/mountainbike.jpg",
+                image: "/public/uploads/seed2.jpg",
                 whenAvailable: [
                   [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],
                   [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],
@@ -123,4 +123,6 @@ const seedDatabase = async () => {
     }
 };
 
-seedDatabase();
+export {
+  seedDatabase
+}
