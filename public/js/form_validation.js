@@ -1,9 +1,13 @@
+(function (){
+
+
 // DOM API method
 
 // Grabbing Form
 let myRegisterForm = document.getElementById("signup-form");
 let myLoginForm = document.getElementById("signin-form");
 let createListingForm = document.getElementById("createListingForm");
+
 
 // All register inputs
 let firstNameInput = document.getElementById("firstName");
@@ -29,6 +33,8 @@ let maxRentalDays = document.getElementById("maxRentalDays");
 let hourlyCost = document.getElementById("hourlyCost");
 let dailyCost = document.getElementById("dailyCost");
 let imageInput = document.getElementById("image");
+
+
 
 if (myRegisterForm) {
   myRegisterForm.addEventListener("submit", (event) => {
@@ -306,3 +312,4 @@ if (createListingForm) {
     createListingForm.submit();
   });
 }
+})();

@@ -33,17 +33,9 @@ let unauthorizedRedirect = (req, res, next) => {//this makes it so that you cann
     next();
 }
 
-let vehicleListingsAuth = (req, res, next) => {
-  if (!req.session.user) {
-    return res.redirect('/login');
-  }
-  next();
-}
-
 export default {
   progressChecker, 
   loginBlock,
   registerBlock,
-  unauthorizedRedirect,
-  vehicleListingsAuth
+  unauthorizedRedirect
 }
