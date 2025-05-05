@@ -26,9 +26,9 @@ let registerBlock = (req, res, next) => {
   next();
 }
 
-let unauthorizedRedirect = (req, res, next) => {//this makes it so that you cannot access the profile page without being authorized
-    if(req.method == "GET"){
-    if(!req.session.user){return res.redirect("/login")}
+let unauthorizedRedirect = (req, res, next) => { // this makes it so that you cannot access the profile page without being authorized
+    if (req.method == "GET" && !req.session.user) {
+      return res.redirect("/login")
     }
     next();
 }
