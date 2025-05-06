@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import xss from 'xss';
-import help from "../helpers.js";
+import help, { checkId } from "../helpers.js";
 import posts from "../data/posts.js"
 import multer from "multer";
 import path from "path";
@@ -31,13 +31,12 @@ const upload = multer({
 });
 
 
-
 router.get("/vehicleListings", async (req, res) => {
   try {
     const allPosts = await posts.getAllPosts();
     console.log(allPosts);
     res.render("vehicleListings", {
-      title: "Vehicle Listings",
+      title: "Available Vehicles",
       posts: allPosts
       // User: req.session.user
     });
@@ -62,8 +61,8 @@ router
     }
     
 
-    const imagePath = '/uploads/' + req.file.filename;
-    */
+    const imagePath = '/public/uploads/' + req.file.filename;
+
     let postTitle = xss(req.body.postTitle)
     let vehicleType = xss(req.body.vehicleType)
     let vehicleTags1 = xss(req.body.vehicleTags1)
@@ -122,8 +121,8 @@ router
       undefined,//imagePath,
       undefined
     ); //need to implement when availible array
-    console.log(newPost);
-    res.redirect(`/posts/${newPost._id}`); // redirect to the new post
+
+    res.redirect(`/listingDetails/${newPost._id}`); // redirect to the new post
     //console.log("test");
   } catch(e) {
     //console.log("test2");
@@ -137,5 +136,27 @@ router
 })
 ;
 
+router.get("/listingDetails/:id", async (req, res) => {
+  try {
+    req.params.id = checkId(req.params.id);
+  } catch (e) {
+    res.status(400).render("error", {
+      title: "Error",
+      error: "Invalid post id"
+    });
+  }
+  try {
+    const post = await posts.getPostById(req.params.id);
+    res.render("listingDetails", {
+      post: post,
+      user: req.session.user
+    })
+  } catch (e) {
+    res.status(400).render("listingDetails"), {
+      error: e.toString(),
+      data: req.body
+    }
+  }
+});
 
 export default router;

@@ -11,7 +11,7 @@ registration handelbars
 
 <form action="/vehicleListings/createListing" method="POST" id="createListingForm">
     {{!-- Error Array --}}
-    <ul id="login-error-model" class="text-danger"></ul>
+    <ul id="error-model" class="text-danger"></ul>
 
     <label for="postTitle">Post Title</label>
     <input type="text" name="postTitle" id="postTitle" value="{{data.postTitle}}">
@@ -91,7 +91,7 @@ registration handelbars
     <br>
     <label for="image">Image</label>
     <br>
-    <input type="file" id="image" accept="image/png, image/jpeg" value="{{data.image}}">
+    <input type="file" id="image" name='image' accept="image/png, image/jpeg" value="{{data.image}}">
 
     {{!-- add usually availible bit here --}}
 
