@@ -1,3 +1,4 @@
+import { all } from "axios";
 import {users} from "./config/mongoCollections.js";
 import {ObjectId} from 'mongodb';
 
@@ -175,8 +176,12 @@ const checkCost = (hourlyCost, dailyCost) => {
     return [hourlyCost, dailyCost]
 }
 const checkImage = (image) => {
-    //TODO
-    return image
+    // since image is a path string
+    if (!image || typeof image !== 'string' || image.trim().length === 0) {
+        throw 'Image path is required';
+    }
+
+    return image;
 }
 
 const checkWhenAvailable= (whenAvailable) => {

@@ -1,8 +1,13 @@
+(function (){
+
+
 // DOM API method
 
 // Grabbing Form
 let myRegisterForm = document.getElementById("signup-form");
 let myLoginForm = document.getElementById("signin-form");
+let createListingForm = document.getElementById("createListingForm");
+
 
 // All register inputs
 let firstNameInput = document.getElementById("firstName");
@@ -16,6 +21,22 @@ let addressInput = document.getElementById("address");
 // All login inputs
 let loginUserIdInput = document.getElementById("userId");
 let loginPasswordInput = document.getElementById("password");
+
+// All createListing inputs
+let postTitle = document.getElementById("postTitle");
+let vehicleType = document.getElementById("vehicleType");
+let vehicleTags1 = document.getElementById("vehicleTags1");
+let vehicleTags2 = document.getElementById("vehicleTags2");
+let vehicleTags3 = document.getElementById("vehicleTags3");
+let protectionIncluded = document.getElementById("protectionIncluded");
+let vehicleCondition = document.getElementById("vehicleCondition");
+let maxRentalHours = document.getElementById("maxRentalHours");
+let maxRentalDays = document.getElementById("maxRentalDays");
+let hourlyCost = document.getElementById("hourlyCost");
+let dailyCost = document.getElementById("dailyCost");
+let imageInput = document.getElementById("image");
+
+
 
 if (myRegisterForm) {
   myRegisterForm.addEventListener("submit", (event) => {
@@ -250,6 +271,79 @@ if (myLoginForm) {
     myLoginForm.submit();
   });
 }
+  
+if (createListingForm) {
+  createListingForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const accumulatedErrors = [];
+    
+    // Image validation
+    if (imageInput.files.length === 0) {
+      accumulatedErrors.push("Please select an image");
+    } else {
+      const file = imageInput.files[0];
+      const validTypes = ['image/png', 'image/jpeg'];
+      
+      if (!validTypes.includes(file.type)) {
+        accumulatedErrors.push("Only PNG and JPEG images are allowed");
+      }
+      
+      if (file.size > 5 * 1024 * 1024) {
+        accumulatedErrors.push("Image size must be less than 5MB");
+      }
+    }
+
+    // Post title validation
+    const title = postTitle.value.trim();
+    if (title.length === 0) {
+      accumulatedErrors.push("Post title cannot be empty");
+    }
+    if (title.length < 2) {
+      accumulatedErrors.push("Post title must be at least 2 characters");
+    }
+
+    // Vehicle condition validation
+    const condition = vehicleCondition.value.trim();
+    if (condition.length === 0) {
+      accumulatedErrors.push("Vehicle condition cannot be empty");
+    }
+    if (isNaN(condition) || condition < 1 || condition > 5) {
+      accumulatedErrors.push("Vehicle condition must be between 1.0 and 5.0");
+    }
+
+    // Cost validation
+    const hourly = hourlyCost.value.trim();
+    const daily = dailyCost.value.trim();
+    if (hourly.length === 0 || daily.length === 0) {
+      accumulatedErrors.push("Cost fields cannot be empty");
+    }
+    if (isNaN(hourly) || isNaN(daily)) {
+      accumulatedErrors.push("Cost must be a valid number");
+    }
+
+    // Display errors if any
+    const errorModel = document.getElementById("error-model");
+    if (errorModel) {
+      errorModel.innerHTML = "";
+    }
+    
+    if (accumulatedErrors.length > 0) {
+      if (errorModel) {
+        accumulatedErrors.forEach((error) => {
+          const li = document.createElement("li");
+          li.textContent = error;
+          errorModel.appendChild(li);
+        });
+      } else {
+        alert(accumulatedErrors.join("\n"));
+      }
+      return;
+    }
+
+    // If no errors, submit the form
+    createListingForm.submit();
+  });
+}
 
 // extra feature for outside of Hoboken
 // Hoboken location logic
@@ -271,3 +365,4 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+})();

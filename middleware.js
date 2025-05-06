@@ -22,6 +22,7 @@ let loginBlock = (req, res, next) => {
   //if(req.method == "GET"){ - I commented this out so that it works on all method but kept it here in case we want to have it only work for GET
   if (req.session.user) {
     return res.redirect("/landing");
+
   }
   //}
   next();
@@ -35,6 +36,7 @@ let registerBlock = (req, res, next) => {
   //}
   next();
 };
+
 
 let unauthorizedRedirect = (req, res, next) => {
   //this makes it so that you cannot access the profile page without being authorized
@@ -62,3 +64,4 @@ export default {
   unauthorizedRedirect,
   signoutBlock,
 };
+
