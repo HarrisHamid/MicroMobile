@@ -3,7 +3,11 @@
 {{/if}}
 
 <div class="vehicle-listings-container">
-    <h1 class="vehicle-lisitings-title">Available Vehicles</h1>
+    <div class="create-listing-div">
+        <a href="/vehicleListings/createListing" class="create-listing-btn">Create Listing</a>
+    </div>
+
+    <h1 class="vehicle-lisitings-title">{{this.title}}</h1>
     <div class="vehicle-listings-grid">
         {{#each posts}}
         <div class="vehicle-card">
@@ -26,7 +30,7 @@
                 </div>
             </div>
             <div class="vehicle-card-footer">
-                <a href="/posts/{{this._id}}" class="view-details-button">View Details</a>
+                <a href="/vehicleListings/listingDetails/{{this._id}}" class="view-details-btn">View Details</a>
             </div>
         </div>
         {{/each}}

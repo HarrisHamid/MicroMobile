@@ -1,0 +1,78 @@
+<div class="listing-details-container">
+    {{#if error}}
+    <div class="error-message">{{error}}</div>
+    {{/if}}
+
+    <div class="listing-header">
+        <h1 class="listing-title">{{post.postTitle}}</h1>
+        <div class="listing-meta">
+            <span class="listing-poster">Posted by {{post.posterName}}</span>
+            <span class="listing-rating">Condition: {{post.vehicleCondition}}/5</span>
+        </div>
+    </div>
+
+    <div class="listing-content">
+        <div class="listing-image-container">
+            <img src="{{post.image}}" alt="{{post.postTitle}}" class="listing-image">
+        </div>
+        <div class="listing-info">
+            <div class="listing-type-tags">
+                <span class="vehicle-type">{{post.vehicleType}}</span>
+                {{#each post.vehicleTags}}
+                <span class="vehicle-tag">{{this}}</span>
+                {{/each}}
+            </div>
+
+            <div class="listing-pricing">
+                <div class="price-option">
+                <span class="price-label">Hourly Rate:</span>
+                <span class="price-value">${{post.hourlyCost}}/hr</span>
+                </div>
+                <div class="price-option">
+                <span class="price-label">Daily Rate:</span>
+                <span class="price-value">${{post.dailyCost}}/day</span>
+                </div>
+            </div>
+
+            <div class="listing-availability">
+                <h3>Availability</h3>
+                <p>Max Rental: {{post.maxRentalHours}} hours or {{post.maxRentalDays}} days</p>
+                <!-- Availability calendar/schedule would go here -->
+            </div>
+
+            {{#if user}}
+            <button class="request-rental-btn" data-post-id="{{post._id}}">Request Rental</button>
+            {{else}}
+            <a href="/auth/login?returnTo=/vehicleListings/listingDetails/{{post._id}}" class="login-to-rent-btn">Login to Request Rental</a>
+            {{/if}}
+
+            <a href="/vehicleListings/vehicleListings" class="return-to-all-listings-btn">Return to All Listings</a>
+        </div>
+    </div>
+
+    <div class="listing-comments">
+        <h2>Comments</h2>
+        {{#if post.vehicleComments.length}}
+        <div class="comments-list">
+            {{#each post.vehicleComments}}
+            <div class="comment">
+                <div class="comment-header">
+                    <span class="comment-author">{{this.Name}}</span>
+                    <span class="comment-date">{{this.commentDate}}</span>
+                </div>
+                <div class="comment-body">{{this.Body}}</div>
+            </div>
+            {{/each}}
+        </div>
+        {{else}}
+        <p class="no-comments">This post has no comments yet</p>
+        {{/if}}
+
+        {{#if user}}
+        <form class="add-comment-form" data-post-id="{{post._id}}">
+            <textarea name="comment" placeholder="Add your comment..." required></textarea>
+            <button type="submit">Post Comment</button>
+        </form>
+        {{/if}}
+    </div>
+</div>
