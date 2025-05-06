@@ -15,6 +15,8 @@ let lastNameInput = document.getElementById("lastName");
 let userIdInput = document.getElementById("userId");
 let passwordInput = document.getElementById("password");
 let confirmPasswordInput = document.getElementById("confirmPassword");
+let emailInput = document.getElementById("email");
+let addressInput = document.getElementById("address");
 
 // All login inputs
 let loginUserIdInput = document.getElementById("userId");
@@ -89,8 +91,8 @@ if (myRegisterForm) {
       accumulatedErrors.push("User ID can only contain letters and numbers");
     }
     // Check length
-    if (userId.length < 5 || userId.length > 10) {
-      accumulatedErrors.push("User ID must be between 5-10 characters");
+    if (userId.length < 5) {
+      accumulatedErrors.push("User ID must be at least 5 characters");
     }
 
     //=======================
@@ -128,19 +130,49 @@ if (myRegisterForm) {
     if (password !== confirmPassword) {
       accumulatedErrors.push("Password and Confirm Password do not match");
     }
-    //=========================
-    // favoriteQuote validation
-    //=========================
-    const favoriteQuote = favoriteQuoteInput.value.trim();
-    // Check if favoriteQuote is empty
-    if (favoriteQuote.length === 0) {
-      accumulatedErrors.push("Favorite quote cannot be empty");
+    //=======================
+    // email validation
+    //=======================
+    const email = emailInput.value.trim();
+    // Check if email is empty
+    if (email.length === 0) {
+      accumulatedErrors.push("Email cannot be empty");
     }
-    // Check length
-    if (favoriteQuote.length < 20 || favoriteQuote.length > 255) {
-      accumulatedErrors.push(
-        "Favorite quote must be between 20-255 characters"
-      );
+    // Regex check for valid email format
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+      accumulatedErrors.push("Email is not valid");
+    }
+
+    //=======================
+    // address validation
+    //=======================
+    const address = addressInput.value.trim();
+    // Check if favoriteQuote is empty
+    if (address.length === 0) {
+      accumulatedErrors.push("Address cannot be empty");
+    }
+    // Lenght check
+    if (address.length < 10) {
+      accumulatedErrors.push("Address must be at least 10 characters long");
+    }
+
+    ///========================
+    // inHoboken validation
+    //========================
+    const inHoboken = document.getElementById("inHoboken").value;
+    const state = document.getElementById("state").value;
+
+    if (inHoboken !== "yes" && inHoboken !== "no") {
+      accumulatedErrors.push('Location must be "yes" or "no"');
+    }
+
+    //============================================
+    // State Validation (only if not in Hoboken)
+    //============================================
+    if (inHoboken === "no") {
+      if (!state || state === "") {
+        accumulatedErrors.push("You must select your state if not in Hoboken");
+      }
     }
 
     // If errors array has stuff display it
@@ -185,8 +217,8 @@ if (myLoginForm) {
       accumulatedErrors.push("User ID can only contain letters and numbers");
     }
     // Check length
-    if (loginUserId.length < 5 || loginUserId.length > 10) {
-      accumulatedErrors.push("User ID must be between 5-10 characters");
+    if (loginUserId.length < 5) {
+      accumulatedErrors.push("User ID must be at least 5 characters");
     }
 
     //=======================
@@ -239,7 +271,7 @@ if (myLoginForm) {
     myLoginForm.submit();
   });
 }
-
+  
 if (createListingForm) {
   createListingForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -312,4 +344,25 @@ if (createListingForm) {
     createListingForm.submit();
   });
 }
+
+// extra feature for outside of Hoboken
+// Hoboken location logic
+document.addEventListener("DOMContentLoaded", function () {
+  const inHobokenSelect = document.getElementById("inHoboken");
+  const stateSelectorDiv = document.getElementById("stateSelector");
+
+  if (inHobokenSelect && stateSelectorDiv) {
+    // Initial hide
+    stateSelectorDiv.style.display = "none";
+
+    // Toggle visibility on change
+    inHobokenSelect.addEventListener("change", function () {
+      if (this.value === "no") {
+        stateSelectorDiv.style.display = "block";
+      } else {
+        stateSelectorDiv.style.display = "none";
+      }
+    });
+  }
+});
 })();
