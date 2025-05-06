@@ -55,7 +55,7 @@ router
 })
 .post("/createListing", upload.single('image'), async (req, res) => {
   try{
-    /*
+    
     if (!req.file) {
       throw "Image upload failed";
     }
