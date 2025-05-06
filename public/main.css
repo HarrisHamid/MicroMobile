@@ -173,3 +173,220 @@ h1 {
 #homeLink:hover {
   text-decoration: underline;
 }
+
+.create-listing-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #0d6efd;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.create-listing-btn:hover {
+  background-color: #0b5ed7;
+}
+
+/* Listing Details Page Styles */
+.listing-details-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 20px 100px;
+}
+
+.listing-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.listing-title {
+  font-size: 2rem;
+  color: #212529;
+  margin-bottom: 0.5rem;
+}
+
+.listing-meta {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.listing-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.listing-image-container {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.listing-image {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+}
+
+.listing-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.listing-type-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.listing-pricing {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.price-option {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.price-label {
+  font-weight: bold;
+}
+
+.price-value {
+  color: #0d6efd;
+  font-weight: bold;
+}
+
+.listing-availability {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.request-rental-btn, .login-to-rent-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s;
+}
+
+.request-rental-btn:hover, .login-to-rent-btn:hover {
+  background-color: #0b5ed7;
+}
+
+.return-to-all-listings-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: #02b955;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s;
+}
+
+.return-to-all-listings-btn:hover {
+  background-color: #009b46;
+}
+
+.listing-comments {
+  margin-top: 3rem;
+}
+
+.comments-list {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comment {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.comment-author {
+  font-weight: bold;
+}
+
+.comment-date {
+  color: #6c757d;
+}
+
+.comment-body {
+  line-height: 1.5;
+}
+
+.add-comment-form {
+  margin-top: 2rem;
+}
+
+.add-comment-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  min-height: 100px;
+}
+
+.add-comment-form button {
+  padding: 0.75rem 1.5rem;
+  background-color: #3db0d3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-comment-form button:hover {
+  background-color: #1a748f;
+}
+
+.no-comments {
+  color: #6c757d;
+  font-style: italic;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  text-align: center;
+}

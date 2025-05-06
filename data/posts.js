@@ -235,11 +235,11 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
 
 }
 
-export default (
+export default {
     createPost,
     getPostById,
     getAllPosts,
     filterPostsByTags,
     filterPostsByTitle,
     createComment
-)
+}

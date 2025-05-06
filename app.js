@@ -5,6 +5,13 @@ import session from "express-session";
 import middleware from "./middleware.js";
 import authRoutes from "./routes/auth_routes.js";
 
+import path from "path";
+import { fileURLToPath } from "url";
+// import { seedDatabase } from "./seed.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 
 app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
@@ -42,6 +49,8 @@ app.use("/signout", middleware.signoutBlock);
 app.use("/auth", authRoutes);
 
 configRoutes(app);
+
+// seedDatabase();
 
 app.listen(3000, () => {
   console.log("We've now got a server!");
