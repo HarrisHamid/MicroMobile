@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -19,7 +18,6 @@
       defer
     ></script>
 
-
   </head>
   <body>
     <header>
@@ -29,11 +27,39 @@
       >
         <a class="navbar-brand fw-bold" href="/">MICROMOBILE</a>
         <div class="d-flex align-items-center">
-          <a href="/auth/login" class="btn btn-outline-primary me-2">
-            <i class="bi bi-person-circle"></i>
-            Login
-          </a>
+          {{#if user}}
+            <!-- Logged in: dropdown with icon only -->
+            <div class="dropdown">
+              <button
+                class="btn btn-outline-primary dropdown-toggle"
+                type="button"
+                id="userDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-person-circle"></i>
+              </button>
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="userDropdown"
+              >
+                <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                <li>
+                  <form action="/auth/signout" method="POST" class="d-inline">
+                    <button type="submit" class="dropdown-item">Sign Out</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          {{else}}
+            <!-- Not logged in: show Login button -->
+            <a href="/auth/login" class="btn btn-outline-primary me-2">
+              <i class="bi bi-person-circle"></i>
+              Login
+            </a>
+          {{/if}}
         </div>
+
       </nav>
       <nav>
       </nav>
