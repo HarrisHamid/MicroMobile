@@ -1,8 +1,8 @@
 import express from "express";
 const router = express.Router();
 
-router.get("/profile", async (req, res) => {
-  res.render("profile", { title: "Profile Page" });
+router.get("/", async (req, res) => {
+  res.render("profile");
 });
 
 export default router;

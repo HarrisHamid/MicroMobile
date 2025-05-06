@@ -1,11 +1,12 @@
 import express from "express";
 import exphbs from "express-handlebars";
 import configRoutes from "./routes/index.js";
-import session from 'express-session';
-import middleware from "./middleware.js"
-import path from 'path';
+import session from "express-session";
+import middleware from "./middleware.js";
+import authRoutes from "./routes/auth_routes.js";
+import path from "path";
 import { fileURLToPath } from "url";
-import { seedDatabase } from "./seed.js";
+// import { seedDatabase } from "./seed.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,23 +17,27 @@ app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 app.use(
   session({
-    name: 'AuthenticationState',
-    secret: 'We are the BEST transportation company',
+    name: "AuthenticationState",
+    secret: "We are the BEST transportation company",
     saveUninitialized: false,
-    resave: false
+    resave: false,
   })
 );
 
-app.use('/', middleware.progressChecker);
+// Middleware
+app.use("/", middleware.progressChecker);
 
-app.use('/login', middleware.loginBlock);
-app.use('/register', middleware.registerBlock);
-app.use('/profile', middleware.unauthorizedRedirect);
+// Auth & Route Protection
+app.use("/login", middleware.loginBlock);
+app.use("/register", middleware.registerBlock);
+// app.use("/profile", middleware.unauthorizedRedirect);
+app.use("/signout", middleware.signoutBlock);
+app.use("/auth", authRoutes);
 
 configRoutes(app);
 

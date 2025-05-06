@@ -2,6 +2,7 @@ footer {
   position: fixed;
   bottom: 0;
   left: 0;
+  margin-bottom: 0px;
   right: 0;
   height: 55px;
   background-color: #d8e0ef;
@@ -42,6 +43,7 @@ label {
 input[type="text"],
 input[type="password"],
 input[type="color"],
+input[type="email"],
 select {
   width: 100%;
   padding: 8px;
@@ -103,11 +105,34 @@ h1 {
   height: auto;
 }
 
+/* Profile */
+.user-profile .avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  opacity: 0.2;
+}
+
+.user-profile .avatar-sm {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  opacity: 0.2;
+}
+
+.verified-info p {
+  margin: 0.3rem 0;
+}
+
+.review-box {
+  padding-top: 1rem;
+}
+
 /* Vehicle Listing Page Styling */
 .vehicle-listings-container {
   max-width: 1200px;
   margin: 1.5rem auto 0;
-  padding: 0 20px 80px; /* Extra bottom padding for fixed footer */
+  padding: 0 20px 80px; 
 }
 
 .vehicle-listings-title {
