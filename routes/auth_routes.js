@@ -2,6 +2,8 @@ import { Router } from "express";
 import { register } from "../data/users.js";
 import { login } from "../data/users.js";
 import xss from "xss";
+import { users } from "../config/mongoCollections.js";
+import bcrypt from "bcryptjs";
 const router = Router();
 
 // Render register page
@@ -265,6 +267,7 @@ router
 
       // Check if registration was successful
       if (newUser.registrationCompleted === true) {
+        req.session.showTerms = true;
         return res.redirect("/auth/login");
       } else {
         return res.status(400).render("register", {
@@ -283,7 +286,9 @@ router
   .route("/login")
   .get(async (req, res) => {
     try {
-      res.render("loginPage");
+      const showTermsModal = req.session.showTerms === true;
+      req.session.showTerms = false;
+      res.render("loginPage", { showTermsModal });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -346,6 +351,19 @@ router
       }
       if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(trimmedPassword)) {
         throw Error(`password must contain at least one special character`);
+      }
+
+      // Check if userId and password match
+      const userCollection = await users();
+      const tempUser = await userCollection.findOne({ userId: trimmedUserId });
+      if (
+        !tempUser ||
+        !(await bcrypt.compare(trimmedPassword, tempUser.password))
+      ) {
+        // invalid login
+        return res.status(401).render("loginPage", {
+          error: "Invalid userId or password",
+        });
       }
 
       // session stuff
