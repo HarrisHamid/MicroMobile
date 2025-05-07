@@ -1,12 +1,15 @@
 (function (){
 
 
+
+
 // DOM API method
 
 // Grabbing Form
 let myRegisterForm = document.getElementById("signup-form");
 let myLoginForm = document.getElementById("signin-form");
 let createListingForm = document.getElementById("createListingForm");
+let requestVehicleForm = document.getElementById("requestVehicleForm");
 
 
 // All register inputs
@@ -28,13 +31,39 @@ let vehicleTags2 = document.getElementById("vehicleTags2");
 let vehicleTags3 = document.getElementById("vehicleTags3");
 let protectionIncluded = document.getElementById("protectionIncluded");
 let vehicleCondition = document.getElementById("vehicleCondition");
-let maxRentalHours = document.getElementById("maxRentalHours");
-let maxRentalDays = document.getElementById("maxRentalDays");
+let maxRentalHoursInput = document.getElementById("maxRentalHours");
+let maxRentalDaysInput = document.getElementById("maxRentalDays");
 let hourlyCost = document.getElementById("hourlyCost");
 let dailyCost = document.getElementById("dailyCost");
 let imageInput = document.getElementById("image");
 
-
+if(requestVehicleForm){
+  $(function() {
+    $('#datetimepicker1').datetimepicker();
+     $('#datetimepicker2').datetimepicker();
+  });
+  requestVehicleForm.addEventListener("submit", (event)=>{
+    event.preventDefault();
+    $(function() {
+      let startDate = $('#datetimepicker1').data("DateTimePicker").date();
+      let endDate = $('#datetimepicker2').data("DateTimePicker").date();
+      let extraComments = $('#extraComments').val();
+      let requestConfig ={
+        method: "POST",
+        contentType: 'application/json',
+        data: JSON.stringify({
+          extraComments: extraComments,
+          startDate: startDate,
+          endDate: endDate
+        }),
+        url: "/vehicleListings/requestVehicle"
+      }
+      $.ajax(requestConfig).then(function (responseMessage) {
+        window.location.replace("/");//CHANGE THIS TO GO TO THE VEHICLE'S PAGE
+      });
+    });
+  })
+}
 
 if (myRegisterForm) {
   myRegisterForm.addEventListener("submit", (event) => {
@@ -269,6 +298,54 @@ if (createListingForm) {
     if (title.length < 2) {
       accumulatedErrors.push("Post title must be at least 2 characters");
     }
+
+    //good type
+    const type = vehicleType.value.trim();
+    let vehicleList = ["scooter", "skateboard", "bicycle", "other"]
+    if(!vehicleList.includes(type)){
+      accumulatedErrors.push("Please use the form submission on /createlisting instead of submitting your own.");
+    }
+
+    //good tags
+    const tag1 = vehicleTags1.value.trim(),
+          tag2 = vehicleTags2.value.trim(),
+          tag3 = vehicleTags3.value.trim();
+    let validTagList = ["none", "offroad", "electric", "2wheel", "4wheel", "new", "modded"]
+    if(!validTagList.includes(tag1) || !validTagList.includes(tag2) || !validTagList.includes(tag3)){
+      accumulatedErrors.push("Please use the form submission on /createlisting instead of submitting your own.");
+    }
+
+    //good protectionIncluded
+    const protInclude = protectionIncluded.value.trim()
+    if(protInclude !== "yes" && protInclude !== "no"){
+      accumulatedErrors.push("protectionIncluded must be yes or no");
+    }
+
+    maxRentalDays = maxRentalDaysInput.value.trim()
+    maxRentalHours = maxRentalHoursInput.value.trim()
+        if (typeof maxRentalHours !== 'number') {
+            if(typeof maxRentalHours === 'string'){
+                maxRentalHours = Number(maxRentalHours.trim())
+            }
+            else{
+                accumulatedErrors.push(`Max Rental Hours must be a number`)
+            
+            }
+        }
+        if (typeof maxRentalDays !== 'number')  {
+            if(typeof maxRentalDays === 'string'){
+                maxRentalDays = Number(maxRentalDays.trim())
+            }
+            else{
+               accumulatedErrors.push(`Max Rental Days must be a number`)
+            
+            }
+        }
+        if(maxRentalHours > 24 || maxRentalHours < 0) accumulatedErrors.push("Max Rental Hours must be between 0 and 24")
+        if(maxRentalDays > 365 || maxRentalDays < 0) accumulatedErrors.push("Max Rental Days must be between 0 and 365")
+        if (maxRentalHours === 0 && maxRentalDays === 0) accumulatedErrors.push(`Max Rental Hours and Max Rental Days cannot both be 0`)
+
+    
 
     // Vehicle condition validation
     const condition = vehicleCondition.value.trim();

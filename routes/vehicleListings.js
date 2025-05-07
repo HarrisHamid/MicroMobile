@@ -6,6 +6,7 @@ import posts from "../data/posts.js"
 import multer from "multer";
 import path from "path";
 import { v4 as uuidv4 } from 'uuid'
+import {ObjectId} from 'mongodb';
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -31,7 +32,7 @@ const upload = multer({
 });
 
 
-router.get("/vehcileListings", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const allPosts = await posts.getAllPosts();
     res.render("vehicleListings", {
@@ -43,6 +44,54 @@ router.get("/vehcileListings", async (req, res) => {
     res.status(500).render("error", {
       title: "Error",
       error: "Could not load vehicle listings"
+    });
+  }
+});
+router 
+.get("/requestVehicle", async (req, res) =>{
+  try{
+  //if(!req.session.user)throw "You must be logged in to see this page"
+  // req.session.user.lastPostChecked = xss(req.body.lastPostChecked)
+  // if(!ObjectId.isValid(req.session.user.lastPostChecked)){throw "Error with getting last post checked data"};
+  res.render("requestVehicle", {title: "Request Vehicle"}) //maybe this should be done as a partial on the vehicleDetails page
+  }
+  catch(e){
+    res.status(400).render("requestVehicle", {
+      title: "Request Vehicle",
+      error: e,
+      data: req.body
+    });
+  }
+})
+.post("/requestVehicle", async (req, res) =>{
+  //console.log(req)
+  try{
+  //if(!req.session.user) throw "You must be logged in to use see this page"
+  //if(!req.session.user.lastPostChecked || !ObjectId.isValid(req.session.user.lastPostChecked)){throw "Error with getting last post checked data"};
+  let extraComments = xss(req.body.extraComments);
+  let start = xss(req.body.startDate);
+  let end = xss(req.body.endDate);
+  //res.json({extraComments: extraComments, startDate: startDate, endDate: endDate})
+  if(typeof extraComments !== "string") throw "Extra Comments must be a string";
+  start = help.checkString(start, "startDate");
+  end = help.checkString(end, "endDate");
+  //res.json({extraComments: extraComments, startDate: startDate, endDate: endDate})
+
+  let startDate = new Date(start);
+  let endDate = new Date(end); 
+  if(startDate == "Invalid Date" ||  endDate == "Invalid Date"){
+    throw "Invalid start or end date"
+  }
+  //let newInsert = await posts.createRequest(req.session.user.lastPostChecked, extraComments, start, end)
+  // res.status(200).render(`/vehicleDetails/${req.session.user.lastPostChecked}`, {requestSuccessful: true})
+  //res.json({completion: "Needs to be integrated"})
+  res.render("createListing", {layouts: null});
+  }
+  catch(e){
+    res.status(400).render("requestVehicle", {
+      title: "Request Vehicle",
+      error: e,
+      data: req.body
     });
   }
 });
