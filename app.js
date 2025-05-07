@@ -30,6 +30,17 @@ app.use(
   })
 );
 
+const hbs = exphbs.create({
+  helpers: {
+    ifEquals: function (arg1, arg2, options) {
+      return arg1 === arg2 ? options.fn(this) : options.inverse(this);
+    },
+  },
+});
+
+app.engine("handlebars", hbs.engine);
+app.set("view engine", "handlebars");
+
 //
 app.use((req, res, next) => {
   if (req.session.user) {
@@ -44,7 +55,7 @@ app.use("/", middleware.progressChecker);
 
 app.use("/login", middleware.loginBlock);
 app.use("/register", middleware.registerBlock);
-app.use('/profile', middleware.unauthorizedRedirect);
+app.use("/profile", middleware.unauthorizedRedirect);
 app.use("/signout", middleware.signoutBlock);
 app.use("/auth", authRoutes);
 
