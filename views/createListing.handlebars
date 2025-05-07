@@ -1,99 +1,113 @@
-{{!--
+{{!
 
 registration handelbars
 
---}}
+}}
 {{#if error}}
-<p>{{error}}</p>
+  <p>{{error}}</p>
 {{/if}}
 
 <p id="hiddenP" hidden>test2</p>
 
-<form action="/vehicleListings/createListing" method="POST" id="createListingForm" enctype="multipart/form-data">
-    {{!-- Error Array --}}
-    <ul id="error-model" class="text-danger"></ul>
+<form
+  action="/vehicleListings/createListing"
+  method="POST"
+  id="createListingForm"
+  enctype="multipart/form-data"
+>
+  <ul id="error-model" class="text-danger"></ul>
 
-    <label for="postTitle">Post Title</label>
-    <input type="text" name="postTitle" id="postTitle" value="{{data.postTitle}}">
+  <div class="form-columns">
+    <!-- Left Column -->
+    <div class="form-column">
+      <label for="postTitle">Post Title</label>
+      <input
+        type="text"
+        name="postTitle"
+        id="postTitle"
+        value="{{data.postTitle}}"
+      />
 
-    <label for="vehicleType">Vehicle Type</label>
-    <select name="vehicleType" id="vehicleType">
-        <option value="scooter">Scooter</option>
-        <option value="skateboard">Skateboard</option>
-        <option value="bicycle">Bicycle</option>
-        <option value="other">Other</option>
-    </select>
+      <label for="vehicleType">Vehicle Type</label>
+      <select name="vehicleType" id="vehicleType">
+        <!-- options -->
+      </select>
 
-    {{!-- for now the tags are just done in three separate selects --}}
-    <label for="vehicleTags1">First vehicle tag</label>
-    <select name="vehicleTags1" id="vehicleTags1">  
-        <option value="none">None</option>
-        <option value="offRoad">Off Road</option>
-        <option value="electric">Electric</option>
-        <option value="2wheel">Two Wheels</option>
-        <option value="4wheel">Four Wheels</option>
-        <option value="new">New</option>
-        <option value="modded">Modded</option>
-    </select>
+      <label for="vehicleTags1">First vehicle tag</label>
+      <select name="vehicleTags1" id="vehicleTags1">
+        <!-- options -->
+      </select>
 
-    <label for="vehicleTags2">Second vehicle tag</label>
-    <select name="vehicleTags2" id="vehicleTags2">
-        <option value="none">None</option>
-        <option value="offRoad">Off Road</option>
-        <option value="electric">Electric</option>
-        <option value="2wheel">Two Wheels</option>
-        <option value="4wheel">Four Wheels</option>
-        <option value="new">New</option>
-        <option value="modded">Modded</option>
-    </select>
+      <label for="vehicleTags2">Second vehicle tag</label>
+      <select name="vehicleTags2" id="vehicleTags2">
+        <!-- options -->
+      </select>
 
-    <label for="vehicleTags3">Third vehicle tag</label>
-    <select name="vehicleTags3" id="vehicleTags3">
-        <option value="none">None</option>
-        <option value="offRoad">Off Road</option>
-        <option value="electric">Electric</option>
-        <option value="2wheel">Two Wheels</option>
-        <option value="4wheel">Four Wheels</option>
-        <option value="new">New</option>
-        <option value="modded">Modded</option>
-    </select>
+      <label for="vehicleTags3">Third vehicle tag</label>
+      <select name="vehicleTags3" id="vehicleTags3">
+        <!-- options -->
+      </select>
 
-    <label for="protectionIncluded">Is protection included in the rental</label>
-    <select name="protectionIncluded" id="protectionIncluded">
-        <option value="no">No</option>
-        <option value="yes">Yes</option>
-    </select>
+      <label for="protectionIncluded">Is protection included in the rental</label>
+      <select name="protectionIncluded" id="protectionIncluded">
+        <!-- options -->
+      </select>
+    </div>
 
-    <label for="vehicleCondition">Vehicle Condition (1.0-5.0)</label>
-    <input type="number" step="0.1" name="vehicleCondition" id="vehicleCondition" value="{{data.vehicleCondition}}">
-    <br>
-    {{!-- <label for="currentlyAvailible">Confirm Password</label>
-    <input type="text" name="currentlyAvailible" id="currentlyAvailible"> --}}
+    <!-- Right Column -->
+    <div class="form-column">
+      <label for="vehicleCondition">Vehicle Condition (1.0-5.0)</label>
+      <input
+        type="number"
+        step="0.1"
+        name="vehicleCondition"
+        id="vehicleCondition"
+        value="{{data.vehicleCondition}}"
+      />
 
-    {{!-- <label for="vehicleComments">vehicleComments</label>
-    <input type="text" name="vehicleComments" id="vehicleComments" value="{{data.favoriteQuote}}"> --}}
+      <label for="maxRentalHours">Max Rental Hours</label>
+      <input
+        type="number"
+        name="maxRentalHours"
+        id="maxRentalHours"
+        value="{{data.maxRentalHours}}"
+      />
 
-    <label for="maxRentalHours">Max Rental Hours</label>
-    <br>
-    <input type="number" name="maxRentalHours" id="maxRentalHours" value="{{data.maxRentalHours}}">
-    <br>
-    <label for="maxRentalDays">Max Rental Days</label>
-    <br>
-    <input type="number" name="maxRentalDays" id="maxRentalDays" value="{{data.maxRentalDays}}">
-    <br>
-    <label for="hourlyCost">Cost Per Hour</label>
-    <br>
-    <input type="number" step="0.01" name="hourlyCost" id="hourlyCost" value="{{data.hourlyCost}}">
-    <br>
-    <label for="dailyCost">Cost Per Day</label>
-    <br>
-    <input type="number" step="0.01" name="dailyCost" id="dailyCost" value="{{data.dailyCost}}">
-    <br>
-    <label for="image">Image</label>
-    <br>
-    <input type="file" id="image" name='image' accept="image/png, image/jpeg" value="{{data.image}}">
+      <label for="maxRentalDays">Max Rental Days</label>
+      <input
+        type="number"
+        name="maxRentalDays"
+        id="maxRentalDays"
+        value="{{data.maxRentalDays}}"
+      />
 
-    {{!-- add usually availible bit here --}}
+      <label for="hourlyCost">Cost Per Hour</label>
+      <input
+        type="number"
+        step="0.01"
+        name="hourlyCost"
+        id="hourlyCost"
+        value="{{data.hourlyCost}}"
+      />
 
-    <button type="submit" name="submitButton" id="submitButton">Register</button>
+      <label for="dailyCost">Cost Per Day</label>
+      <input
+        type="number"
+        step="0.01"
+        name="dailyCost"
+        id="dailyCost"
+        value="{{data.dailyCost}}"
+      />
+
+      <label for="image">Image</label>
+      <input
+        type="file"
+        id="image"
+        name="image"
+        accept="image/png, image/jpeg"
+      />
+    </div>
+  </div>
+
+  <button type="submit" name="submitButton" id="submitButton">Register</button>
 </form>
