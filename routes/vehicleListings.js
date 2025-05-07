@@ -79,13 +79,13 @@ router
     if(postTitle.length < 2){
       throw "The title must be at least two characters long"
     }
-    let vehicleList = ["scooter", "skateboard", "bicycle", "other"]
+    let vehicleList = ["Scooter", "Skateboard", "Bicycle", "Other"]
     if(!vehicleList.includes(vehicleType)){
-      throw "Please use the form submission on /createlisting instead of submitting your own."
+      throw "Vehicle type must be one of: Scooter, Skateboard, Bicycle, Other"
     }
-    let validTagList = ["none", "offroad", "electric", "2wheel", "4wheel", "new", "modded"]
+    let validTagList = ["None", "Off Road", "Electric", "Two Wheels", "Four Wheels", "New", "Modded"]
     if(!validTagList.includes(vehicleTags1) || !validTagList.includes(vehicleTags2) || !validTagList.includes(vehicleTags3)){
-      throw "Please use the form submission on /createlisting instead of submitting your own."
+      throw "Vehicle tags must be among: None, Off Road, Electric, Two Wheels, Four Wheels, New, Modded"
     }
     let vehicleTags = [vehicleTags1, vehicleTags1, vehicleTags3];
 
@@ -113,7 +113,7 @@ router
       hourlyCost, 
       dailyCost,
       imagePath,
-      undefined
+      whenAvailable
     ); //need to implement when availible array
 
     res.redirect(`/listingDetails/${newPost._id}`); // redirect to the new post
@@ -147,9 +147,18 @@ router.get("/listingDetails/:id", async (req, res) => {
     })
   } catch (e) {
     res.status(400).render("listingDetails"), {
-      error: e.toString(),
-      data: req.body
+      error: e.toString()
     }
+  }
+});
+router.post("/listingDetails/:id", async (req, res) => {
+  try {
+    posts.createComment(req.params.id, "temp username", "temp first name??", "temp last name??", req.body); // im ngl i dont know how to get the currently logged in users details, also why are we taking first and last name separately?
+    res.redirect(req.originalUrl); // refresh page
+  } catch (e) {
+    res.status(400).render("listingDetails", {
+      error: e.toString()
+    })
   }
 });
 
