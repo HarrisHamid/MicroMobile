@@ -5,6 +5,7 @@ let progressChecker = (req, res, next) => {
     temp = "Not Authenticated";
   } else {
     temp = "Authenticated ";
+    console.log(req.session.user);
   }
   if (!req.session.user) {
     temp2 = "";

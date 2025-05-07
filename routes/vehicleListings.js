@@ -10,10 +10,10 @@ import { v4 as uuidv4 } from 'uuid'
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/uploads/');
+    cb(null, 'public/uploads/'); //this is where we store our images
   },
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
+    const ext = path.extname(file.originalname); //I'm seeing some stuff of including Date.now() to get a unique filename. Worth looking into.
     cb(null, uuidv4() + ext);
   }
 });
@@ -21,10 +21,10 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg') {
-      cb(null, true);
+    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg') { //mimetype is basically the extension (.png -> image/png)
+      cb(null, true); //allow upload
     } else {
-      cb(new Error('Only PNG and JPEG images are allowed'), false);
+      cb(new Error('Only PNG and JPEG images are allowed'), false); //reject upload
     }
   },
   limits: { fileSize: 5 * 1024 * 1024 } // max filesize 5MB
@@ -34,7 +34,6 @@ const upload = multer({
 router.get("/vehicleListings", async (req, res) => {
   try {
     const allPosts = await posts.getAllPosts();
-    console.log(allPosts);
     res.render("vehicleListings", {
       title: "Available Vehicles",
       posts: allPosts
@@ -50,7 +49,6 @@ router.get("/vehicleListings", async (req, res) => {
 
 router
 .get("/createListing", async (req, res) => {
-  console.log("create listing page");
   res.render("createListing", { title: "Create Listing" });
 })
 .post("/createListing", upload.single('image'), async (req, res) => {
@@ -61,7 +59,7 @@ router
     }
     
 
-    const imagePath = '/public/uploads/' + req.file.filename;
+    const imagePath = '/public/uploads/' + xss(req.file.filename);
 
     let postTitle = xss(req.body.postTitle)
     let vehicleType = xss(req.body.vehicleType)
@@ -77,7 +75,7 @@ router
 
     let posterUsername = 'Jack1!'//xss(req.session.user.posterUserame);
     let posterName = "Jack" //xss(req.session.user.posterName);
-
+    
 
   
     postTitle = help.checkString(postTitle, "post title");
@@ -106,7 +104,6 @@ router
     hourlyCost = tempArr2[0];
     dailyCost = tempArr2[1];
 
-    console.log("about to create post");
     let newPost = await posts.createPost(
       postTitle,
       vehicleType,
@@ -118,21 +115,18 @@ router
       maxRentalDays,
       hourlyCost, 
       dailyCost,
-      undefined,//imagePath,
+      imagePath,//imagePath,
       undefined
     ); //need to implement when availible array
-
-    res.redirect(`/listingDetails/${newPost._id}`); // redirect to the new post
-    //console.log("test");
+    return res.redirect(`/vehicleListings/listingDetails/${newPost._id}`); // redirect to the new post
   } catch(e) {
-    //console.log("test2");
-    res.status(400).render("createListing", {
+    return res.status(400).render("createListing", {
       title: "Create Listing",
       error: e.toString(),
       data: req.body
     });
   }
-  res.render("profile", { title: "Create Listing" }); //render their profile at the end so they can see their listings, including the newest one
+  return res.render("profile", { title: "Create Listing" }); //render their profile at the end so they can see their listings, including the newest one
 })
 ;
 

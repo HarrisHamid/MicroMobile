@@ -312,6 +312,7 @@ export const register = async (
     inHoboken: inHoboken,
     signupDate: signupDate,
     lastLogin: lastLogin,
+    role: 'user' //middleware prints the role so I at least set it here. -Jack
   };
 
   // not in Hoboken check
@@ -445,6 +446,7 @@ export const login = async (userId, password) => {
     inHoboken: user.inHoboken,
     signupDate: user.signupDate,
     lastLogin: lastLogin,
+    role: user.role
   };
   // not in Hoboken check
   if (user.inHoboken === "no") {

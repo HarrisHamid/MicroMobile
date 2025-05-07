@@ -19,15 +19,16 @@ const createPost = async (
 ) => {
     // I believe many of these are called incorrectly - for example, checkPosterUsername currently only has one input... unless there's some sort of 496-esque overflow mechanic in JS so that the string will apply for a string check function within chckPosterUsername? 
     //also, I think posterUsername and posterName will come from their account information, which we'll get from cookies, and since it's our internal info and not something the user submits, I don't think we need to check it? Something to ask him about. They'll still be passed into this function from the route but I don't think we need to check them.
+    //I agree that they are being called wrong. Removing the second 'Vehicle Type' field from the checkType call still works, though. Strange. Leaving as is since it functions but keeping checkType changed so we know it works. -Jack
     postTitle = checkTitle(postTitle, 'Post Title')
-    vehicleType = checkType(vehicleType, 'Vehicle Type')
+    vehicleType = checkType(vehicleType)
     vehicleTags = checkTags(vehicleTags, 'Vehicle Tags')
     vehicleCondition = checkCondition(vehicleCondition, 'Vehicle Condition')
     posterUsername = checkPosterUsername(posterUsername, 'Poster Username') 
     posterName = checkPosterName(posterName, 'Poster Name')
     [maxRentalHours, maxRentalDays] = checkMaxRental(maxRentalHours, maxRentalDays)
     [hourlyCost, dailyCost] = checkCost(hourlyCost, dailyCost)
-    //image = checkImage(image)
+    image = checkImage(image)
     whenAvailable = checkWhenAvailable(whenAvailable, 'When Available')
 
     let newPost = {
@@ -56,7 +57,6 @@ const createPost = async (
     
     const newId = insertInfo.insertedId.toString();
     const thePost = await getPostById(newId);
-    console.log(thePost);
     return thePost;
 };
 

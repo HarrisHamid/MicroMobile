@@ -9,7 +9,7 @@ const constructorMethod = (app) => {
   app.use("/profile", profileRoutes);
   app.use("/vehicleListings", vehicleListingsRoutes);
   app.use("/auth", authRoutes);
-  app.use("/createListing", createListingRoutes);
+  app.use("/createListing", createListingRoutes); //I don't think. We already have /vehicleListings/createListing. -Jack
   
   app.use("*", (req, res) => {
     res.status(404).render("error", { error: "Page Not Found" });
