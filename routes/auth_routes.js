@@ -2,6 +2,8 @@ import { Router } from "express";
 import { register } from "../data/users.js";
 import { login } from "../data/users.js";
 import xss from "xss";
+import { users } from "../config/mongoCollections.js";
+import bcrypt from "bcryptjs";
 const router = Router();
 
 // Render register page
@@ -265,6 +267,7 @@ router
 
       // Check if registration was successful
       if (newUser.registrationCompleted === true) {
+        req.session.showTerms = true;
         return res.redirect("/auth/login");
       } else {
         return res.status(400).render("register", {
@@ -283,7 +286,9 @@ router
   .route("/login")
   .get(async (req, res) => {
     try {
-      res.render("loginPage");
+      const showTermsModal = req.session.showTerms === true;
+      req.session.showTerms = false;
+      res.render("loginPage", { showTermsModal });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -348,6 +353,19 @@ router
         throw Error(`password must contain at least one special character`);
       }
 
+      // Check if userId and password match
+      const userCollection = await users();
+      const tempUser = await userCollection.findOne({ userId: trimmedUserId });
+      if (
+        !tempUser ||
+        !(await bcrypt.compare(trimmedPassword, tempUser.password))
+      ) {
+        // invalid login
+        return res.status(401).render("loginPage", {
+          error: "Invalid userId or password",
+        });
+      }
+
       // session stuff
       const user = await login(trimmedUserId.toLowerCase(), trimmedPassword);
       console.log(user);
@@ -371,14 +389,16 @@ router
   });
 
 // Render signout
-router.route("/signout").get(async (req, res) => {
+router.route("/signout").post(async (req, res) => {
   try {
     req.session.destroy((err) => {
       if (err) {
         return res.status(500).send("Error while logging out.");
       }
-      res.clearCookie("AuthenticationState"); // or "connect.sid" if you're using the default
-      return res.redirect("/signout");
+      res.clearCookie("AuthenticationState");
+      res.render("signout", {
+        message: "You have been logged out successfully.",
+      });
     });
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -4,6 +4,7 @@ import configRoutes from "./routes/index.js";
 import session from "express-session";
 import middleware from "./middleware.js";
 import authRoutes from "./routes/auth_routes.js";
+
 import path from "path";
 import { fileURLToPath } from "url";
 // import { seedDatabase } from "./seed.js";
@@ -20,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/public", express.static(path.join(__dirname, "public")));
+app.use("/public", express.static("public"));
 
 app.use(
   session({
@@ -31,13 +32,32 @@ app.use(
   })
 );
 
-// Middleware
+const hbs = exphbs.create({
+  helpers: {
+    ifEquals: function (arg1, arg2, options) {
+      return arg1 === arg2 ? options.fn(this) : options.inverse(this);
+    },
+  },
+});
+
+app.engine("handlebars", hbs.engine);
+app.set("view engine", "handlebars");
+
+//
+app.use((req, res, next) => {
+  if (req.session.user) {
+    res.locals.user = req.session.user;
+  } else {
+    res.locals.user = null;
+  }
+  next();
+});
+
 app.use("/", middleware.progressChecker);
 
-// Auth & Route Protection
 app.use("/login", middleware.loginBlock);
 app.use("/register", middleware.registerBlock);
-// app.use("/profile", middleware.unauthorizedRedirect);
+app.use("/profile", middleware.unauthorizedRedirect);
 app.use("/signout", middleware.signoutBlock);
 app.use("/auth", authRoutes);
 
