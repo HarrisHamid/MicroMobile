@@ -368,6 +368,7 @@ router
 
       // session stuff
       const user = await login(trimmedUserId.toLowerCase(), trimmedPassword);
+      console.log(user);
       req.session.user = {
         userId: user.userId,
         firstName: user.firstName,
@@ -376,6 +377,7 @@ router
         address: user.address,
         inHoboken: user.inHoboken,
         state: user.state,
+        role: user.role //same as above, I include the role here so our middleware can print it. -Jack
       };
       return res.redirect("/");
     } catch (error) {

@@ -19,8 +19,9 @@ const createPost = async (
 ) => {
     // I believe many of these are called incorrectly - for example, checkPosterUsername currently only has one input... unless there's some sort of 496-esque overflow mechanic in JS so that the string will apply for a string check function within chckPosterUsername? 
     //also, I think posterUsername and posterName will come from their account information, which we'll get from cookies, and since it's our internal info and not something the user submits, I don't think we need to check it? Something to ask him about. They'll still be passed into this function from the route but I don't think we need to check them.
+    //I agree that they are being called wrong. Removing the second 'Vehicle Type' field from the checkType call still works, though. Strange. Leaving as is since it functions but keeping checkType changed so we know it works. -Jack
     postTitle = checkTitle(postTitle, 'Post Title')
-    vehicleType = checkType(vehicleType, 'Vehicle Type')
+    vehicleType = checkType(vehicleType)
     vehicleTags = checkTags(vehicleTags, 'Vehicle Tags')
     vehicleCondition = checkCondition(vehicleCondition, 'Vehicle Condition')
     posterUsername = checkPosterUsername(posterUsername, 'Poster Username') 
@@ -57,7 +58,7 @@ const createPost = async (
     const newId = insertInfo.insertedId.toString();
     const thePost = await getPostById(newId);
     return thePost;
-}
+};
 
 const getPostById = async (postId) => {
     checkId(postId);
@@ -66,7 +67,7 @@ const getPostById = async (postId) => {
     if (thePost === null) throw 'No post with that id'; //might want to throw a 404 or 500 here depending on how we use the function
     thePost._id = thePost._id.toString()
     return thePost;
-}
+};
 
 // gets all of the posts in the 'posts' collection
 const getAllPosts = async () => {
@@ -78,7 +79,7 @@ const getAllPosts = async () => {
 
     postList = postList.map(elem => {elem._id = elem._id.toString(); return elem;});
     return postList;
-}
+};
 
 // filters posts by the specified tags
 // allows for search for all of the tags combined, or posts containing at least one provided tag
@@ -115,7 +116,7 @@ const filterPostsByTags = async (tags, filterType) => {
         // return posts
         return postsWithTags;
     }
-}
+};
 
 // finds posts based on matching their titles to the prefix provided
 const filterPostsByTitle = async (prefix) => {
@@ -140,7 +141,7 @@ const filterPostsByTitle = async (prefix) => {
     );
     // return posts that have title prefix
     return filteredPosts;
-}
+};
 
 const createComment = async (postId, posterUsername, posterFirstName, posterLastName, body) => {
     // Input validation for posterUsername, posterName, and body
@@ -233,7 +234,7 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
     //not too sure what to return here, this can be changed
     return await getPostById(postId);
 
-}
+};
 
 export default {
     createPost,

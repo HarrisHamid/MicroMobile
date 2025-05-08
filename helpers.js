@@ -2,8 +2,8 @@ import { all } from "axios";
 import {users} from "./config/mongoCollections.js";
 import {ObjectId} from 'mongodb';
 
-let vehicleTypes = ['Bike', 'Scooter', 'Skateboard']
-let vehicleTags = ['Electric', 'Gas', 'Hybrid', '2 Wheeler', '3 Wheeler', '4 Wheeler', 'Off Road', 'City']
+let vehicleTypes = ["scooter", "skateboard", "bicycle", "other"]; //I think we should store this somewhere else for expandability. vehicleListings.js and this file both have it hardcoded in. We should have a header where we can store this information instead of having to redo every file. -Jack
+let vehicleTags = ['Electric', 'Gas', 'Hybrid', '2 Wheeler', '3 Wheeler', '4 Wheeler', 'Off Road', 'City'] 
 
 const checkStringIsGood = (str, strName) => {//can't we merge this and the function below? Why would they be separate? (implmented this as just checkString)
     if (str === undefined) throw `${strName || 'String'} is undefined`
@@ -180,7 +180,6 @@ const checkImage = (image) => {
     if (!image || typeof image !== 'string' || image.trim().length === 0) {
         throw 'Image path is required';
     }
-
     return image;
 }
 
