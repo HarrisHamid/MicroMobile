@@ -275,7 +275,7 @@ const createRequest = async(postId, extraComments, startDate, endDate) => {
     return 1;
 }
 
-export default (
+export default {
     createPost,
     getPostById,
     getAllPosts,
@@ -283,4 +283,4 @@ export default (
     filterPostsByTitle,
     createComment,
     createRequest
-)
+}
