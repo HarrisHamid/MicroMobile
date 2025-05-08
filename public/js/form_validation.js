@@ -6,6 +6,7 @@
   let myLoginForm = document.getElementById("signin-form");
   let createListingForm = document.getElementById("createListingForm");
 
+  let requestVehicleForm = document.getElementById("requestVehicleForm");
   // All register inputs
   let firstNameInput = document.getElementById("firstName");
   let lastNameInput = document.getElementById("lastName");
@@ -33,11 +34,39 @@
   let dailyCost = document.getElementById("dailyCost");
   let imageInput = document.getElementById("image");
 
+  
+if(requestVehicleForm){
+  $(function() {
+    $('#datetimepicker1').datetimepicker();
+     $('#datetimepicker2').datetimepicker();
+  });
+  requestVehicleForm.addEventListener("submit", (event)=>{
+    event.preventDefault();
+    $(function() {
+      let startDate = $('#datetimepicker1').data("DateTimePicker").date();
+      let endDate = $('#datetimepicker2').data("DateTimePicker").date();
+      let extraComments = $('#extraComments').val();
+      let requestConfig ={
+        method: "POST",
+        contentType: 'application/json',
+        data: JSON.stringify({
+          extraComments: extraComments,
+          startDate: startDate,
+          endDate: endDate
+        }),
+        url: "/vehicleListings/requestVehicle"
+      }
+      $.ajax(requestConfig).then(function (responseMessage) {
+        window.location.replace("/");//CHANGE THIS TO GO TO THE VEHICLE'S PAGE
+      });
+    });
+  })
+}
+  
   if (myRegisterForm) {
     myRegisterForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const accumulatedErrors = [];
-
       //=======================
       // firstName validation
       //=======================
@@ -72,6 +101,7 @@
       if (lastName.length < 2 || lastName.length > 20) {
         accumulatedErrors.push("Last name must be between 2-20 characters");
       }
+
 
       //=======================
       // userId validation
@@ -274,12 +304,71 @@
       event.preventDefault();
       const accumulatedErrors = [];
 
+
+    //good type
+    const type = vehicleType.value.trim();
+    let vehicleList = ["scooter", "skateboard", "bicycle", "other"]
+    if(!vehicleList.includes(type)){
+      accumulatedErrors.push("Please use the form submission on /createlisting instead of submitting your own.");
+    }
+
+    //good tags
+    const tag1 = vehicleTags1.value.trim(),
+          tag2 = vehicleTags2.value.trim(),
+          tag3 = vehicleTags3.value.trim();
+    let validTagList = ["none", "offroad", "electric", "2wheel", "4wheel", "new", "modded"]
+    if(!validTagList.includes(tag1) || !validTagList.includes(tag2) || !validTagList.includes(tag3)){
+      accumulatedErrors.push("Please use the form submission on /createlisting instead of submitting your own.");
+    }
+
+    //good protectionIncluded
+    const protInclude = protectionIncluded.value.trim()
+    if(protInclude !== "yes" && protInclude !== "no"){
+      accumulatedErrors.push("protectionIncluded must be yes or no");
+    }
+
+    maxRentalDays = maxRentalDaysInput.value.trim()
+    maxRentalHours = maxRentalHoursInput.value.trim()
+        if (typeof maxRentalHours !== 'number') {
+            if(typeof maxRentalHours === 'string'){
+                maxRentalHours = Number(maxRentalHours.trim())
+            }
+            else{
+                accumulatedErrors.push(`Max Rental Hours must be a number`)
+            
+            }
+        }
+        if (typeof maxRentalDays !== 'number')  {
+            if(typeof maxRentalDays === 'string'){
+                maxRentalDays = Number(maxRentalDays.trim())
+            }
+            else{
+               accumulatedErrors.push(`Max Rental Days must be a number`)
+            
+            }
+        }
+        if(maxRentalHours > 24 || maxRentalHours < 0) accumulatedErrors.push("Max Rental Hours must be between 0 and 24")
+        if(maxRentalDays > 365 || maxRentalDays < 0) accumulatedErrors.push("Max Rental Days must be between 0 and 365")
+        if (maxRentalHours === 0 && maxRentalDays === 0) accumulatedErrors.push(`Max Rental Hours and Max Rental Days cannot both be 0`)
+
+    
+
+    // Vehicle condition validation
+    const condition = vehicleCondition.value.trim();
+    if (condition.length === 0) {
+      accumulatedErrors.push("Vehicle condition cannot be empty");
+    }
+    if (isNaN(condition) || condition < 1 || condition > 5) {
+      accumulatedErrors.push("Vehicle condition must be between 1.0 and 5.0");
+    }
+
       // Image validation
       if (imageInput.files.length === 0) {
         accumulatedErrors.push("Please select an image");
       } else {
         const file = imageInput.files[0];
         const validTypes = ["image/png", "image/jpeg"];
+
 
         if (!validTypes.includes(file.type)) {
           accumulatedErrors.push("Only PNG and JPEG images are allowed");

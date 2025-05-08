@@ -45,7 +45,9 @@ const createPost = async (
         hourlyCost: hourlyCost,
         dailyCost: dailyCost,
         image: image,
-        whenAvailable: whenAvailable
+        whenAvailable: whenAvailable,
+        requests: [], //this is an array of objects containing extraComments, startDate, endDate, and the Id of the requester
+        taken: [] // this is an array of starDate, endDate, and Id of requester
     }
     
     const postCollection = await posts();
@@ -236,11 +238,51 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
 
 };
 
+
+const createRequest = async(postId, extraComments, startDate, endDate) => {
+    if(typeof extraComments !== "string") throw "Extra Comments must be a string";
+    startDate = checkString(startDate, "startDate");
+    endDate = checkString(endDate, "endDate");
+    let newRequest = {
+        extraComments: extraComments,
+        startDate: startDate,
+        endDate: endDate
+    }
+    const postCollection = await posts();
+    const vehicle = await postCollection.findOne(
+        { _id: new ObjectId(postId) }
+    );
+    let startDate2 = new Date(startDate);
+    let endDate2 = new Date(endDate);
+    for(let x of vehicle.taken){
+        let takenStart = new Date(x.startDate);
+        let takenEnd = new Date(x.endDate);
+        if(startDate2.getTime() > takenStart.getTime() && startDate2.getTime() < takenEnd.getTime()){
+            //basically if your start time is taken, fail
+            return -1
+        }
+        if(endDate2.getTime() > takenStart.getTime() && endDate2.getTime() < takenEnd.getTime()){
+            //basically if your end time is taken, fail
+            return -1
+        }
+    }
+
+    const updateInfo = await postCollection.updateOne(
+        { _id: new ObjectId(postId) },
+        { $push: { requests: newRequest } }
+    );
+    if (!updateInfo.acknowledged || updateInfo.modifiedCount === 0) {
+        throw 'Could not handle request. Please try again later.';
+    }
+    return 1;
+}
+
 export default {
     createPost,
     getPostById,
     getAllPosts,
     filterPostsByTags,
     filterPostsByTitle,
-    createComment
-}
+    createComment,
+    createRequest
+ }

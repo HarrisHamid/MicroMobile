@@ -1,0 +1,55 @@
+{{!--
+
+registration handelbars
+
+--}}
+{{#if error}}
+<p>{{error}}</p>
+{{/if}}
+
+<p id="hiddenP" hidden>test2</p>
+
+<form action="/vehicleListings/requestVehicle" method="POST" id="requestVehicleForm">
+    {{!-- Error Array --}}
+    <ul id="login-error-model" class="text-danger"></ul>
+
+
+<div class="container">
+  <div class="row">
+    <div class='col-sm-6'>
+      <div class="form-group">
+        <div class='input-group date' data-provide="datepicker" id='datetimepicker1'>
+          <label for="input1">Start date and time</label>
+          <input type='text' class="form-control" id="input1"/>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class='col-sm-6'>
+      <div class="form-group">
+        <div class='input-group date' data-provide="datepicker" id='datetimepicker2'>
+        <label for="input2">End date and time</label>
+          <input type='text' class="form-control" id="input2"/>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    <label for="extraComments">Extra Comments</label>
+    <input type="text" name="extraComments" id="extraComments" value="{{data.extraComments}}">
+
+
+    <button type="submit" name="submitButton" id="submitButton">Register</button>
+</form>
