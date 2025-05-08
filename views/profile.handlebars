@@ -1,0 +1,39 @@
+<div class="container mt-5 user-profile">
+  <div class="row">
+    <!-- LEFT SECTION -->
+    <div class="col-md-6 d-flex flex-column align-items-start">
+      <img
+        src="/public/img/default-user.png"
+        alt="User Avatar"
+        class="avatar mb-3"
+      />
+      <h2>{{firstName}}</h2>
+
+      <h6 class="mt-4 text-uppercase text-muted">Verified Info</h6>
+      <div class="verified-info mt-2">
+        <p>Email: {{email}}</p>
+        <p>Addresss: {{address}}</p>
+        {{#ifEquals inHoboken "yes"}}
+          <p>State: NJ</p>
+        {{else}}
+          <p>State: {{state}}</p>
+        {{/ifEquals}}
+      </div>
+    </div>
+
+    <!-- RIGHT SECTION -->
+    <div class="col-md-6">
+      <h6 class="text-uppercase text-muted">Reviews from Hosts</h6>
+      <div class="review-box mt-3">
+        <img
+          src="/public/img/default-user.png"
+          alt="Reviewer"
+          class="avatar-sm mb-2"
+        />
+        <h6><strong>No reviews yet</strong></h6>
+        <p class="text-muted">{{firstName}}
+          hasn’t received a review on MicroMobile yet</p>
+      </div>
+    </div>
+  </div>
+</div>

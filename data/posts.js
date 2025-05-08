@@ -237,6 +237,7 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
 
 }
 
+
 const createRequest = async(postId, extraComments, startDate, endDate) => {
     if(typeof extraComments !== "string") throw "Extra Comments must be a string";
     startDate = checkString(startDate, "startDate");
@@ -275,7 +276,7 @@ const createRequest = async(postId, extraComments, startDate, endDate) => {
     return 1;
 }
 
-export default (
+export default {
     createPost,
     getPostById,
     getAllPosts,
@@ -283,4 +284,4 @@ export default (
     filterPostsByTitle,
     createComment,
     createRequest
-)
+ }
