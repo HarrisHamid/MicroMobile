@@ -218,10 +218,10 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
 
     let newComment = { 
         _id: (new ObjectId()).toString(),
-        userName: userId,
-        name: fullName,
+        Username: userId,
+        Name: fullName,
         commentDate: new Date().toLocaleDateString(),
-        body: body
+        Body: body
       }
     
     const postCollection = await posts();

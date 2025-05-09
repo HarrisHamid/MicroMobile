@@ -69,8 +69,8 @@
         {{/if}}
 
         {{#if user}}
-        <form class="add-comment-form" data-post-id="{{post._id}}">
-            <textarea name="comment" placeholder="Add your comment..." required></textarea>
+        <form class="add-comment-form" id="commentForm" data-post-id="{{post._id}}" method="POST" action="/vehicleListings/listingDetails/{{post._id}}">
+            <textarea name="comment" id="commentInput" placeholder="Add your comment..." required></textarea>
             <button type="submit">Post Comment</button>
         </form>
         {{/if}}

@@ -211,13 +211,13 @@ router.get("/listingDetails/:id", async (req, res) => {
 });
 router.post("/listingDetails/:id", async (req, res) => {
   try {
-    posts.createComment(
+    await posts.createComment(
       req.params.id,
-      "temp username",
-      "temp first name??",
-      "temp last name??",
-      req.body
-    ); // im ngl i dont know how to get the currently logged in users details, also why are we taking first and last name separately?
+      req.session.user.userId,
+      req.session.user.firstName,
+      req.session.user.lastName,
+      req.body.comment
+    ); 
     res.redirect(req.originalUrl); // refresh page
   } catch (e) {
     res.status(400).render("listingDetails", {

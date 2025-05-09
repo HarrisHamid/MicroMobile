@@ -5,6 +5,7 @@
   let myRegisterForm = document.getElementById("signup-form");
   let myLoginForm = document.getElementById("signin-form");
   let createListingForm = document.getElementById("createListingForm");
+  let commentForm = document.getElementById("commentForm");
 
   let requestVehicleForm = document.getElementById("requestVehicleForm");
   // All register inputs
@@ -33,6 +34,9 @@
   let hourlyCost = document.getElementById("hourlyCost");
   let dailyCost = document.getElementById("dailyCost");
   let imageInput = document.getElementById("image");
+
+  // All comment inputs
+  let commentInput = document.getElementById("commentInput");
 
   if (requestVehicleForm) {
     $(function () {
@@ -66,6 +70,14 @@
     myRegisterForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const accumulatedErrors = [];
+
+      //=======================
+      // 18+ validation
+      //=======================
+      const isAdultChecked = document.getElementById("isAdult").checked;
+      if (!isAdultChecked) {
+        accumulatedErrors.push("You must confirm you are 18 or older");
+      }
       //=======================
       // firstName validation
       //=======================
@@ -340,8 +352,8 @@
         accumulatedErrors.push("protectionIncluded must be yes or no");
       }
 
-      maxRentalDays = maxRentalDaysInput.value.trim();
-      maxRentalHours = maxRentalHoursInput.value.trim();
+      maxRentalDays = maxRentalDays.value.trim();
+      maxRentalHours = maxRentalHours.value.trim();
       if (typeof maxRentalHours !== "number") {
         if (typeof maxRentalHours === "string") {
           maxRentalHours = Number(maxRentalHours.trim());
@@ -430,6 +442,43 @@
 
       // If no errors, submit the form
       createListingForm.submit();
+    });
+  }
+
+  if (commentForm) {
+    commentForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const accumulatedErrors = [];
+      // Comment validation
+      const comment = commentInput.value.trim();
+      if (comment.length === 0) {
+        accumulatedErrors.push("Comment cannot be empty");
+      }
+      if (comment.length < 2) {
+        accumulatedErrors.push("Comment must be at least 2 characters");
+      }
+      if (comment.length > 999) {
+        accumulatedErrors.push("Comment must be less than 999 characters");
+      }
+      // Display errors if any
+      const errorModel = document.getElementById("error-model");
+      if (errorModel) {
+        errorModel.innerHTML = "";
+      }
+      if (accumulatedErrors.length > 0) {
+        if (errorModel) {
+          accumulatedErrors.forEach((error) => {
+            const li = document.createElement("li");
+            li.textContent = error;
+            errorModel.appendChild(li);
+          });
+        } else {
+          alert(accumulatedErrors.join("\n"));
+        }
+        return;
+      }
+      // If no errors, submit the form
+      commentForm.submit();
     });
   }
 

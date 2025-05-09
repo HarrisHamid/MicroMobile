@@ -29,6 +29,13 @@ router
       let inHoboken = xss(req.body.inHoboken);
       let state = xss(req.body.state || "");
 
+      //Age check cause you never know
+     if (!req.body.isAdult) {
+       return res.status(400).render("register", {
+         error: "You must confirm you are 18 years of age or older"
+       });
+     }
+
       // trimminging the inputs
       const trimmedFirstName = firstName.trim();
       const trimmedLastName = lastName.trim();
@@ -267,8 +274,10 @@ router
 
       // Check if registration was successful
       if (newUser.registrationCompleted === true) {
+        const user = await login(userId, password)
+        req.session.user = user
         req.session.showTerms = true;
-        return res.redirect("/auth/login");
+        return res.redirect("/");
       } else {
         return res.status(400).render("register", {
           error: "Registration failed. Please try again.",
