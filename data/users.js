@@ -312,7 +312,10 @@ export const register = async (
     inHoboken: inHoboken,
     signupDate: signupDate,
     lastLogin: lastLogin,
-    role: 'user' //middleware prints the role so I at least set it here. -Jack
+    role: 'user', //middleware prints the role so I at least set it here. -Jack
+    ratings: [],
+    ratingAverage: 0,  
+    ratingCount: 0    
   };
 
   // not in Hoboken check
@@ -456,3 +459,57 @@ export const login = async (userId, password) => {
   return userData;
 };
 
+export const addRating = async (toUserId, fromUserId, score) => {
+  toUserId = checkId(toUserId);
+  fromUserId = checkId(fromUserId);
+
+  if (toUserId === fromUserId) throw "Cannot rate yourself";
+  if (typeof score !== 'number' || score < 1 || score > 5) throw "Score must be 1-5";
+
+  const userCol = await users();
+  const user = await userCol.findOne({ _id: new ObjectId(toUserId) });
+  if (!user) throw "Target user not found";
+
+  // Update array and running average:
+  let newCount = (user.ratingCount) + 1;
+  let newTotal = (user.ratingAverage) * (user.ratingCount) + score;
+  let newAvg = newTotal / newCount;
+
+  // Check if the user already rated
+  let existingRating = false
+  for (let i = 0; i < user.ratings.length; i++) {
+    if (user.ratings[i].userId === fromUserId) {
+      existingRating = true;
+      break;
+    }
+  }
+
+if (existingRating) {
+  newCount = ratingCount;
+  const totalMinusOld = ratingAverage * ratingCount - existing.score;
+  newAvg = (totalMinusOld + score) / newCount;
+  await userCol.updateOne(
+    { _id: ObjectId(toUserId), "ratings.userId": fromUserId },
+    {
+      $set: {
+        "ratings.$.score": score,
+        ratingAverage: newAvg,
+        ratingCount: newCount
+      }
+    }
+  );
+    return { updated: true };
+  }
+  else {
+    newCount = ratingCount + 1;
+    const total = ratingAverage * ratingCount + score;
+    newAvg = total / newCount;
+    await userCol.updateOne(
+      { _id: ObjectId(toUserId) },
+      {
+        $push: { ratings: { userId: fromUserId, score} },
+        $set: { ratingAverage: newAvg, ratingCount: newCount }
+      }
+    );
+  }
+};
