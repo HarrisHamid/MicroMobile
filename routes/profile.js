@@ -21,5 +21,21 @@ router.get("/", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+router.post('/:id/rate', async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/auth/login");
+  }
+  const toUserId = req.params.id;
+  const fromUserId = req.session.user._id;
+  const score = parseInt(req.body.score, 10);
+  try {
+    await usersData.addRating(toUserId, fromUserId, score);
+    res.redirect(`/profile/${toUserId}`);
+  } catch (e) {
+    res.status(400).render('profile', {error: e});
+  }
+});
+
+
 
 export default router;

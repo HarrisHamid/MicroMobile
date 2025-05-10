@@ -15,7 +15,10 @@ const seedDatabase = async () => {
                 address: "1 Castle Point Terrace",
                 inHoboken: true,
                 signupDate: "05/06/2025",
-                lastLogin: "05/06/2025 08:24PM"
+                lastLogin: "05/06/2025 08:24PM",
+                ratings: [{user:"ajfra", rating: 5}, {user:"i_love_micromobile", rating: 2}],
+                ratingAverage: 3.5,
+                ratingCount: 2 
               },
               {
                 firstName: "AJ",
@@ -26,7 +29,10 @@ const seedDatabase = async () => {
                 address: "2E Highview Avenue",
                 inHoboken: false,
                 signupDate: "05/06/2025",
-                lastLogin: "05/06/2025 08:24PM"
+                lastLogin: "05/06/2025 08:24PM",
+                ratings: [{user:"da_programmer_man", rating: 3}],
+                ratingAverage: 3,  
+                ratingCount: 1
               },
               {
                 firstName: "Micro",
@@ -37,7 +43,10 @@ const seedDatabase = async () => {
                 address: "800 Washington Street",
                 inHoboken: true,
                 signupDate: "05/06/2025",
-                lastLogin: "05/06/2025 08:24PM"
+                lastLogin: "05/06/2025 08:24PM",
+                ratings: [],
+                ratingAverage: 0,  
+                ratingCount: 0
               }
         ];
 
