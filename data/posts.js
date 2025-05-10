@@ -120,6 +120,24 @@ const filterPostsByTags = async (tags, filterType) => {
     }
 };
 
+const filterPostsBySingleTag = async (tag) => {
+    if (!tag) {
+        return await getAllPosts();
+    }
+
+    tag = checkString(tag, 'Tag').toLowerCase();
+
+    const postCollection = await posts();
+    const filteredPosts = await postCollection.find({
+        $or: [
+            { vehicleType: { $regex: tag, $options: 'i' } },
+            { vehicleTags: { $regex: tag, $options: 'i' } }
+        ]
+    }).toArray();
+
+    return filteredPosts;
+}
+
 // finds posts based on matching their titles to the prefix provided
 const filterPostsByTitle = async (prefix) => {
     // Input validation for prefix
@@ -129,7 +147,7 @@ const filterPostsByTitle = async (prefix) => {
     // get length of prefix
     let prefixLength = prefix.trim().length;
     // get posts
-    const allPosts = getAllPosts();
+    const allPosts = await getAllPosts();
     // filter posts based on whether their titles start with the provided prefix
     const filteredPosts = allPosts.filter(
         post => {
@@ -161,10 +179,6 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
     // Regex check for lettters and numbers only
     if (!/^[a-zA-Z0-9]+$/.test(userId)) {
       throw "User ID can only contain letters and numbers";
-    }
-    // Check length
-    if (userId.length < 5 || userId.length > 10) {
-      throw "User ID must be between 5-10 characters";
     }
     //=======================
     // firstName validation
@@ -282,6 +296,7 @@ export default {
     getPostById,
     getAllPosts,
     filterPostsByTags,
+    filterPostsBySingleTag,
     filterPostsByTitle,
     createComment,
     createRequest

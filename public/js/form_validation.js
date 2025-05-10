@@ -524,4 +524,48 @@
       loginBtn.disabled = true;
     }
   });
+
+  // Tag filtering
+  document.addEventListener("DOMContentLoaded", () => {
+    const filterToggleBtn = document.getElementById('filter-toggle-btn');
+    const tagsDropdown = document.getElementById('tags-dropdown');
+    const applyTagsBtn = document.getElementById('apply-tags-btn');
+    const clearTagsBtn = document.getElementById('clear-tags-btn');
+
+    if (filterToggleBtn && tagsDropdown) {
+      // Toggle dropdown visibility
+      filterToggleBtn.addEventListener('click', () => {
+        tagsDropdown.classList.toggle('show');
+      });
+
+      // Apply tag filter
+      if (applyTagsBtn) {
+        applyTagsBtn.addEventListener('click', () => {
+          const selectedTag = document.querySelector('input[name="tagFilter"]:checked');
+          if (selectedTag) {
+            window.location.href = `/vehicleListings/filterByTag?tag=${encodeURIComponent(selectedTag.value)}`;
+          }
+        });
+      }
+
+      // Clear tag filter
+      if (clearTagsBtn) {
+        clearTagsBtn.addEventListener('click', () => {
+          window.location.href = '/vehicleListings/vehicleListings';
+        });
+      }
+
+      // Close dropdown when clicking outside
+      window.addEventListener('click', (event) => {
+        if (!event.target.matches('.filter-toggle-btn') && !event.target.closest('.tags-dropdown')) {
+          const dropdowns = document.querySelectorAll('.tags-dropdown');
+          dropdowns.forEach(dropdown => {
+            if (dropdown.classList.contains('show')) {
+              dropdown.classList.remove('show');
+            }
+          });
+        }
+      });
+    }
+  });
 })();
