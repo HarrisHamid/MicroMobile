@@ -3,7 +3,33 @@
 {{/if}}
 
 <div class="vehicle-listings-container">
-    <div class="create-listing-div">
+    <div class="search-create-container">
+        <form action="search" method="GET" class="search-form">
+            <input type="text" name="searchTerm" placeholder="Search by vehicle name..." class="search-input">
+            <input type="hidden" name="clearFilters" value="true">
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+        <div class="filter-tags-container">
+            <button id="filter-toggle-btn" class="filter-toggle-btn">Filter by Tag</button>
+            <div id="tags-dropdown" class="tags-dropdown">
+                <h4>Vehicle Types</h4>
+                {{#each vehicleTypes}}
+                <label class="tag-checkbox-label">
+                    <input type="radio" name="tagFilter" value="{{this}}" class="tag-checkbox">
+                    <span class="tag-checkbox-text">{{this}}</span>
+                </label>
+                {{/each}}
+                <h4>Tags</h4>
+                {{#each otherTags}}
+                <label class="tag-checkbox-label">
+                    <input type="radio" name="tagFilter" value="{{this}}" class="tag-checkbox">
+                    <span class="tag-checkbox-text">{{this}}</span>
+                </label>
+                {{/each}}
+                <button id="apply-tags-btn" class="apply-tags-btn">Apply Filter</button>
+                <button id="clear-tags-btn" class="clear-tags-btn">Clear Filter</button>
+            </div>
+        </div>
         <a href="/vehicleListings/createListing" class="create-listing-btn">Create Listing</a>
     </div>
 

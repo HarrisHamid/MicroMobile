@@ -7,6 +7,7 @@ import multer from "multer";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { ObjectId } from "mongodb";
+import { all } from "axios";
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -32,12 +33,60 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // max filesize 5MB
 });
 
+router.get("/search", async (req, res) => {
+  try {
+    const searchTerm = req.query.searchTerm;
+    let allPosts;
+
+    if (searchTerm && searchTerm.trim().length > 0) {
+      allPosts = await posts.filterPostsByTitle(searchTerm.trim());
+    } else {
+      allPosts = await posts.getAllPosts();
+    }
+
+    res.render("vehicleListings", {
+      title: searchTerm ? `Results for "${searchTerm}"` : "Available Vehicles",
+      posts: allPosts,
+      vehicleTypes: ["Scooter", "Skateboard", "Bicycle", "Other"],
+      otherTags: ["Electric", "Off Road", "Two Wheels", "Four Wheels", "New", "Modded"]
+    })
+  } catch (e) {
+    res.status(500).render("error", {
+      title: "Error",
+      error: "Could not load vehicle listings"
+    })
+  }
+});
+router.get("/filterByTag", async (req, res) => {
+  try {
+    const tag = req.query.tag;
+    const allPosts = await posts.filterPostsBySingleTag(tag);
+
+    res.render("vehicleListings", {
+      title: tag ? `Vehicles with tag: ${tag}` : "Available Vehicles",
+      posts: allPosts,
+      vehicleTypes: ["Scooter", "Skateboard", "Bicycle", "Other"],
+      otherTags: ["Electric", "Off Road", "Two Wheels", "Four Wheels", "New", "Modded"]
+    });
+  } catch (e) {
+    res.status(500).render("error", {
+      title: "Error",
+      error: "Could not filter vehicle listings by tag"
+    });
+  }
+});
 router.get("/vehicleListings", async (req, res) => {
+  if (req.query.searchTerm && req.query.searchTerm.trim() !== "") {
+    return res.redirect(`/vehicleListings/search?searchTerm=${encodeURIComponent(req.query.searchTerm)}`);
+  }
+
   try {
     const allPosts = await posts.getAllPosts();
     res.render("vehicleListings", {
       title: "Available Vehicles",
       posts: allPosts,
+      vehicleTypes: ["Scooter", "Skateboard", "Bicycle", "Other"],
+      otherTags: ["Electric", "Off Road", "Two Wheels", "Four Wheels", "New", "Modded"]
       // User: req.session.user
     });
   } catch (e) {

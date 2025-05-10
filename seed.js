@@ -88,7 +88,7 @@ const seedDatabase = async () => {
               {
                 id: "9d9a9c4-e2f4-6h0e-d49c-8c3f6d7d8533",
                 postTitle: "Mountain Bike Pro",
-                vehicleType: "Bike",
+                vehicleType: "Bicycle",
                 vehicleTags: ["Off Road"],
                 vehicleCondition: 4.2,
                 currentlyAvailable: true,
