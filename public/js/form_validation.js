@@ -7,6 +7,7 @@
   let createListingForm = document.getElementById("createListingForm");
   let commentForm = document.getElementById("commentForm");
   let ratingForm = document.getElementById("ratingForm");
+  let paymentForm = document.getElementById("paymentForm");
 
   let requestVehicleForm = document.getElementById("requestVehicleForm");
   // All register inputs
@@ -43,6 +44,17 @@
   let commentInput = document.getElementById("commentInput");
   //All rating inputs
   let ratingInput = document.getElementById("ratingInput");
+  
+  //All payment inputs
+  //firstname and lastname already got
+  //address already got
+  let cityInput = document.getElementById("city");
+  let stateInput = document.getElementById("state");
+  let zipInput = document.getElementById("zipCode");
+  let nameOnCardInput = document.getElementById("nameOnCard");
+  let cardNumberInput = document.getElementById("cardNumber");
+  let expirationDateInput = document.getElementById("formExpiration");
+  let cvvInput = document.getElementById("CVV");
 
   if(requestVehicleButton){
     requestVehicleButton.addEventListener("click", (event)=>{
@@ -797,6 +809,165 @@ if (createListingForm) {
 
       // If no errors, submit the form
       ratingForm.submit();
+    });
+  }
+  if (paymentForm) {
+    paymentForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const accumulatedErrors = [];
+      //=======================
+      // firstName validation
+      //=======================
+      const firstName = firstNameInput.value.trim();
+
+      // Check if firstName is empty
+      if (firstName.length === 0) {
+        accumulatedErrors.push("First name cannot be empty");
+      }
+      // Regex check for lettters only
+      if (!/^[a-zA-Z]+$/.test(firstName)) {
+        accumulatedErrors.push("First name can only contain letters");
+      }
+      // Check length
+      if (firstName.length < 2 || firstName.length > 20) {
+        accumulatedErrors.push("First name must be between 2-20 characters");
+      }
+
+      //=======================
+      // lastName validation
+      //=======================
+      const lastName = lastNameInput.value.trim();
+      // Check if lastName is empty
+      if (lastName.length === 0) {
+        accumulatedErrors.push("Last name cannot be empty");
+      }
+      // Regex check for lettters only
+      if (!/^[a-zA-Z]+$/.test(lastName)) {
+        accumulatedErrors.push("Last name can only contain letters");
+      }
+      // Check length
+      if (lastName.length < 2 || lastName.length > 20) {
+        accumulatedErrors.push("Last name must be between 2-20 characters");
+      }
+
+      //=======================
+      // address validation
+      //=======================
+      const address = addressInput.value.trim();
+      // Check if favoriteQuote is empty
+      if (address.length === 0) {
+        accumulatedErrors.push("Address cannot be empty");
+      }
+      // Lenght check
+      if (address.length < 10) {
+        accumulatedErrors.push("Address must be at least 10 characters long");
+      }
+
+      //=======================
+      // city validation
+      //=======================
+      const city = cityInput.value.trim();
+      // Check if city is empty
+      if (city.length === 0) {
+        accumulatedErrors.push("City cannot be empty");
+      }
+      // Regex check for lettters only
+      if (!/^[a-zA-Z]+$/.test(city)) {
+        accumulatedErrors.push("City can only contain letters");
+      }
+
+      //=======================
+      // state validation
+      //=======================
+      const state = stateInput.value.trim();
+      // Check if state is empty
+      if (state.length === 0) {
+        accumulatedErrors.push("State cannot be empty");
+      }
+      // Regex check for lettters only
+      if (!/^[a-zA-Z]+$/.test(state)) {
+        accumulatedErrors.push("State can only contain letters");
+      }
+      //=======================
+      // zipCode validation
+      //=======================
+      const zipCode = zipInput.value.trim();
+      // Check if zipCode is empty
+      if (zipCode.length === 0) {
+        accumulatedErrors.push("Zip Code cannot be empty");
+      }
+      // Regex check for 5 digits
+      if (!/^\d{5}$/.test(zipCode)) {
+        accumulatedErrors.push("Zip Code must be 5 digits");
+      }
+      //=======================
+      // nameOnCard validation
+      //=======================
+      const nameOnCard = nameOnCardInput.value.trim();
+      // Check if nameOnCard is empty
+      if (nameOnCard.length === 0) {
+        accumulatedErrors.push("Name on Card cannot be empty");
+      }
+      // Regex check for lettters and spaces only
+      if (!/^[a-zA-Z\s]+$/.test(nameOnCard)) {
+        accumulatedErrors.push("Name on Card can only contain letters and spaces");
+      }
+      //=======================
+      // cardNumber validation
+      //=======================
+      const cardNumber = cardNumberInput.value.trim();
+      // Check if cardNumber is empty
+      if (cardNumber.length === 0) {
+        accumulatedErrors.push("Card Number cannot be empty");
+      }
+      // Regex check for 15 or 16 digits
+      if (!/^\d{15,16}$/.test(cardNumber)) {
+        accumulatedErrors.push("Card Number must be 15 or 16 digits");
+      }
+      //=======================
+      // expirationDate validation
+      //=======================
+      const expirationDate = expirationDateInput.value.trim();
+      // Check if expirationDate is empty
+      if (expirationDate.length === 0) {
+        accumulatedErrors.push("Expiration Date cannot be empty");
+      }
+      // Regex check for MM/YY format
+      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expirationDate)) {
+        accumulatedErrors.push("Expiration Date must be in MM/YY format");
+      }
+      //=======================
+      // CVV validation
+      //=======================
+      const cvv = cvvInput.value.trim();
+      // Check if CVV is empty
+      if (cvv.length === 0) {
+        accumulatedErrors.push("CVV cannot be empty");
+      }
+      // Regex check for 3 or 4 digits
+      if (!/^\d{3,4}$/.test(cvv)) {
+        accumulatedErrors.push("CVV must be 3 or 4 digits");
+      }
+      // If errors array has stuff display it
+      const errorModel = document.getElementById("error-model");
+      // clear old messsages
+      if (errorModel) {
+        errorModel.innerHTML = "";
+      }
+      if (accumulatedErrors.length > 0) {
+        if (errorModel) {
+          accumulatedErrors.forEach((error) => {
+            const li = document.createElement("li");
+            li.textContent = error;
+            errorModel.appendChild(li);
+          });
+        } else {
+          alert(accumulatedErrors.join("\n")); // safety net if errorModel is not found
+        }
+        return;
+      }
+      // If no errors, submit the form
+      paymentForm.submit();
     });
   }
 
