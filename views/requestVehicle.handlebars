@@ -3,6 +3,15 @@
 registration handelbars
 
 --}}
+ <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"
+    ></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 {{#if error}}
 <p>{{error}}</p>
 {{/if}}
@@ -51,5 +60,5 @@ registration handelbars
     <input type="text" name="extraComments" id="extraComments" value="{{data.extraComments}}">
 
 
-    <button type="submit" name="submitButton" id="submitButton">Register</button>
+    <button type="submit" name="submitButton" id="submitButton">Request Vehicle</button>
 </form>

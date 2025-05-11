@@ -35,10 +35,74 @@
   let dailyCost = document.getElementById("dailyCost");
   let imageInput = document.getElementById("image");
 
+  //All vehicle details inputs
+  let  requestVehicleButton = document.getElementById("reqVehicleButton");
+
   // All comment inputs
   let commentInput = document.getElementById("commentInput");
 
+  if(requestVehicleButton){
+    requestVehicleButton.addEventListener("click", (event)=>{
+      event.preventDefault();
+      $(function () {
+      let button = $("#reqVehicleButton");
+      let postId = requestVehicleButton.getAttribute('data-post-id');
+      $("#hiddenPostId").val(postId);
+      let requestConfigRV = {
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+          test: "test",
+          postId: postId,
+        }),
+        url: "/vehicleListings/requestVehicleGET",
+      };
+      
+      $.ajax(requestConfigRV).then(function (responseMessage) {
+        console.log(responseMessage);
+        button.replaceWith(responseMessage); 
+        requestVehicleForm = document.getElementById("requestVehicleForm");
+        if (requestVehicleForm) {
+          (function ($) {
+            console.log( $("#datetimepicker1"));
+            $("#datetimepicker1").datetimepicker();
+            $("#datetimepicker2").datetimepicker();
+          })(window.jQuery);
+          requestVehicleForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            (function ($) {
+              let startDate = $("#datetimepicker1").data("DateTimePicker").date();
+              let endDate = $("#datetimepicker2").data("DateTimePicker").date();
+              let extraComments = $("#extraComments").val();
+              let requestConfig = {
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                  extraComments: extraComments,
+                  startDate: startDate,
+                  endDate: endDate,
+                  vehicleId: $('#hiddenPostId').val(),
+                }),
+                url: "/vehicleListings/requestVehicle",
+              };
+              console.log("test")
+              $.ajax(requestConfig).then(function (responseMessage) {
+                $("#main").replaceWith(responseMessage); //CHANGE THIS TO GO TO THE VEHICLE'S PAGE
+              });
+            })(window.jQuery);
+          });
+        }
+      });
+    });
+    })
+  }
+
+
+
+
+
   if (requestVehicleForm) {
+    console.log("test");
     $(function () {
       $("#datetimepicker1").datetimepicker();
       $("#datetimepicker2").datetimepicker();
@@ -55,12 +119,12 @@
           data: JSON.stringify({
             extraComments: extraComments,
             startDate: startDate,
-            endDate: endDate,
+            endDate: endDate
           }),
           url: "/vehicleListings/requestVehicle",
         };
         $.ajax(requestConfig).then(function (responseMessage) {
-          window.location.replace("/"); //CHANGE THIS TO GO TO THE VEHICLE'S PAGE
+          $("#main").replaceWith(responseMessage); //CHANGE THIS TO GO TO THE VEHICLE'S PAGE
         });
       });
     });
