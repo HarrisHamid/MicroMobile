@@ -45,7 +45,9 @@ const createPost = async (
         hourlyCost: hourlyCost,
         dailyCost: dailyCost,
         image: image,
-        whenAvailable: whenAvailable
+        whenAvailable: whenAvailable,
+        requests: [], //this is an array of objects containing extraComments, startDate, endDate, and the Id of the requester
+        taken: [] // this is an array of starDate, endDate, and Id of requester
     }
     
     const postCollection = await posts();
@@ -118,6 +120,24 @@ const filterPostsByTags = async (tags, filterType) => {
     }
 };
 
+const filterPostsBySingleTag = async (tag) => {
+    if (!tag) {
+        return await getAllPosts();
+    }
+
+    tag = checkString(tag, 'Tag').toLowerCase();
+
+    const postCollection = await posts();
+    const filteredPosts = await postCollection.find({
+        $or: [
+            { vehicleType: { $regex: tag, $options: 'i' } },
+            { vehicleTags: { $regex: tag, $options: 'i' } }
+        ]
+    }).toArray();
+
+    return filteredPosts;
+}
+
 // finds posts based on matching their titles to the prefix provided
 const filterPostsByTitle = async (prefix) => {
     // Input validation for prefix
@@ -127,7 +147,7 @@ const filterPostsByTitle = async (prefix) => {
     // get length of prefix
     let prefixLength = prefix.trim().length;
     // get posts
-    const allPosts = getAllPosts();
+    const allPosts = await getAllPosts();
     // filter posts based on whether their titles start with the provided prefix
     const filteredPosts = allPosts.filter(
         post => {
@@ -135,7 +155,10 @@ const filterPostsByTitle = async (prefix) => {
             if (postTitle.length < prefixLength) {
                 return false;
             } else {
-                return postTitle.startsWith(prefix.trim().toLowerCase());
+                let wordsInTitle = postTitle.split(' ');
+                let check_words = wordsInTitle.some(word => word.startsWith(prefix.trim().toLowerCase()));
+                let check_string = postTitle.startsWith(prefix.trim().toLowerCase());
+                return check_words || check_string;
             }
         }
     );
@@ -159,10 +182,6 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
     // Regex check for lettters and numbers only
     if (!/^[a-zA-Z0-9]+$/.test(userId)) {
       throw "User ID can only contain letters and numbers";
-    }
-    // Check length
-    if (userId.length < 5 || userId.length > 10) {
-      throw "User ID must be between 5-10 characters";
     }
     //=======================
     // firstName validation
@@ -216,10 +235,10 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
 
     let newComment = { 
         _id: (new ObjectId()).toString(),
-        userName: userId,
-        name: fullName,
+        Username: userId,
+        Name: fullName,
         commentDate: new Date().toLocaleDateString(),
-        body: body
+        Body: body
       }
     
     const postCollection = await posts();
@@ -236,11 +255,136 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
 
 };
 
+
+const checkRequest = async(userId, postId, extraComments, startDate, endDate) => {
+    if(typeof extraComments !== "string") throw "Extra Comments must be a string";
+    startDate = checkString(startDate, "startDate");
+    endDate = checkString(endDate, "endDate");
+
+    const postCollection = await posts();
+    const vehicle = await postCollection.findOne(
+        { _id: new ObjectId(postId) }
+    );
+    let startDate2 = new Date(startDate);
+    let endDate2 = new Date(endDate);
+    let now = new Date();
+    let cost = 0;
+    let millsInDay  = 86400000;
+    let millsInHour = 86400000 / 24;
+    let difference = 0;
+    let numHours = undefined;
+    let numDays = undefined;
+    if(endDate2.getTime() <= startDate2.getTime()) throw "Invalid end Time"
+    if(startDate2.getTime() <= now.getTime()) throw "Invalid Start Time"
+    if((difference = endDate2.getTime() - startDate2.getTime()) < millsInDay){ // if time is less than a day
+        if(vehicle.hourlyCost === 0)throw "This vehicle cannot be rented for more than a day"
+        numHours = Math.ceil(difference / millsInHour);
+        if (numHours > vehicle.maxRentalHours) throw `This vehicle cannot be rented for more than ${vehicle.maxRentalHours} hours`
+        cost = vehicle.hourlyCost * numHours;
+    }
+    else{
+        if(vehicle.dailyCost === 0)throw "This vehicle cannot be rented for more than 24 hours"
+        numDays = Math.ceil(difference / millsInDay);
+        if (numDays > vehicle.maxRentalDays) throw `This vehicle cannot be rented for more than ${vehicle.maxRentalDays} days`
+        cost = vehicle.dailyCost * numDays;
+    };
+    
+    for(let x of vehicle.taken){
+        let takenStart = new Date(x.startDate);
+        let takenEnd = new Date(x.endDate);
+        if(startDate2.getTime() > takenStart.getTime() && startDate2.getTime() < takenEnd.getTime()){
+            //basically if your start time is taken, fail
+           throw "Invalid start time"
+        }
+        if(endDate2.getTime() > takenStart.getTime() && endDate2.getTime() < takenEnd.getTime()){
+            //basically if your end time is taken, fail
+            throw "Invalid end time"
+        }
+    }
+
+   
+    if(numHours){
+        return {hours: numHours, costPerHour: vehicle.hourlyCost, cost: cost}
+    }
+    else{
+        return {days: numDays, costPerDay: vehicle.dailyCost, cost: cost}
+    }
+}
+
+const createRequest = async(userId, postId, extraComments, startDate, endDate) => {
+    if(typeof extraComments !== "string") throw "Extra Comments must be a string";
+    startDate = checkString(startDate, "startDate");
+    endDate = checkString(endDate, "endDate");
+    let newRequest = {
+        extraComments: extraComments,
+        startDate: startDate,
+        endDate: endDate,
+        requestingUser: userId
+    }
+    const postCollection = await posts();
+    const vehicle = await postCollection.findOne(
+        { _id: new ObjectId(postId) }
+    );
+    let startDate2 = new Date(startDate);
+    let endDate2 = new Date(endDate);
+    let now = new Date();
+    let cost = 0;
+    let millsInDay  = 86400000;
+    let millsInHour = 86400000 / 24;
+    let difference = 0;
+    let numHours = undefined;
+    let numDays = undefined;
+    if(endDate2.getTime() <= startDate2.getTime()) throw "Invalid end Time"
+    if(startDate2.getTime() <= now.getTime()) throw "Invalid Start Time"
+    if((difference = endDate2.getTime() - startDate2.getTime()) < millsInDay){ // if time is less than a day
+        if(vehicle.hourlyCost === 0)throw "This vehicle cannot be rented for more than a day"
+        numHours = Math.ceil(difference / millsInHour);
+        if (numHours > vehicle.maxRentalHours) throw `This vehicle cannot be rented for more than ${vehicle.maxRentalHours} hours`
+        cost = vehicle.hourlyCost * numHours;
+    }
+    else{
+        if(vehicle.dailyCost === 0)throw "This vehicle cannot be rented for more than 24 hours"
+        numDays = Math.ceil(difference / millsInDay);
+        if (numDays > vehicle.maxRentalDays) throw `This vehicle cannot be rented for more than ${vehicle.maxRentalDays} days`
+        cost = vehicle.dailyCost * numDays;
+    };
+    
+    for(let x of vehicle.taken){
+        let takenStart = new Date(x.startDate);
+        let takenEnd = new Date(x.endDate);
+        if(startDate2.getTime() > takenStart.getTime() && startDate2.getTime() < takenEnd.getTime()){
+            //basically if your start time is taken, fail
+            throw "Invalid start time"
+        }
+        if(endDate2.getTime() > takenStart.getTime() && endDate2.getTime() < takenEnd.getTime()){
+            //basically if your end time is taken, fail
+            throw "Invalid end time"
+        }
+    }
+
+    const updateInfo = await postCollection.updateOne(
+        { _id: new ObjectId(postId) },
+        { $push: { requests: newRequest } }
+    );
+    if (!updateInfo.acknowledged || updateInfo.modifiedCount === 0) {
+        throw 'Could not handle request. Please try again later.';
+    }
+    if(numHours){
+        return {hours: numHours, costPerHour: vehicle.hourlyCost, cost: cost}
+    }
+    else{
+        return {days: numDays, costPerDay: vehicle.dailyCost, cost: cost}
+    }
+}
+
 export default {
     createPost,
     getPostById,
     getAllPosts,
     filterPostsByTags,
+    filterPostsBySingleTag,
     filterPostsByTitle,
-    createComment
-}
+    createComment,
+    checkRequest,
+    createRequest
+ }
