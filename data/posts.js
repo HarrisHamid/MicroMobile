@@ -156,7 +156,9 @@ const filterPostsByTitle = async (prefix) => {
                 return false;
             } else {
                 let wordsInTitle = postTitle.split(' ');
-                return wordsInTitle.some(word => word.startsWith(prefix.trim().toLowerCase()));
+                let check_words = wordsInTitle.some(word => word.startsWith(prefix.trim().toLowerCase()));
+                let check_string = postTitle.startsWith(prefix.trim().toLowerCase());
+                return check_words || check_string;
             }
         }
     );
