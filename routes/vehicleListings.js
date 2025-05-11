@@ -8,6 +8,8 @@ import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { ObjectId } from "mongodb";
 import { all } from "axios";
+import { getUserByUserId } from "../data/users.js";
+import { addRating } from "../data/users.js";
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -249,9 +251,17 @@ router.get("/listingDetails/:id", async (req, res) => {
   }
   try {
     const post = await posts.getPostById(req.params.id);
+    let posterStats = { ratingAverage: 0, ratingCount: 0 };
+    try {
+      posterStats = await getUserByUserId(post.posterUsername);
+      posterStats.ratingAverage = Number(posterStats.ratingAverage.toFixed(1));
+    } catch (e) {
+      console.warn("Couldn’t fetch poster ratings:", e);
+    }
     res.render("listingDetails", {
       post: post,
       user: req.session.user,
+      posterStats
     });
   } catch (e) {
     res.status(400).render("listingDetails"),
@@ -272,7 +282,35 @@ router.post("/listingDetails/:id", async (req, res) => {
     res.redirect(req.originalUrl); // refresh page
   } catch (e) {
     res.status(400).render("listingDetails", {
+      post,
+      user: req.session.user,
+      posterStats,
       error: e.toString(),
+    });
+  }
+});
+router.post("/listingDetails/:id/rate", async (req, res) => {
+  try {
+    const listingId    = checkId(req.params.id);
+    const score        = Number(req.body.ratingInput);
+    const post         = await posts.getPostById(listingId);
+
+    const toUser       = await getUserByUserId(post.posterUsername);
+    const fromUser     = await getUserByUserId(req.session.user.userId);
+    if (!toUser || !fromUser) {
+      throw "User not found";
+    }
+    await addRating(toUser._id.toString(), fromUser._id.toString(), score);
+    return res.redirect(`/vehicleListings/listingDetails/${listingId}`);
+  } catch (e) {
+    const listingId = checkId(req.params.id);
+    const post = await posts.getPostById(listingId);
+    const posterStats = await getUserByUserId(post.posterUsername).catch(() => null);
+    return res.status(400).render("listingDetails", {
+      post,
+      user: req.session.user,
+      posterStats,
+      error: e.toString()
     });
   }
 });

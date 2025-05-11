@@ -7,6 +7,13 @@
         <h1 class="listing-title">{{post.postTitle}}</h1>
         <div class="listing-meta">
             <span class="listing-poster">Posted by {{post.posterName}}</span>
+            {{#if posterStats.ratingCount}}
+            <span class="listing-user-rating">
+              User Rating: ⭐ {{posterStats.ratingAverage}}/5
+            </span>
+          {{else}}
+            <span class="listing-user-rating">No ratings yet</span>
+          {{/if}}
             <span class="listing-rating">Condition: {{post.vehicleCondition}}/5</span>
         </div>
     </div>
@@ -48,6 +55,30 @@
 
             <a href="/vehicleListings/vehicleListings" class="return-to-all-listings-btn">Return to All Listings</a>
         </div>
+    </div>
+
+    <div class="listing-rating-form">
+    {{#if user}}
+        <form 
+        method="POST" 
+        action="/vehicleListings/listingDetails/{{post._id}}/rate"
+        class="add-rating-form"
+        id="ratingForm"
+        >
+            <div class="rating-row">
+            <label for="ratingInput">Rate this user:</label>
+            <select name="ratingInput" id="ratingInput" required>
+                <option value="" disabled selected>Choose…</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <button type="submit">Submit</button>
+            </div>
+        </form>
+    {{/if}}
     </div>
 
     <div class="listing-comments">

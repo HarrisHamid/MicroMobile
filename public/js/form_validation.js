@@ -6,6 +6,7 @@
   let myLoginForm = document.getElementById("signin-form");
   let createListingForm = document.getElementById("createListingForm");
   let commentForm = document.getElementById("commentForm");
+  let ratingForm = document.getElementById("ratingForm");
 
   let requestVehicleForm = document.getElementById("requestVehicleForm");
   // All register inputs
@@ -37,6 +38,8 @@
 
   // All comment inputs
   let commentInput = document.getElementById("commentInput");
+  //All rating inputs
+  let ratingInput = document.getElementById("ratingInput");
 
   if (requestVehicleForm) {
     $(function () {
@@ -481,6 +484,43 @@
       }
       // If no errors, submit the form
       commentForm.submit();
+    });
+  }
+
+  if (ratingForm) {
+    ratingForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const accumulatedErrors = [];
+      rating = ratingInput.value.trim();
+      // Rating validation
+      if (isNaN(rating)) {
+        accumulatedErrors.push("Rating must be a number");
+      }
+      if (rating < 1 || rating > 5) {
+        accumulatedErrors.push("Rating must be between 1 and 5");
+      }
+
+
+      // Display errors if any
+      const errorModel = document.getElementById("error-model");
+      if (errorModel) {
+        errorModel.innerHTML = "";
+      }
+      if (accumulatedErrors.length > 0) {
+        if (errorModel) {
+          accumulatedErrors.forEach((error) => {
+            const li = document.createElement("li");
+            li.textContent = error;
+            errorModel.appendChild(li);
+          });
+        } else {
+          alert(accumulatedErrors.join("\n"));
+        }
+        return;
+      }
+
+      // If no errors, submit the form
+      ratingForm.submit();
     });
   }
 
