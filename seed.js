@@ -9,13 +9,16 @@ const seedDatabase = async () => {
             {
                 firstName: "Colby",
                 lastName: "Foster",
-                userId: "da_programmer_man",
-                password: "$2a$08$XdvNkfdNIL8F8xsuIUeSbNOF",
-                email: "cfoster4@stevens.edu",
+                userId: "foster",
+                password: "$2b$10$dnq4FMTtxKZyvXAeT7siGeQyLud./DzsihdmkVT4rY2GuQUcGPHn6",
+                email: "cfoster3@stevens.edu",
                 address: "1 Castle Point Terrace",
                 inHoboken: true,
                 signupDate: "05/06/2025",
-                lastLogin: "05/06/2025 08:24PM"
+                lastLogin: "05/06/2025 08:24PM",
+                ratings: [{userId: "6820e128170e22aca1ca2c73", rating: 5}, {userId: "6820e128170e21aca1ca7c73", rating: 2}],
+                ratingAverage: 3.5,
+                ratingCount: 2 
               },
               {
                 firstName: "AJ",
@@ -26,7 +29,10 @@ const seedDatabase = async () => {
                 address: "2E Highview Avenue",
                 inHoboken: false,
                 signupDate: "05/06/2025",
-                lastLogin: "05/06/2025 08:24PM"
+                lastLogin: "05/06/2025 08:24PM",
+                ratings: [{userId: "6820e128170e21aca1ca7c73", rating: 3}],
+                ratingAverage: 3,  
+                ratingCount: 1
               },
               {
                 firstName: "Micro",
@@ -37,7 +43,10 @@ const seedDatabase = async () => {
                 address: "800 Washington Street",
                 inHoboken: true,
                 signupDate: "05/06/2025",
-                lastLogin: "05/06/2025 08:24PM"
+                lastLogin: "05/06/2025 08:24PM",
+                ratings: [],
+                ratingAverage: 0,  
+                ratingCount: 0
               }
         ];
 
@@ -55,20 +64,20 @@ const seedDatabase = async () => {
                 vehicleComments: [
                   {
                     id: "7b7997a2-c0d2-4f8c-b27a-6a1d4b5b6312",
-                    Username: "da_programmer_man",
+                    Username: "foster",
                     Name: "Colby Foster",
-                    commentDate: "3/5/2025",
+                    commentDate: "12/12/2024",
                     Body: "good scooter"
                   },
                   {
                     id: "8c8998b3-d1e3-5g9d-c38b-7b2e5c6c7423",
                     Username: "ajfra",
                     Name: "AJ Francese",
-                    commentDate: "12/12/2024",
+                    commentDate: "3/5/2025",
                     Body: "Great condition and easy to ride!"
                   }
                 ],
-                posterUsername: "da_programmer_man",
+                posterUsername: "foster",
                 posterName: "Colby Foster",
                 maxRentalHours: 8,
                 maxRentalDays: 2,
@@ -83,7 +92,9 @@ const seedDatabase = async () => {
                   [0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,1,0,0,0,0],
                   [0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,1,0,0,0,0],
                   [0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,1,0,0,0,0]
-                ]
+                ],
+                requests: [],
+                taken: []
               },
               {
                 id: "9d9a9c4-e2f4-6h0e-d49c-8c3f6d7d8533",
@@ -116,7 +127,9 @@ const seedDatabase = async () => {
                   [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],
                   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
                   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-                ]
+                ],
+                requests: [],
+                taken: []
               }
         ];
 

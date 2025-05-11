@@ -8,6 +8,8 @@ import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { ObjectId } from "mongodb";
 import { all } from "axios";
+import { getUserByUserId } from "../data/users.js";
+import { addRating } from "../data/users.js";
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -48,13 +50,22 @@ router.get("/search", async (req, res) => {
       title: searchTerm ? `Results for "${searchTerm}"` : "Available Vehicles",
       posts: allPosts,
       vehicleTypes: ["Scooter", "Skateboard", "Bicycle", "Other"],
-      otherTags: ["Electric", "Off Road", "Two Wheels", "Four Wheels", "New", "Modded"]
-    })
+      otherTags: [
+        "Electric",
+        "Off Road",
+        "Two Wheels",
+        "Four Wheels",
+        "New",
+        "Modded",
+        "Snow Gear",
+        "Beach Gear",
+      ],
+    });
   } catch (e) {
     res.status(500).render("error", {
       title: "Error",
-      error: "Could not load vehicle listings"
-    })
+      error: "Could not load vehicle listings",
+    });
   }
 });
 router.get("/filterByTag", async (req, res) => {
@@ -66,18 +77,31 @@ router.get("/filterByTag", async (req, res) => {
       title: tag ? `Vehicles with tag: ${tag}` : "Available Vehicles",
       posts: allPosts,
       vehicleTypes: ["Scooter", "Skateboard", "Bicycle", "Other"],
-      otherTags: ["Electric", "Off Road", "Two Wheels", "Four Wheels", "New", "Modded"]
+      otherTags: [
+        "Electric",
+        "Off Road",
+        "Two Wheels",
+        "Four Wheels",
+        "New",
+        "Modded",
+        "Snow Gear",
+        "Beach Gear",
+      ],
     });
   } catch (e) {
     res.status(500).render("error", {
       title: "Error",
-      error: "Could not filter vehicle listings by tag"
+      error: "Could not filter vehicle listings by tag",
     });
   }
 });
 router.get("/vehicleListings", async (req, res) => {
   if (req.query.searchTerm && req.query.searchTerm.trim() !== "") {
-    return res.redirect(`/vehicleListings/search?searchTerm=${encodeURIComponent(req.query.searchTerm)}`);
+    return res.redirect(
+      `/vehicleListings/search?searchTerm=${encodeURIComponent(
+        req.query.searchTerm
+      )}`
+    );
   }
 
   try {
@@ -86,7 +110,16 @@ router.get("/vehicleListings", async (req, res) => {
       title: "Available Vehicles",
       posts: allPosts,
       vehicleTypes: ["Scooter", "Skateboard", "Bicycle", "Other"],
-      otherTags: ["Electric", "Off Road", "Two Wheels", "Four Wheels", "New", "Modded"]
+      otherTags: [
+        "Electric",
+        "Off Road",
+        "Two Wheels",
+        "Four Wheels",
+        "New",
+        "Modded",
+        "Snow Gear",
+        "Beach Gear",
+      ],
       // User: req.session.user
     });
   } catch (e) {
@@ -97,14 +130,21 @@ router.get("/vehicleListings", async (req, res) => {
   }
 });
 router
-  .get("/requestVehicle", async (req, res) => {
+  .post("/requestVehicleGET", async (req, res) => {
+    //GET is done as a POST so I can have a req.body
+    console.log(req);
     try {
-      //if(!req.session.user)throw "You must be logged in to see this page"
-      // req.session.user.lastPostChecked = xss(req.body.lastPostChecked)
-      // if(!ObjectId.isValid(req.session.user.lastPostChecked)){throw "Error with getting last post checked data"};
-      res.render("requestVehicle", { title: "Request Vehicle" }); //maybe this should be done as a partial on the vehicleDetails page
+      console.log("GOOD");
+      if (!req.session.user) throw "You must be logged in to see this page";
+      let postId = xss(req.body.postId);
+      if (!ObjectId.isValid(postId)) {
+        throw "Error with getting post ID";
+      }
+      res.render("requestVehicle", { layout: null, postId: postId }); //maybe this should be done as a partial on the vehicleDetails page
     } catch (e) {
+      console.log(e);
       res.status(400).render("requestVehicle", {
+        layout: null,
         title: "Request Vehicle",
         error: e,
         data: req.body,
@@ -112,35 +152,133 @@ router
     }
   })
   .post("/requestVehicle", async (req, res) => {
-    //console.log(req)
+    console.log(req);
     try {
-      //if(!req.session.user) throw "You must be logged in to use see this page"
-      //if(!req.session.user.lastPostChecked || !ObjectId.isValid(req.session.user.lastPostChecked)){throw "Error with getting last post checked data"};
+      let a = req.body;
+      if (
+        a.extraComments === undefined ||
+        !a.startDate ||
+        !a.endDate ||
+        !a.vehicleId
+      )
+        throw "Must have all inputs";
+      if (!req.session.user) throw "You must be logged in to use see this page";
+      let vehicleId = xss(req.body.vehicleId);
+      if (!ObjectId.isValid(vehicleId)) {
+        throw "Error with getting post id";
+      }
       let extraComments = xss(req.body.extraComments);
       let start = xss(req.body.startDate);
       let end = xss(req.body.endDate);
-      //res.json({extraComments: extraComments, startDate: startDate, endDate: endDate})
+
       if (typeof extraComments !== "string")
         throw "Extra Comments must be a string";
       start = help.checkString(start, "startDate");
       end = help.checkString(end, "endDate");
-      //res.json({extraComments: extraComments, startDate: startDate, endDate: endDate})
 
       let startDate = new Date(start);
       let endDate = new Date(end);
       if (startDate == "Invalid Date" || endDate == "Invalid Date") {
         throw "Invalid start or end date";
       }
-      //let newInsert = await posts.createRequest(req.session.user.lastPostChecked, extraComments, start, end)
-      // res.status(200).render(`/vehicleDetails/${req.session.user.lastPostChecked}`, {requestSuccessful: true})
-      //res.json({completion: "Needs to be integrated"})
-      res.render("createListing", { layouts: null });
+      let checkReq = await posts.checkRequest(
+        req.session.user.userId,
+        vehicleId,
+        extraComments,
+        start,
+        end
+      );
+      if (checkReq.hours) {
+        res.render("payment", {
+          layout: null,
+          vehicleId: vehicleId,
+          extraComments: extraComments,
+          startDate: start,
+          endDate: end,
+          hours: checkReq.hours,
+          costPerHour: checkReq.costPerHour,
+          cost: checkReq.cost,
+        });
+      } else {
+        res.render("payment", {
+          layout: null,
+          title: "Payment",
+          data: {
+            vehicleId: vehicleId,
+            extraComments: extraComments,
+            startDate: start,
+            endDate: end,
+            days: checkReq.days,
+            costPerDay: checkReq.costPerDay,
+            cost: checkReq.cost,
+          },
+        });
+      }
+      // const post = await posts.getPostById(vehicleId);
+      // res.render("listingDetails", {
+      //   post: post,
+      //   user: req.session.user,
+      //   requestSuccessful: true
+      // });
     } catch (e) {
+      console.log(e);
       res.status(400).render("requestVehicle", {
         title: "Request Vehicle",
         error: e,
         data: req.body,
       });
+    }
+  })
+  .post("/payment", async (req, res) => {
+    console.log("SUPRISEbamPoof");
+    console.log(req);
+    try {
+      let a = req.body;
+      if (a.extraComments === undefined || !a.startDate || !a.endDate)
+        throw "Must have all inputs";
+      if (!req.session.user) throw "You must be logged in to use see this page";
+      let vehicleId = xss(req.body.vehicleId);
+      if (!ObjectId.isValid(vehicleId)) {
+        throw "Error with getting post id";
+      }
+      let extraComments = xss(req.body.extraComments);
+      let start = xss(req.body.startDate);
+      let end = xss(req.body.endDate);
+
+      if (typeof extraComments !== "string")
+        throw "Extra Comments must be a string";
+      start = help.checkString(start, "startDate");
+      end = help.checkString(end, "endDate");
+
+      let startDate = new Date(start);
+      let endDate = new Date(end);
+      if (startDate == "Invalid Date" || endDate == "Invalid Date") {
+        throw "Invalid start or end date";
+      }
+      let createRequest = await posts.createRequest(
+        req.session.user.userId,
+        vehicleId,
+        extraComments,
+        start,
+        end
+      );
+      res.redirect(`/vehicleListings/listingDetails/${vehicleId}`);
+      // const post = await posts.getPostById(vehicleId);
+      // res.render("listingDetails", {
+      //   post: post,
+      //   user: req.session.user,
+      //   requestSuccessful: true
+      // });
+    } catch (e) {
+      console.log(e);
+      res
+        .status(400)
+        .render("payment", {
+          layout: null,
+          error: e,
+          title: "Payment",
+          data: req.body,
+        });
     }
   });
 
@@ -167,6 +305,8 @@ router
       let maxRentalDays = xss(req.body.maxRentalDays);
       let hourlyCost = xss(req.body.hourlyCost);
       let dailyCost = xss(req.body.dailyCost);
+      let whenAvailableFake = xss(req.body.whenAvailable);
+      whenAvailableFake = whenAvailableFake.split(",");
 
       let posterUsername = "Jack1!"; //xss(req.session.user.posterUserame);
       let posterName = "Jack"; //xss(req.session.user.posterName);
@@ -188,6 +328,8 @@ router
         "Four Wheels",
         "New",
         "Modded",
+        "Snow Gear",
+        "Beach Gear",
       ];
 
       if (
@@ -195,13 +337,21 @@ router
         !validTagList.includes(vehicleTags2) ||
         !validTagList.includes(vehicleTags3)
       ) {
-        throw "Vehicle tags must be among: None, Off Road, Electric, Two Wheels, Four Wheels, New, Modded";
+        throw "Vehicle tags must be among: None, Off Road, Electric, Two Wheels, Four Wheels, New, Modded, Snow Gear, Beach Gear";
       }
       let vehicleTags = [vehicleTags1, vehicleTags2, vehicleTags3];
 
       if (protectionIncluded !== "yes" && protectionIncluded !== "no") {
         throw "protectionIncluded must be yes or no";
       }
+
+      // vehicleCondition = help.checkCondition(vehicleCondition);
+      // let tempArr = help.checkMaxRental(maxRentalHours, maxRentalDays);
+      // maxRentalHours = tempArr[0];
+      // maxRentalDays = tempArr[1];
+      // let tempArr2 = help.checkCost(hourlyCost, dailyCost);
+      // hourlyCost = tempArr2[0];
+      // dailyCost = tempArr2[1];
 
       vehicleCondition = help.checkCondition(vehicleCondition);
       let tempArr = help.checkMaxRental(maxRentalHours, maxRentalDays);
@@ -210,6 +360,189 @@ router
       let tempArr2 = help.checkCost(hourlyCost, dailyCost);
       hourlyCost = tempArr2[0];
       dailyCost = tempArr2[1];
+
+      const idMap = {
+        //lmfao the enumerator is back. remember to collapse this lol
+        m0: 0,
+        m1: 1,
+        m2: 2,
+        m3: 3,
+        m4: 4,
+        m5: 5,
+        m6: 6,
+        m7: 7,
+        m8: 8,
+        m9: 9,
+        m10: 10,
+        m11: 11,
+        m12: 12,
+        m13: 13,
+        m14: 14,
+        m15: 15,
+        m16: 16,
+        m17: 17,
+        m18: 18,
+        m19: 19,
+        m20: 20,
+        m21: 21,
+        m22: 22,
+        m23: 23,
+
+        t0: 24,
+        t1: 25,
+        t2: 26,
+        t3: 27,
+        t4: 28,
+        t5: 29,
+        t6: 30,
+        t7: 31,
+        t8: 32,
+        t9: 33,
+        t10: 34,
+        t11: 35,
+        t12: 36,
+        t13: 37,
+        t14: 38,
+        t15: 39,
+        t16: 40,
+        t17: 41,
+        t18: 42,
+        t19: 43,
+        t20: 44,
+        t21: 45,
+        t22: 46,
+        t23: 47,
+
+        w0: 48,
+        w1: 49,
+        w2: 50,
+        w3: 51,
+        w4: 52,
+        w5: 53,
+        w6: 54,
+        w7: 55,
+        w8: 56,
+        w9: 57,
+        w10: 58,
+        w11: 59,
+        w12: 60,
+        w13: 61,
+        w14: 62,
+        w15: 63,
+        w16: 64,
+        w17: 65,
+        w18: 66,
+        w19: 67,
+        w20: 68,
+        w21: 69,
+        w22: 70,
+        w23: 71,
+
+        h0: 72,
+        h1: 73,
+        h2: 74,
+        h3: 75,
+        h4: 76,
+        h5: 77,
+        h6: 78,
+        h7: 79,
+        h8: 80,
+        h9: 81,
+        h10: 82,
+        h11: 83,
+        h12: 84,
+        h13: 85,
+        h14: 86,
+        h15: 87,
+        h16: 88,
+        h17: 89,
+        h18: 90,
+        h19: 91,
+        h20: 92,
+        h21: 93,
+        h22: 94,
+        h23: 95,
+
+        f0: 96,
+        f1: 97,
+        f2: 98,
+        f3: 99,
+        f4: 100,
+        f5: 101,
+        f6: 102,
+        f7: 103,
+        f8: 104,
+        f9: 105,
+        f10: 106,
+        f11: 107,
+        f12: 108,
+        f13: 109,
+        f14: 110,
+        f15: 111,
+        f16: 112,
+        f17: 113,
+        f18: 114,
+        f19: 115,
+        f20: 116,
+        f21: 117,
+        f22: 118,
+        f23: 119,
+
+        s0: 120,
+        s1: 121,
+        s2: 122,
+        s3: 123,
+        s4: 124,
+        s5: 125,
+        s6: 126,
+        s7: 127,
+        s8: 128,
+        s9: 129,
+        s10: 130,
+        s11: 131,
+        s12: 132,
+        s13: 133,
+        s14: 134,
+        s15: 135,
+        s16: 136,
+        s17: 137,
+        s18: 138,
+        s19: 139,
+        s20: 140,
+        s21: 141,
+        s22: 142,
+        s23: 143,
+
+        u0: 144,
+        u1: 145,
+        u2: 146,
+        u3: 147,
+        u4: 148,
+        u5: 149,
+        u6: 150,
+        u7: 151,
+        u8: 152,
+        u9: 153,
+        u10: 154,
+        u11: 155,
+        u12: 156,
+        u13: 157,
+        u14: 158,
+        u15: 159,
+        u16: 160,
+        u17: 161,
+        u18: 162,
+        u19: 163,
+        u20: 164,
+        u21: 165,
+        u22: 166,
+        u23: 167,
+      };
+
+      let whenAvailable = new Array(168).fill(0);
+      for (let i in whenAvailableFake) {
+        whenAvailable[idMap[whenAvailableFake[i]]] = 1;
+      }
 
       let newPost = await posts.createPost(
         postTitle,
@@ -233,7 +566,6 @@ router
         data: req.body,
       });
     }
-    return res.render("profile", { title: "Create Listing" }); //render their profile at the end so they can see their listings, including the newest one
   });
 
 router.get("/listingDetails/:id", async (req, res) => {
@@ -247,9 +579,17 @@ router.get("/listingDetails/:id", async (req, res) => {
   }
   try {
     const post = await posts.getPostById(req.params.id);
+    let posterStats = { ratingAverage: 0, ratingCount: 0 };
+    try {
+      posterStats = await getUserByUserId(post.posterUsername);
+      posterStats.ratingAverage = Number(posterStats.ratingAverage.toFixed(1));
+    } catch (e) {
+      console.warn("Couldn’t fetch poster ratings:", e);
+    }
     res.render("listingDetails", {
       post: post,
       user: req.session.user,
+      posterStats,
     });
   } catch (e) {
     res.status(400).render("listingDetails"),
@@ -266,10 +606,40 @@ router.post("/listingDetails/:id", async (req, res) => {
       req.session.user.firstName,
       req.session.user.lastName,
       req.body.comment
-    ); 
+    );
     res.redirect(req.originalUrl); // refresh page
   } catch (e) {
     res.status(400).render("listingDetails", {
+      post,
+      user: req.session.user,
+      posterStats,
+      error: e.toString(),
+    });
+  }
+});
+router.post("/listingDetails/:id/rate", async (req, res) => {
+  try {
+    const listingId = checkId(req.params.id);
+    const score = Number(req.body.ratingInput);
+    const post = await posts.getPostById(listingId);
+
+    const toUser = await getUserByUserId(post.posterUsername);
+    const fromUser = await getUserByUserId(req.session.user.userId);
+    if (!toUser || !fromUser) {
+      throw "User not found";
+    }
+    await addRating(toUser._id.toString(), fromUser._id.toString(), score);
+    return res.redirect(`/vehicleListings/listingDetails/${listingId}`);
+  } catch (e) {
+    const listingId = checkId(req.params.id);
+    const post = await posts.getPostById(listingId);
+    const posterStats = await getUserByUserId(post.posterUsername).catch(
+      () => null
+    );
+    return res.status(400).render("listingDetails", {
+      post,
+      user: req.session.user,
+      posterStats,
       error: e.toString(),
     });
   }

@@ -320,7 +320,7 @@ router
 
       // trimminging the inputs
       const trimmedUserId = userId.trim();
-      const trimmedPassword = password.trim();
+      const trimmedPassword = password; //remove the .trim() because lab10 had us not trim passwords 
 
       // Check if all fields are filled
       if (!trimmedUserId || !trimmedPassword) {
@@ -375,7 +375,7 @@ router
 
       // Check if userId and password match
       const userCollection = await users();
-      const tempUser = await userCollection.findOne({ userId: trimmedUserId });
+      const tempUser = await userCollection.findOne({userId: { $regex: new RegExp(userId, 'i') }});
       if (
         !tempUser ||
         !(await bcrypt.compare(trimmedPassword, tempUser.password))

@@ -552,6 +552,18 @@ h1 {
   background-color: #1a748f;
 }
 
+#whenAvailable1 {
+  color: red;
+}
+
+.whenAvailableGrid {
+  display: grid;
+  grid-template-rows: repeat(24, 1fr); /* 7 equal columns */
+  grid-auto-flow: column;
+  gap: 5px; /* Space between checkboxes */
+  color: blue;
+}
+
 /* Listing page search bar */
 .search-create-container {
   display: flex;
@@ -764,4 +776,16 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
+  
+.add-rating-form .rating-row {
+  display: flex;
+  align-items: center;   
+  flex-wrap: nowrap;   
+  gap: 0.75rem;           
+}
+
+.add-rating-form .rating-row label {
+  white-space: nowrap;    
+  flex-shrink: 0;         
+  margin: 0;              
 }
