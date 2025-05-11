@@ -468,12 +468,14 @@ if (createListingForm) {
         } else { //select tail
           tail = idMap[this.id];
           flip = 0;
-          for(let i = head + 1; i < tail; i++){
-            if(boxes[i].checked){
-            } else {
+          if(head < tail){
+            for(let i = head + 1; i < tail; i++){
+              if(boxes[i].checked){
+              } else {
+              }
+              boxes[i].checked = boxes[head].checked;
+              }
             }
-            boxes[i].checked = boxes[head].checked;
-          }
           head = -1;
           tail = -1;
         }
@@ -520,15 +522,15 @@ if (createListingForm) {
         accumulatedErrors.push("Vehicle condition must be between 1.0 and 5.0");
       }
 
-      // Cost validation
-      const hourly = hourlyCost.value.trim();
-      const daily = dailyCost.value.trim();
-      if (hourly.length === 0 || daily.length === 0) {
-        accumulatedErrors.push("Cost fields cannot be empty");
-      }
-      if (isNaN(hourly) || isNaN(daily)) {
-        accumulatedErrors.push("Cost must be a valid number");
-      }
+    // Cost validation
+    const hourly = hourlyCost.value.trim();
+    const daily = dailyCost.value.trim();
+    if (hourly.length === 0 || daily.length === 0) {
+      accumulatedErrors.push("Cost fields cannot be empty");
+    }
+    if (isNaN(hourly) || isNaN(daily)) {
+      accumulatedErrors.push("Cost must be a valid number");
+    }
 
       // Display errors if any
       const errorModel = document.getElementById("error-model");
