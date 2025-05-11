@@ -450,7 +450,7 @@ export const login = async (userId, password) => {
     inHoboken: user.inHoboken,
     signupDate: user.signupDate,
     lastLogin: lastLogin,
-    role: user.role
+    role: user.role,
   };
   // not in Hoboken check
   if (user.inHoboken === "no") {
