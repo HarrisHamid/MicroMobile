@@ -458,3 +458,16 @@ h1 {
   margin-bottom: 2rem;
   text-align: center;
 }
+
+#whenAvailable1 {
+  color: red;
+}
+
+.whenAvailableGrid {
+  display: grid;
+  grid-template-rows: repeat(24, 1fr); /* 7 equal columns */
+  grid-auto-flow: column;
+  gap: 5px; /* Space between checkboxes */
+  color: blue;
+}
+
