@@ -7,25 +7,17 @@
         alt="User Avatar"
         class="avatar mb-3"
       />
-      <h2>Harris H.</h2>
-      <p class="text-muted">Joined TODAY</p>
+      <h2>{{firstName}}</h2>
 
       <h6 class="mt-4 text-uppercase text-muted">Verified Info</h6>
       <div class="verified-info mt-2">
-        <p>
-          Approved to drive
-          <span class="text-primary ms-2">Verify ID</span>
-        </p>
-        <p>Email address</p>
-        <p>
-          Phone number
-          <span class="text-primary ms-2">Verify phone number</span>
-          <i class="bi bi-check-circle ms-1 text-primary"></i>
-        </p>
-        <p class="text-muted small">
-          Build trust with other users on MicroMobile by verifying your contact
-          information.
-        </p>
+        <p>Email: {{email}}</p>
+        <p>Addresss: {{address}}</p>
+        {{#ifEquals inHoboken "yes"}}
+          <p>State: NJ</p>
+        {{else}}
+          <p>State: {{state}}</p>
+        {{/ifEquals}}
       </div>
     </div>
 
@@ -39,7 +31,8 @@
           class="avatar-sm mb-2"
         />
         <h6><strong>No reviews yet</strong></h6>
-        <p class="text-muted">Harris hasn’t received a review on MicroMobile yet</p>
+        <p class="text-muted">{{firstName}}
+          hasn’t received a review on MicroMobile yet</p>
       </div>
     </div>
   </div>
