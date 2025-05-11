@@ -1,11 +1,12 @@
 <div class="container mt-5 user-profile">
   <div class="row">
     <!-- LEFT SECTION -->
-    <div class="col-md-6 d-flex flex-column align-items-start">
+    <div class="col-md-6">
       <img
         src="/public/images/avatar.png"
         alt="User Avatar"
-        class="avatar mb-3"
+        class="img-fluid rounded-circle mb-3"
+        style="width: 160px; height: 145px"
       />
       <h2>{{firstName}}</h2>
 
@@ -25,14 +26,7 @@
     <div class="col-md-6">
       <h6 class="text-uppercase text-muted">Reviews from Hosts</h6>
       <div class="review-box mt-3">
-        <img
-          src="/public/img/avatar.png"
-          alt="Reviewer"
-          class="avatar-sm mb-2"
-        />
-        <h6><strong>No reviews yet</strong></h6>
-        <p class="text-muted">{{firstName}}
-          hasn’t received a review on MicroMobile yet</p>
+        <p class="review-text">Review Avg goes here</p>
       </div>
     </div>
   </div>

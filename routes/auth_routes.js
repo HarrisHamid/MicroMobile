@@ -260,6 +260,17 @@ router
         }
       }
 
+      //Check is userId already exists
+      const userCollection = await users();
+      const existingUser = await userCollection.findOne({
+        userId: trimmedUserId.toLowerCase(),
+      });
+      if (existingUser) {
+        return res.status(400).render("register", {
+          error: "userId already exists. Please choose a different one.",
+        });
+      }
+
       // Register the user
       const newUser = await register(
         trimmedFirstName,
@@ -413,6 +424,5 @@ router.route("/signout").post(async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 
 export default router;
