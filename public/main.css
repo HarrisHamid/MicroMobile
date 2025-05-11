@@ -639,7 +639,7 @@ h1 {
   padding: 10px;
   width: 200px;
   z-index: 100;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .tags-dropdown.show {
@@ -721,7 +721,7 @@ h1 {
   padding: 10px;
   width: 200px;
   z-index: 100;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .tags-dropdown.show {
@@ -745,7 +745,8 @@ h1 {
   margin-left: 8px;
 }
 
-.apply-tags-btn, .clear-tags-btn {
+.apply-tags-btn,
+.clear-tags-btn {
   display: block;
   width: 100%;
   padding: 8px;
@@ -758,7 +759,8 @@ h1 {
   font-size: 14px;
 }
 
-.apply-tags-btn:hover, .clear-tags-btn:hover {
+.apply-tags-btn:hover,
+.clear-tags-btn:hover {
   background-color: #1a748f;
 }
 
@@ -770,6 +772,11 @@ h1 {
   background-color: #5a6268;
 }
 
+#signout-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
 .add-rating-form .rating-row {
   display: flex;
   align-items: center;   
