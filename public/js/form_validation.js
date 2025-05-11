@@ -564,26 +564,44 @@ if (createListingForm) {
   boxes.forEach(checkbox => {
     checkbox.addEventListener("change", function() {
       if(tail == -1){ //DO NOT DELETE!!! YOU NEED THIS LINE!!! When we change other boxes state we will set off their change event too you will get stuck in an infinite loop. -Jack
+        console.log("awoba");
         if(flip == 0){ //select head
           head = idMap[this.id];
           flip = 1;
           if(this.checked){
             headState = 1;
+            console.log("headstate true");
           } else {
             headState = 0;
-          }
-        
+            console.log("headstate false");
+          }        
         } else { //select tail
           tail = idMap[this.id];
           flip = 0;
+          console.log("headstate: "+ headState);
           if(head < tail){
-            for(let i = head + 1; i < tail; i++){
-              if(boxes[i].checked){
+            console.log("head start");
+            for(let i = head; i < tail+1; i++){ 
+              if(headState == 1){          
+                boxes[i].checked = true;
+                console.log("pured");
               } else {
-              }
-              boxes[i].checked = boxes[head].checked;
+                boxes[i].checked = false;
+                console.log("damned");
               }
             }
+          } else {
+            console.log("tail start");
+            for(let i = tail; i < head+1; i++){
+              //boxes[i].checked = boxes[tail].checked;
+              if(headState == 1){          
+                //boxes[i].checked = boxes[head].checked;
+                boxes[i].checked = true;
+              } else {
+                boxes[i].checked = false;
+              }
+            }
+          }
           head = -1;
           tail = -1;
         }
@@ -694,14 +712,6 @@ if (createListingForm) {
         accumulatedErrors.push("Post title must be at least 2 characters");
       }
 
-      // Vehicle condition validation
-      const condition = vehicleCondition.value.trim();
-      if (condition.length === 0) {
-        accumulatedErrors.push("Vehicle condition cannot be empty");
-      }
-      if (isNaN(condition) || condition < 1 || condition > 5) {
-        accumulatedErrors.push("Vehicle condition must be between 1.0 and 5.0");
-      }
 
       // Cost validation
       const hourly = hourlyCost.value.trim();
