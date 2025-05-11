@@ -20,6 +20,7 @@ import {
 } from "../helpers.js";
 import { users } from "../config/mongoCollections.js";
 import bcrypt from "bcryptjs";
+import { ObjectId } from "mongodb";
 
 // GET user by provided uid
 const getUserById = async (uid) => {
@@ -30,7 +31,7 @@ const getUserById = async (uid) => {
   // find user with uid
   const user = await userCollection.findOne({ _id: new ObjectId(uid) });
   if (user === null) {
-    throw new Error("User not found"); // 404?
+    throw "User not found"; // 404?
   }
   // convert objectId to string and return user
   user._id = user._id.toString();
@@ -470,46 +471,51 @@ export const addRating = async (toUserId, fromUserId, score) => {
   const user = await userCol.findOne({ _id: new ObjectId(toUserId) });
   if (!user) throw "Target user not found";
 
-  // Update array and running average:
-  let newCount = (user.ratingCount) + 1;
-  let newTotal = (user.ratingAverage) * (user.ratingCount) + score;
-  let newAvg = newTotal / newCount;
+  const existingRating = user.ratings.find(r => r.userId === fromUserId);
 
-  // Check if the user already rated
-  let existingRating = false
-  for (let i = 0; i < user.ratings.length; i++) {
-    if (user.ratings[i].userId === fromUserId) {
-      existingRating = true;
-      break;
-    }
-  }
+  if (existingRating) {
+    const newCount = user.ratingCount;                                    
+    const totalMinusOld = user.ratingAverage * user.ratingCount          
+                          - existingRating.score;                         
+    const newAvg = (totalMinusOld + score) / newCount;                   
 
-if (existingRating) {
-  newCount = ratingCount;
-  const totalMinusOld = ratingAverage * ratingCount - existing.score;
-  newAvg = (totalMinusOld + score) / newCount;
-  await userCol.updateOne(
-    { _id: ObjectId(toUserId), "ratings.userId": fromUserId },
-    {
-      $set: {
-        "ratings.$.score": score,
-        ratingAverage: newAvg,
-        ratingCount: newCount
-      }
-    }
-  );
-    return { updated: true };
-  }
-  else {
-    newCount = ratingCount + 1;
-    const total = ratingAverage * ratingCount + score;
-    newAvg = total / newCount;
     await userCol.updateOne(
-      { _id: ObjectId(toUserId) },
+      { _id: new ObjectId(toUserId), "ratings.userId": fromUserId },
       {
-        $push: { ratings: { userId: fromUserId, score} },
+        $set: {
+          "ratings.$.score": score,
+          ratingAverage: newAvg,
+          ratingCount: newCount
+        }
+      }
+    );
+    return { updated: true };
+  } 
+  else {
+    const newCount = user.ratingCount + 1;
+    const total = user.ratingAverage * user.ratingCount + score;
+    const newAvg = total / newCount;
+
+    await userCol.updateOne(
+      { _id: new ObjectId(toUserId) },
+      {
+        $push: { ratings: { userId: fromUserId, score } },
         $set: { ratingAverage: newAvg, ratingCount: newCount }
       }
     );
+    return { updated: false };
   }
+};
+
+
+export const getUserByUserId = async (userId) => {
+  if (typeof userId !== "string" || userId.trim().length === 0) {
+    throw "Invalid userId";
+  }
+  const userCollection = await users();
+  const user = await userCollection.findOne(
+    { userId: userId.trim() }
+  );
+  if (!user) throw "User not found";
+  return user;
 };

@@ -489,7 +489,7 @@
     ratingForm.addEventListener('submit', (event) => {
       event.preventDefault();
       const accumulatedErrors = [];
-
+      rating = ratingInput.value.trim();
       // Rating validation
       if (isNaN(rating)) {
         accumulatedErrors.push("Rating must be a number");

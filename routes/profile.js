@@ -15,6 +15,7 @@ router.get("/", async (req, res) => {
       address: req.session.user.address,
       inHoboken: req.session.user.inHoboken,
       state: req.session.user.state,
+      ratingAverage: req.session.user.ratingAverage?.toFixed(2) || "No Ratings Yet"
     });
   } catch (error) {
     console.error("Error rendering profile page:", error);
