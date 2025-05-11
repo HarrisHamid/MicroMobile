@@ -99,14 +99,18 @@ router.get("/vehicleListings", async (req, res) => {
   }
 });
 router
-  .get("/requestVehicle", async (req, res) => {
+  .post("/requestVehicleGET", async (req, res) => { //GET is done as a POST so I can have a req.body
+    console.log(req);
     try {
-      //if(!req.session.user)throw "You must be logged in to see this page"
-      // req.session.user.lastPostChecked = xss(req.body.lastPostChecked)
-      // if(!ObjectId.isValid(req.session.user.lastPostChecked)){throw "Error with getting last post checked data"};
-      res.render("requestVehicle", { title: "Request Vehicle" }); //maybe this should be done as a partial on the vehicleDetails page
+      console.log("GOOD");
+      if(!req.session.user)throw "You must be logged in to see this page"
+       let postId = xss(req.body.postId)
+       if(!ObjectId.isValid(postId)){throw "Error with getting post ID"};
+      res.render("requestVehicle", {layout: null, postId: postId }); //maybe this should be done as a partial on the vehicleDetails page
     } catch (e) {
+      console.log(e);
       res.status(400).render("requestVehicle", {
+        layout: null,
         title: "Request Vehicle",
         error: e,
         data: req.body,
@@ -114,35 +118,83 @@ router
     }
   })
   .post("/requestVehicle", async (req, res) => {
-    //console.log(req)
+    console.log(req)
     try {
-      //if(!req.session.user) throw "You must be logged in to use see this page"
-      //if(!req.session.user.lastPostChecked || !ObjectId.isValid(req.session.user.lastPostChecked)){throw "Error with getting last post checked data"};
+      let a = req.body
+      if(a.extraComments === undefined || !a.startDate || !a.endDate || !a.vehicleId) throw "Must have all inputs"
+      if(!req.session.user) throw "You must be logged in to use see this page"
+      let vehicleId = xss(req.body.vehicleId);
+      if(!ObjectId.isValid(vehicleId)){throw "Error with getting post id"};
       let extraComments = xss(req.body.extraComments);
       let start = xss(req.body.startDate);
       let end = xss(req.body.endDate);
-      //res.json({extraComments: extraComments, startDate: startDate, endDate: endDate})
+      
       if (typeof extraComments !== "string")
         throw "Extra Comments must be a string";
       start = help.checkString(start, "startDate");
       end = help.checkString(end, "endDate");
-      //res.json({extraComments: extraComments, startDate: startDate, endDate: endDate})
 
       let startDate = new Date(start);
       let endDate = new Date(end);
       if (startDate == "Invalid Date" || endDate == "Invalid Date") {
         throw "Invalid start or end date";
       }
-      //let newInsert = await posts.createRequest(req.session.user.lastPostChecked, extraComments, start, end)
-      // res.status(200).render(`/vehicleDetails/${req.session.user.lastPostChecked}`, {requestSuccessful: true})
-      //res.json({completion: "Needs to be integrated"})
-      res.render("createListing", { layouts: null });
+      let checkReq = await posts.checkRequest(req.session.user.userId, vehicleId, extraComments, start, end);
+      if(checkReq.hours){
+        res.render("payment", {layout: null, vehicleId:vehicleId, extraComments: extraComments, startDate: start, endDate: end, hours: checkReq.hours, costPerHour: checkReq.costPerHour, cost: checkReq.cost})
+      }
+      else{
+        res.render("payment", {layout: null, title:"Payment", data:{vehicleId:vehicleId, extraComments: extraComments, startDate: start, endDate: end, days: checkReq.days, costPerDay: checkReq.costPerDay, cost: checkReq.cost}})
+      }
+      // const post = await posts.getPostById(vehicleId);
+      // res.render("listingDetails", {
+      //   post: post,
+      //   user: req.session.user,
+      //   requestSuccessful: true
+      // });
     } catch (e) {
+      console.log(e);
       res.status(400).render("requestVehicle", {
         title: "Request Vehicle",
         error: e,
         data: req.body,
       });
+    }
+  })
+  .post("/payment", async (req, res) => {
+    console.log("SUPRISEbamPoof");
+    console.log(req);
+    try {
+      let a = req.body
+      if(a.extraComments === undefined || !a.startDate || !a.endDate) throw "Must have all inputs"
+      if(!req.session.user) throw "You must be logged in to use see this page"
+      let vehicleId = xss(req.body.vehicleId);
+      if(!ObjectId.isValid(vehicleId)){throw "Error with getting post id"};
+      let extraComments = xss(req.body.extraComments);
+      let start = xss(req.body.startDate);
+      let end = xss(req.body.endDate);
+      
+      if (typeof extraComments !== "string")
+        throw "Extra Comments must be a string";
+      start = help.checkString(start, "startDate");
+      end = help.checkString(end, "endDate");
+
+      let startDate = new Date(start);
+      let endDate = new Date(end);
+      if (startDate == "Invalid Date" || endDate == "Invalid Date") {
+        throw "Invalid start or end date";
+      }
+      let createRequest = await posts.createRequest(req.session.user.userId, vehicleId, extraComments, start, end);
+      res.redirect(`/vehicleListings/listingDetails/${vehicleId}`)
+      // const post = await posts.getPostById(vehicleId);
+      // res.render("listingDetails", {
+      //   post: post,
+      //   user: req.session.user,
+      //   requestSuccessful: true
+      // });
+    } catch (e) {
+      console.log(e)
+      res.status(400).render("payment", {layout: null, error: e, title:"Payment", data: req.body})
     }
   });
 
@@ -237,7 +289,6 @@ router
         data: req.body,
       });
     }
-    return res.render("profile", { title: "Create Listing" }); //render their profile at the end so they can see their listings, including the newest one
   });
 
 router.get("/listingDetails/:id", async (req, res) => {

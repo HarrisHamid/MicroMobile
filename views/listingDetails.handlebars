@@ -1,3 +1,6 @@
+{{#if requestSuccessful}}
+<p>Your vehicle request has been successfully submitted. You will be notified if the request is approved</p>
+{{/if}}
 <div class="listing-details-container">
     {{#if error}}
     <div class="error-message">{{error}}</div>
@@ -48,7 +51,9 @@
             </div>
 
             {{#if user}}
-            <button class="request-rental-btn" data-post-id="{{post._id}}">Request Rental</button>
+            <div class="request-rental-btn">
+            <button class="request-rental-btn" data-post-id="{{post._id}}" id="reqVehicleButton">Request Rental</button>
+            </div>
             {{else}}
             <a href="/auth/login?returnTo=/vehicleListings/listingDetails/{{post._id}}" class="login-to-rent-btn">Login to Request Rental</a>
             {{/if}}
@@ -107,3 +112,6 @@
         {{/if}}
     </div>
 </div>
+
+{{!-- It's fine if the user sees this. It's just hidden because there's no reason for them to see it --}}
+<p id="hiddenPostId" hidden>{{postId}}</p>

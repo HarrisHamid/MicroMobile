@@ -127,7 +127,7 @@ export const register = async (
   // Case-insensitive check
   const userCollection = await users();
   const existingUser = await userCollection.findOne({
-    userId: { $regex: new RegExp(`^${userId}$`, "i") },
+    userId: {$regex: new RegExp(userId, 'i') },
   });
   if (existingUser) {
     throw Error(`userId already exists`);
@@ -140,7 +140,7 @@ export const register = async (
   if (typeof password !== "string") {
     throw Error(`password must be of type String`);
   }
-  password = password.trim();
+  //password = password.trim();
   // Empty just spaces check
   if (password.length === 0) {
     throw Error(`password cant be empty or just spaces`);
@@ -182,7 +182,7 @@ export const register = async (
   }
   // Case-insensitive check
   const existingEmail = await userCollection.findOne({
-    email: { $regex: new RegExp(`^${email}$`, "i") },
+    email: { $regex: new RegExp(email, 'i') },
   });
   if (existingEmail) {
     throw Error(`email already exists`);
@@ -367,7 +367,7 @@ export const login = async (userId, password) => {
   // Case-insensitive check
   const userCollection = await users(); // reference to the collection
   const existingUser = await userCollection.findOne({
-    userId: { $regex: new RegExp(`^${userId}$`, "i") },
+    userId: { $regex: new RegExp(userId, 'i')},
   });
   if (!existingUser) {
     throw Error(`userId does not exist`);
@@ -380,7 +380,7 @@ export const login = async (userId, password) => {
   if (typeof password !== "string") {
     throw Error(`password must be of type String`);
   }
-  password = password.trim();
+  //password = password.trim();
   // Empty just spaces check
   if (password.length === 0) {
     throw Error(`password cant be empty or just spaces`);
@@ -408,7 +408,7 @@ export const login = async (userId, password) => {
   // "Either the userId or password is invalid".
   const usersCollection = await users(); // reference to the collection
   const user = await usersCollection.findOne({
-    userId: { $regex: new RegExp(`^${userId}$`, "i") },
+    userId: { $regex: new RegExp(userId, 'i') },
   });
   if (!user) {
     throw Error(`Either the userId or password is invalid`);
