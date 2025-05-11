@@ -353,30 +353,242 @@
         accumulatedErrors.push("Password must be at least 8 characters long");
       }
 
-      // If errors array has stuff display it
-      const errorModel = document.getElementById("login-error-model");
-      // clear old messsages
+    // If errors array has stuff display it
+    const errorModel = document.getElementById("login-error-model");
+    // clear old messsages
+    if (errorModel) {
+      errorModel.innerHTML = "";
+    }
+    if (accumulatedErrors.length > 0) {
       if (errorModel) {
-        errorModel.innerHTML = "";
+        accumulatedErrors.forEach((error) => {
+          const li = document.createElement("li");
+          li.textContent = error;
+          errorModel.appendChild(li);
+        });
+      } else {
+        alert(accumulatedErrors.join("\n")); // Display errors in an alert if errorModel is not found
       }
-      if (accumulatedErrors.length > 0) {
-        if (errorModel) {
-          accumulatedErrors.forEach((error) => {
-            const li = document.createElement("li");
-            li.textContent = error;
-            errorModel.appendChild(li);
-          });
-        } else {
-          alert(accumulatedErrors.join("\n")); // Display errors in an alert if errorModel is not found
-        }
-        return;
-      }
-      // If no errors, submit the form
-      myLoginForm.submit();
-    });
+      return;
+    }
+    // If no errors, submit the form
+    myLoginForm.submit();
+  });
+}
+  
+if (createListingForm) {
+  //I set up the whenAvailable array functionality here.
+  const idMap = { //Massive enumerator to map the id's for checkboxes to their index within the 
+    m0: 0,
+    m1: 1,
+    m2: 2,
+    m3: 3,
+    m4: 4,
+    m5: 5,
+    m6: 6,
+    m7: 7,
+    m8: 8,
+    m9: 9,
+    m10:10,
+    m11:11,
+    m12:12,
+    m13:13,
+    m14:14,
+    m15:15,
+    m16:16,
+    m17:17,
+    m18:18,
+    m19:19,
+    m20:20,
+    m21:21,
+    m22:22,
+    m23:23,
+
+    t0: 24,
+    t1: 25,
+    t2: 26,
+    t3: 27,
+    t4: 28,
+    t5: 29,
+    t6: 30,
+    t7: 31,
+    t8: 32,
+    t9: 33,
+    t10:34,
+    t11:35,
+    t12:36,
+    t13:37,
+    t14:38,
+    t15:39,
+    t16:40,
+    t17:41,
+    t18:42,
+    t19:43,
+    t20:44,
+    t21:45,
+    t22:46,
+    t23:47,
+
+    w0: 48,
+    w1: 49,
+    w2: 50,
+    w3: 51,
+    w4: 52,
+    w5: 53,
+    w6: 54,
+    w7: 55,
+    w8: 56,
+    w9: 57,
+    w10:58,
+    w11:59,
+    w12:60,
+    w13:61,
+    w14:62,
+    w15:63,
+    w16:64,
+    w17:65,
+    w18:66,
+    w19:67,
+    w20:68,
+    w21:69,
+    w22:70,
+    w23:71,
+
+    h0: 72,
+    h1: 73,
+    h2: 74,
+    h3: 75,
+    h4: 76,
+    h5: 77,
+    h6: 78,
+    h7: 79,
+    h8: 80,
+    h9: 81,
+    h10:82,
+    h11:83,
+    h12:84,
+    h13:85,
+    h14:86,
+    h15:87,
+    h16:88,
+    h17:89,
+    h18:90,
+    h19:91,
+    h20:92,
+    h21:93,
+    h22:94,
+    h23:95,
+
+    f0: 96,
+    f1: 97,
+    f2: 98,
+    f3: 99,
+    f4: 100,
+    f5: 101,
+    f6: 102,
+    f7: 103,
+    f8: 104,
+    f9: 105,
+    f10:106,
+    f11:107,
+    f12:108,
+    f13:109,
+    f14:110,
+    f15:111,
+    f16:112,
+    f17:113,
+    f18:114,
+    f19:115,
+    f20:116,
+    f21:117,
+    f22:118,
+    f23:119,
+
+    s0: 120,
+    s1: 121,
+    s2: 122,
+    s3: 123,
+    s4: 124,
+    s5: 125,
+    s6: 126,
+    s7: 127,
+    s8: 128,
+    s9: 129,
+    s10:130,
+    s11:131,
+    s12:132,
+    s13:133,
+    s14:134,
+    s15:135,
+    s16:136,
+    s17:137,
+    s18:138,
+    s19:139,
+    s20:140,
+    s21:141,
+    s22:142,
+    s23:143,
+
+    u0: 144,
+    u1: 145,
+    u2: 146,
+    u3: 147,
+    u4: 148,
+    u5: 149,
+    u6: 150,
+    u7: 151,
+    u8: 152,
+    u9: 153,
+    u10:154,
+    u11:155,
+    u12:156,
+    u13:157,
+    u14:158,
+    u15:159,
+    u16:160,
+    u17:161,
+    u18:162,
+    u19:163,
+    u20:164,
+    u21:165,
+    u22:166,
+    u23:167,
   }
 
-  if (createListingForm) {
+  let head = -1;
+  let tail = -1;
+  let flip = 0;
+  let headState = -1;
+  let boxes = document.querySelectorAll("input[type='checkbox']");
+  
+  boxes.forEach(checkbox => {
+    checkbox.addEventListener("change", function() {
+      if(tail == -1){ //DO NOT DELETE!!! YOU NEED THIS LINE!!! When we change other boxes state we will set off their change event too you will get stuck in an infinite loop. -Jack
+        if(flip == 0){ //select head
+          head = idMap[this.id];
+          flip = 1;
+          if(this.checked){
+            headState = 1;
+          } else {
+            headState = 0;
+          }
+        
+        } else { //select tail
+          tail = idMap[this.id];
+          flip = 0;
+          for(let i = head + 1; i < tail; i++){
+            if(boxes[i].checked){
+            } else {
+            }
+            boxes[i].checked = boxes[head].checked;
+          }
+          head = -1;
+          tail = -1;
+        }
+      }
+    })
+  });
+  
     createListingForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const accumulatedErrors = [];
@@ -465,11 +677,11 @@
         if (!validTypes.includes(file.type)) {
           accumulatedErrors.push("Only PNG and JPEG images are allowed");
         }
-
-        if (file.size > 5 * 1024 * 1024) {
-          accumulatedErrors.push("Image size must be less than 5MB");
-        }
+      
+      if (file.size > 5 * 1024 * 1024) {
+        accumulatedErrors.push("Image size must be less than 5MB");
       }
+    }
 
       // Post title validation
       const title = postTitle.value.trim();
