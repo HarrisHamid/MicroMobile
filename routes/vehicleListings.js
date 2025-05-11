@@ -48,7 +48,7 @@ router.get("/search", async (req, res) => {
       title: searchTerm ? `Results for "${searchTerm}"` : "Available Vehicles",
       posts: allPosts,
       vehicleTypes: ["Scooter", "Skateboard", "Bicycle", "Other"],
-      otherTags: ["Electric", "Off Road", "Two Wheels", "Four Wheels", "New", "Modded"]
+      otherTags: ["Electric", "Off Road", "Two Wheels", "Four Wheels", "New", "Modded", "Snow Gear", "Beach Gear"]
     })
   } catch (e) {
     res.status(500).render("error", {
@@ -66,7 +66,7 @@ router.get("/filterByTag", async (req, res) => {
       title: tag ? `Vehicles with tag: ${tag}` : "Available Vehicles",
       posts: allPosts,
       vehicleTypes: ["Scooter", "Skateboard", "Bicycle", "Other"],
-      otherTags: ["Electric", "Off Road", "Two Wheels", "Four Wheels", "New", "Modded"]
+      otherTags: ["Electric", "Off Road", "Two Wheels", "Four Wheels", "New", "Modded", "Snow Gear", "Beach Gear"]
     });
   } catch (e) {
     res.status(500).render("error", {
@@ -86,7 +86,7 @@ router.get("/vehicleListings", async (req, res) => {
       title: "Available Vehicles",
       posts: allPosts,
       vehicleTypes: ["Scooter", "Skateboard", "Bicycle", "Other"],
-      otherTags: ["Electric", "Off Road", "Two Wheels", "Four Wheels", "New", "Modded"]
+      otherTags: ["Electric", "Off Road", "Two Wheels", "Four Wheels", "New", "Modded", "Snow Gear", "Beach Gear"]
       // User: req.session.user
     });
   } catch (e) {
@@ -188,6 +188,8 @@ router
         "Four Wheels",
         "New",
         "Modded",
+        "Snow Gear",
+        "Beach Gear"
       ];
 
       if (
@@ -195,7 +197,7 @@ router
         !validTagList.includes(vehicleTags2) ||
         !validTagList.includes(vehicleTags3)
       ) {
-        throw "Vehicle tags must be among: None, Off Road, Electric, Two Wheels, Four Wheels, New, Modded";
+        throw "Vehicle tags must be among: None, Off Road, Electric, Two Wheels, Four Wheels, New, Modded, Snow Gear, Beach Gear";
       }
       let vehicleTags = [vehicleTags1, vehicleTags2, vehicleTags3];
 

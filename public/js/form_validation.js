@@ -328,13 +328,15 @@
         tag2 = vehicleTags2.value.trim(),
         tag3 = vehicleTags3.value.trim();
       let validTagList = [
-        "none",
-        "offroad",
-        "electric",
-        "2wheel",
-        "4wheel",
-        "new",
-        "modded",
+        "None",
+        "Off Road",
+        "Electric",
+        "Two Wheel",
+        "Four Wheel",
+        "New",
+        "Modded",
+        "Snow Gear",
+        "Beach Gear"
       ];
       if (
         !validTagList.includes(tag1) ||

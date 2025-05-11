@@ -155,7 +155,8 @@ const filterPostsByTitle = async (prefix) => {
             if (postTitle.length < prefixLength) {
                 return false;
             } else {
-                return postTitle.startsWith(prefix.trim().toLowerCase());
+                let wordsInTitle = postTitle.split(' ');
+                return wordsInTitle.some(word => word.startsWith(prefix.trim().toLowerCase()));
             }
         }
     );
