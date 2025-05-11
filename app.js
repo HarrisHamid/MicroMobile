@@ -7,7 +7,7 @@ import authRoutes from "./routes/auth_routes.js";
 
 import path from "path";
 import { fileURLToPath } from "url";
-// import { seedDatabase } from "./seed.js";
+ import { seedDatabase } from "./seed.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -63,7 +63,7 @@ app.use("/auth", authRoutes);
 
 configRoutes(app);
 
-// seedDatabase();
+ seedDatabase();
 
 app.listen(3000, () => {
   console.log("We've now got a server!");

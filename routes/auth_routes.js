@@ -29,6 +29,13 @@ router
       let inHoboken = xss(req.body.inHoboken);
       let state = xss(req.body.state || "");
 
+      //Age check cause you never know
+     if (!req.body.isAdult) {
+       return res.status(400).render("register", {
+         error: "You must confirm you are 18 years of age or older"
+       });
+     }
+
       // trimminging the inputs
       const trimmedFirstName = firstName.trim();
       const trimmedLastName = lastName.trim();
@@ -267,8 +274,10 @@ router
 
       // Check if registration was successful
       if (newUser.registrationCompleted === true) {
+        const user = await login(userId, password)
+        req.session.user = user
         req.session.showTerms = true;
-        return res.redirect("/auth/login");
+        return res.redirect("/");
       } else {
         return res.status(400).render("register", {
           error: "Registration failed. Please try again.",
@@ -300,7 +309,7 @@ router
 
       // trimminging the inputs
       const trimmedUserId = userId.trim();
-      const trimmedPassword = password.trim();
+      const trimmedPassword = password; //remove the .trim() because lab10 had us not trim passwords 
 
       // Check if all fields are filled
       if (!trimmedUserId || !trimmedPassword) {
@@ -355,7 +364,7 @@ router
 
       // Check if userId and password match
       const userCollection = await users();
-      const tempUser = await userCollection.findOne({ userId: trimmedUserId });
+      const tempUser = await userCollection.findOne({userId: { $regex: new RegExp(userId, 'i') }});
       if (
         !tempUser ||
         !(await bcrypt.compare(trimmedPassword, tempUser.password))

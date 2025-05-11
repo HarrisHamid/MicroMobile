@@ -15,11 +15,28 @@ router.get("/", async (req, res) => {
       address: req.session.user.address,
       inHoboken: req.session.user.inHoboken,
       state: req.session.user.state,
+      ratingAverage: req.session.user.ratingAverage?.toFixed(2) || "No Ratings Yet"
     });
   } catch (error) {
     console.error("Error rendering profile page:", error);
     res.status(500).send("Internal Server Error");
   }
 });
+router.post('/:id/rate', async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/auth/login");
+  }
+  const toUserId = req.params.id;
+  const fromUserId = req.session.user._id;
+  const score = parseInt(req.body.score, 10);
+  try {
+    await usersData.addRating(toUserId, fromUserId, score);
+    res.redirect(`/profile/${toUserId}`);
+  } catch (e) {
+    res.status(400).render('profile', {error: e});
+  }
+});
+
+
 
 export default router;

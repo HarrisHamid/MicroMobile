@@ -20,6 +20,7 @@ import {
 } from "../helpers.js";
 import { users } from "../config/mongoCollections.js";
 import bcrypt from "bcryptjs";
+import { ObjectId } from "mongodb";
 
 // GET user by provided uid
 const getUserById = async (uid) => {
@@ -30,7 +31,7 @@ const getUserById = async (uid) => {
   // find user with uid
   const user = await userCollection.findOne({ _id: new ObjectId(uid) });
   if (user === null) {
-    throw new Error("User not found"); // 404?
+    throw "User not found"; // 404?
   }
   // convert objectId to string and return user
   user._id = user._id.toString();
@@ -126,7 +127,7 @@ export const register = async (
   // Case-insensitive check
   const userCollection = await users();
   const existingUser = await userCollection.findOne({
-    userId: { $regex: new RegExp(`^${userId}$`, "i") },
+    userId: {$regex: new RegExp(userId, 'i') },
   });
   if (existingUser) {
     throw Error(`userId already exists`);
@@ -139,7 +140,7 @@ export const register = async (
   if (typeof password !== "string") {
     throw Error(`password must be of type String`);
   }
-  password = password.trim();
+  //password = password.trim();
   // Empty just spaces check
   if (password.length === 0) {
     throw Error(`password cant be empty or just spaces`);
@@ -181,7 +182,7 @@ export const register = async (
   }
   // Case-insensitive check
   const existingEmail = await userCollection.findOne({
-    email: { $regex: new RegExp(`^${email}$`, "i") },
+    email: { $regex: new RegExp(email, 'i') },
   });
   if (existingEmail) {
     throw Error(`email already exists`);
@@ -312,7 +313,10 @@ export const register = async (
     inHoboken: inHoboken,
     signupDate: signupDate,
     lastLogin: lastLogin,
-    role: 'user' //middleware prints the role so I at least set it here. -Jack
+    role: 'user', //middleware prints the role so I at least set it here. -Jack
+    ratings: [],
+    ratingAverage: 0,  
+    ratingCount: 0    
   };
 
   // not in Hoboken check
@@ -363,7 +367,7 @@ export const login = async (userId, password) => {
   // Case-insensitive check
   const userCollection = await users(); // reference to the collection
   const existingUser = await userCollection.findOne({
-    userId: { $regex: new RegExp(`^${userId}$`, "i") },
+    userId: { $regex: new RegExp(userId, 'i')},
   });
   if (!existingUser) {
     throw Error(`userId does not exist`);
@@ -376,7 +380,7 @@ export const login = async (userId, password) => {
   if (typeof password !== "string") {
     throw Error(`password must be of type String`);
   }
-  password = password.trim();
+  //password = password.trim();
   // Empty just spaces check
   if (password.length === 0) {
     throw Error(`password cant be empty or just spaces`);
@@ -404,7 +408,7 @@ export const login = async (userId, password) => {
   // "Either the userId or password is invalid".
   const usersCollection = await users(); // reference to the collection
   const user = await usersCollection.findOne({
-    userId: { $regex: new RegExp(`^${userId}$`, "i") },
+    userId: { $regex: new RegExp(userId, 'i') },
   });
   if (!user) {
     throw Error(`Either the userId or password is invalid`);
@@ -456,3 +460,62 @@ export const login = async (userId, password) => {
   return userData;
 };
 
+export const addRating = async (toUserId, fromUserId, score) => {
+  toUserId = checkId(toUserId);
+  fromUserId = checkId(fromUserId);
+
+  if (toUserId === fromUserId) throw "Cannot rate yourself";
+  if (typeof score !== 'number' || score < 1 || score > 5) throw "Score must be 1-5";
+
+  const userCol = await users();
+  const user = await userCol.findOne({ _id: new ObjectId(toUserId) });
+  if (!user) throw "Target user not found";
+
+  const existingRating = user.ratings.find(r => r.userId === fromUserId);
+
+  if (existingRating) {
+    const newCount = user.ratingCount;                                    
+    const totalMinusOld = user.ratingAverage * user.ratingCount          
+                          - existingRating.score;                         
+    const newAvg = (totalMinusOld + score) / newCount;                   
+
+    await userCol.updateOne(
+      { _id: new ObjectId(toUserId), "ratings.userId": fromUserId },
+      {
+        $set: {
+          "ratings.$.score": score,
+          ratingAverage: newAvg,
+          ratingCount: newCount
+        }
+      }
+    );
+    return { updated: true };
+  } 
+  else {
+    const newCount = user.ratingCount + 1;
+    const total = user.ratingAverage * user.ratingCount + score;
+    const newAvg = total / newCount;
+
+    await userCol.updateOne(
+      { _id: new ObjectId(toUserId) },
+      {
+        $push: { ratings: { userId: fromUserId, score } },
+        $set: { ratingAverage: newAvg, ratingCount: newCount }
+      }
+    );
+    return { updated: false };
+  }
+};
+
+
+export const getUserByUserId = async (userId) => {
+  if (typeof userId !== "string" || userId.trim().length === 0) {
+    throw "Invalid userId";
+  }
+  const userCollection = await users();
+  const user = await userCollection.findOne(
+    { userId: userId.trim() }
+  );
+  if (!user) throw "User not found";
+  return user;
+};

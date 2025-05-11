@@ -564,3 +564,221 @@ h1 {
   color: blue;
 }
 
+/* Listing page search bar */
+.search-create-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 20px;
+  width: 100%;
+}
+
+.search-form {
+  display: flex;
+  width: 100%;
+}
+
+.search-input {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  font-size: 16px;
+  height: 100%;
+}
+
+.search-btn {
+  width: 65px !important;
+  padding: 0;
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  cursor: pointer;
+  font-size: 14px;
+  height: 100%;
+  flex-shrink: 0;
+  transition: background-color 0.2s;
+}
+
+.search-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Tag Filtering Styles */
+.filter-tags-container {
+  position: relative;
+  display: inline-block;
+}
+
+.filter-toggle-btn {
+  padding: 8px 15px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.filter-toggle-btn:hover {
+  background-color: #5a6268;
+}
+
+.tags-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  width: 200px;
+  z-index: 100;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tags-dropdown.show {
+  display: block;
+}
+
+.tag-checkbox-label {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.tag-checkbox-text {
+  margin-left: 8px;
+}
+
+.apply-tags-btn {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  background-color: #3db0d3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.apply-tags-btn:hover {
+  background-color: #1a748f;
+}
+
+/* Adjust search-create-container for new elements */
+.search-create-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.search-form {
+  flex-grow: 1;
+  min-width: 250px;
+}
+
+/* Tag Filtering Styles */
+.filter-tags-container {
+  position: relative;
+  display: inline-block;
+}
+
+.filter-toggle-btn {
+  padding: 8px 15px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.filter-toggle-btn:hover {
+  background-color: #5a6268;
+}
+
+.tags-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  width: 200px;
+  z-index: 100;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tags-dropdown.show {
+  display: block;
+}
+
+.tags-dropdown h4 {
+  margin: 10px 0 5px 0;
+  font-size: 14px;
+  color: #495057;
+}
+
+.tag-checkbox-label {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.tag-checkbox-text {
+  margin-left: 8px;
+}
+
+.apply-tags-btn, .clear-tags-btn {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  background-color: #3db0d3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.apply-tags-btn:hover, .clear-tags-btn:hover {
+  background-color: #1a748f;
+}
+
+.clear-tags-btn {
+  background-color: #6c757d;
+}
+
+.clear-tags-btn:hover {
+  background-color: #5a6268;
+}
+
+.add-rating-form .rating-row {
+  display: flex;
+  align-items: center;   
+  flex-wrap: nowrap;   
+  gap: 0.75rem;           
+}
+
+.add-rating-form .rating-row label {
+  white-space: nowrap;    
+  flex-shrink: 0;         
+  margin: 0;              
+}

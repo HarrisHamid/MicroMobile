@@ -5,7 +5,10 @@
   let myRegisterForm = document.getElementById("signup-form");
   let myLoginForm = document.getElementById("signin-form");
   let createListingForm = document.getElementById("createListingForm");
+  let commentForm = document.getElementById("commentForm");
+  let ratingForm = document.getElementById("ratingForm");
 
+  let requestVehicleForm = document.getElementById("requestVehicleForm");
   // All register inputs
   let firstNameInput = document.getElementById("firstName");
   let lastNameInput = document.getElementById("lastName");
@@ -33,11 +36,115 @@
   let dailyCost = document.getElementById("dailyCost");
   let imageInput = document.getElementById("image");
 
+  //All vehicle details inputs
+  let  requestVehicleButton = document.getElementById("reqVehicleButton");
+
+  // All comment inputs
+  let commentInput = document.getElementById("commentInput");
+  //All rating inputs
+  let ratingInput = document.getElementById("ratingInput");
+
+  if(requestVehicleButton){
+    requestVehicleButton.addEventListener("click", (event)=>{
+      event.preventDefault();
+      $(function () {
+      let button = $("#reqVehicleButton");
+      let postId = requestVehicleButton.getAttribute('data-post-id');
+      $("#hiddenPostId").val(postId);
+      let requestConfigRV = {
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+          test: "test",
+          postId: postId,
+        }),
+        url: "/vehicleListings/requestVehicleGET",
+      };
+      
+      $.ajax(requestConfigRV).then(function (responseMessage) {
+        console.log(responseMessage);
+        button.replaceWith(responseMessage); 
+        requestVehicleForm = document.getElementById("requestVehicleForm");
+        if (requestVehicleForm) {
+          (function ($) {
+            console.log( $("#datetimepicker1"));
+            $("#datetimepicker1").datetimepicker();
+            $("#datetimepicker2").datetimepicker();
+          })(window.jQuery);
+          requestVehicleForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            (function ($) {
+              let startDate = $("#datetimepicker1").data("DateTimePicker").date();
+              let endDate = $("#datetimepicker2").data("DateTimePicker").date();
+              let extraComments = $("#extraComments").val();
+              let requestConfig = {
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                  extraComments: extraComments,
+                  startDate: startDate,
+                  endDate: endDate,
+                  vehicleId: $('#hiddenPostId').val(),
+                }),
+                url: "/vehicleListings/requestVehicle",
+              };
+              console.log("test")
+              $.ajax(requestConfig).then(function (responseMessage) {
+                $("#main").replaceWith(responseMessage); //CHANGE THIS TO GO TO THE VEHICLE'S PAGE
+              });
+            })(window.jQuery);
+          });
+        }
+      });
+    });
+    })
+  }
+
+
+
+
+
+  if (requestVehicleForm) {
+    console.log("test");
+    $(function () {
+      $("#datetimepicker1").datetimepicker();
+      $("#datetimepicker2").datetimepicker();
+    });
+    requestVehicleForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      $(function () {
+        let startDate = $("#datetimepicker1").data("DateTimePicker").date();
+        let endDate = $("#datetimepicker2").data("DateTimePicker").date();
+        let extraComments = $("#extraComments").val();
+        let requestConfig = {
+          method: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({
+            extraComments: extraComments,
+            startDate: startDate,
+            endDate: endDate
+          }),
+          url: "/vehicleListings/requestVehicle",
+        };
+        $.ajax(requestConfig).then(function (responseMessage) {
+          $("#main").replaceWith(responseMessage); //CHANGE THIS TO GO TO THE VEHICLE'S PAGE
+        });
+      });
+    });
+  }
+
   if (myRegisterForm) {
     myRegisterForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const accumulatedErrors = [];
 
+      //=======================
+      // 18+ validation
+      //=======================
+      const isAdultChecked = document.getElementById("isAdult").checked;
+      if (!isAdultChecked) {
+        accumulatedErrors.push("You must confirm you are 18 or older");
+      }
       //=======================
       // firstName validation
       //=======================
@@ -447,6 +554,7 @@ if (createListingForm) {
     u22:166,
     u23:167,
   }
+
   let head = -1;
   let tail = -1;
   let flip = 0;
@@ -477,25 +585,98 @@ if (createListingForm) {
           head = -1;
           tail = -1;
         }
-
       }
     })
   });
+  
+    createListingForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const accumulatedErrors = [];
 
-  createListingForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const accumulatedErrors = [];
-    
-    // Image validation
-    if (imageInput.files.length === 0) {
-      accumulatedErrors.push("Please select an image");
-    } else {
-      const file = imageInput.files[0];
-      const validTypes = ['image/png', 'image/jpeg'];
-      
-      if (!validTypes.includes(file.type)) {
-        accumulatedErrors.push("Only PNG and JPEG images are allowed");
+      //good type
+      const type = vehicleType.value.trim();
+      let vehicleList = ["scooter", "skateboard", "bicycle", "other"];
+      if (!vehicleList.includes(type)) {
+        accumulatedErrors.push(
+          "Please use the form submission on /createlisting instead of submitting your own."
+        );
       }
+
+      //good tags
+      const tag1 = vehicleTags1.value.trim(),
+        tag2 = vehicleTags2.value.trim(),
+        tag3 = vehicleTags3.value.trim();
+      let validTagList = [
+        "None",
+        "Off Road",
+        "Electric",
+        "Two Wheel",
+        "Four Wheel",
+        "New",
+        "Modded",
+        "Snow Gear",
+        "Beach Gear"
+      ];
+      if (
+        !validTagList.includes(tag1) ||
+        !validTagList.includes(tag2) ||
+        !validTagList.includes(tag3)
+      ) {
+        accumulatedErrors.push(
+          "Please use the form submission on /createlisting instead of submitting your own."
+        );
+      }
+
+      //good protectionIncluded
+      const protInclude = protectionIncluded.value.trim();
+      if (protInclude !== "yes" && protInclude !== "no") {
+        accumulatedErrors.push("protectionIncluded must be yes or no");
+      }
+
+      maxRentalDays = maxRentalDays.value.trim();
+      maxRentalHours = maxRentalHours.value.trim();
+      if (typeof maxRentalHours !== "number") {
+        if (typeof maxRentalHours === "string") {
+          maxRentalHours = Number(maxRentalHours.trim());
+        } else {
+          accumulatedErrors.push(`Max Rental Hours must be a number`);
+        }
+      }
+      if (typeof maxRentalDays !== "number") {
+        if (typeof maxRentalDays === "string") {
+          maxRentalDays = Number(maxRentalDays.trim());
+        } else {
+          accumulatedErrors.push(`Max Rental Days must be a number`);
+        }
+      }
+      if (maxRentalHours > 24 || maxRentalHours < 0)
+        accumulatedErrors.push("Max Rental Hours must be between 0 and 24");
+      if (maxRentalDays > 365 || maxRentalDays < 0)
+        accumulatedErrors.push("Max Rental Days must be between 0 and 365");
+      if (maxRentalHours === 0 && maxRentalDays === 0)
+        accumulatedErrors.push(
+          `Max Rental Hours and Max Rental Days cannot both be 0`
+        );
+
+      // Vehicle condition validation
+      const condition = vehicleCondition.value.trim();
+      if (condition.length === 0) {
+        accumulatedErrors.push("Vehicle condition cannot be empty");
+      }
+      if (isNaN(condition) || condition < 1 || condition > 5) {
+        accumulatedErrors.push("Vehicle condition must be between 1.0 and 5.0");
+      }
+
+      // Image validation
+      if (imageInput.files.length === 0) {
+        accumulatedErrors.push("Please select an image");
+      } else {
+        const file = imageInput.files[0];
+        const validTypes = ["image/png", "image/jpeg"];
+
+        if (!validTypes.includes(file.type)) {
+          accumulatedErrors.push("Only PNG and JPEG images are allowed");
+        }
       
       if (file.size > 5 * 1024 * 1024) {
         accumulatedErrors.push("Image size must be less than 5MB");
@@ -509,15 +690,6 @@ if (createListingForm) {
       }
       if (title.length < 2) {
         accumulatedErrors.push("Post title must be at least 2 characters");
-      }
-
-      // Vehicle condition validation
-      const condition = vehicleCondition.value.trim();
-      if (condition.length === 0) {
-        accumulatedErrors.push("Vehicle condition cannot be empty");
-      }
-      if (isNaN(condition) || condition < 1 || condition > 5) {
-        accumulatedErrors.push("Vehicle condition must be between 1.0 and 5.0");
       }
 
       // Cost validation
@@ -551,6 +723,80 @@ if (createListingForm) {
 
       // If no errors, submit the form
       createListingForm.submit();
+    });
+  }
+
+  if (commentForm) {
+    commentForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const accumulatedErrors = [];
+      // Comment validation
+      const comment = commentInput.value.trim();
+      if (comment.length === 0) {
+        accumulatedErrors.push("Comment cannot be empty");
+      }
+      if (comment.length < 2) {
+        accumulatedErrors.push("Comment must be at least 2 characters");
+      }
+      if (comment.length > 999) {
+        accumulatedErrors.push("Comment must be less than 999 characters");
+      }
+      // Display errors if any
+      const errorModel = document.getElementById("error-model");
+      if (errorModel) {
+        errorModel.innerHTML = "";
+      }
+      if (accumulatedErrors.length > 0) {
+        if (errorModel) {
+          accumulatedErrors.forEach((error) => {
+            const li = document.createElement("li");
+            li.textContent = error;
+            errorModel.appendChild(li);
+          });
+        } else {
+          alert(accumulatedErrors.join("\n"));
+        }
+        return;
+      }
+      // If no errors, submit the form
+      commentForm.submit();
+    });
+  }
+
+  if (ratingForm) {
+    ratingForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const accumulatedErrors = [];
+      rating = ratingInput.value.trim();
+      // Rating validation
+      if (isNaN(rating)) {
+        accumulatedErrors.push("Rating must be a number");
+      }
+      if (rating < 1 || rating > 5) {
+        accumulatedErrors.push("Rating must be between 1 and 5");
+      }
+
+
+      // Display errors if any
+      const errorModel = document.getElementById("error-model");
+      if (errorModel) {
+        errorModel.innerHTML = "";
+      }
+      if (accumulatedErrors.length > 0) {
+        if (errorModel) {
+          accumulatedErrors.forEach((error) => {
+            const li = document.createElement("li");
+            li.textContent = error;
+            errorModel.appendChild(li);
+          });
+        } else {
+          alert(accumulatedErrors.join("\n"));
+        }
+        return;
+      }
+
+      // If no errors, submit the form
+      ratingForm.submit();
     });
   }
 
@@ -594,6 +840,50 @@ if (createListingForm) {
 
       // Disable login form until terms are accepted
       loginBtn.disabled = true;
+    }
+  });
+
+  // Tag filtering
+  document.addEventListener("DOMContentLoaded", () => {
+    const filterToggleBtn = document.getElementById('filter-toggle-btn');
+    const tagsDropdown = document.getElementById('tags-dropdown');
+    const applyTagsBtn = document.getElementById('apply-tags-btn');
+    const clearTagsBtn = document.getElementById('clear-tags-btn');
+
+    if (filterToggleBtn && tagsDropdown) {
+      // Toggle dropdown visibility
+      filterToggleBtn.addEventListener('click', () => {
+        tagsDropdown.classList.toggle('show');
+      });
+
+      // Apply tag filter
+      if (applyTagsBtn) {
+        applyTagsBtn.addEventListener('click', () => {
+          const selectedTag = document.querySelector('input[name="tagFilter"]:checked');
+          if (selectedTag) {
+            window.location.href = `/vehicleListings/filterByTag?tag=${encodeURIComponent(selectedTag.value)}`;
+          }
+        });
+      }
+
+      // Clear tag filter
+      if (clearTagsBtn) {
+        clearTagsBtn.addEventListener('click', () => {
+          window.location.href = '/vehicleListings/vehicleListings';
+        });
+      }
+
+      // Close dropdown when clicking outside
+      window.addEventListener('click', (event) => {
+        if (!event.target.matches('.filter-toggle-btn') && !event.target.closest('.tags-dropdown')) {
+          const dropdowns = document.querySelectorAll('.tags-dropdown');
+          dropdowns.forEach(dropdown => {
+            if (dropdown.classList.contains('show')) {
+              dropdown.classList.remove('show');
+            }
+          });
+        }
+      });
     }
   });
 })();
