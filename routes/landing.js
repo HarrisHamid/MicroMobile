@@ -17,6 +17,7 @@ router.get("/", async (req, res) => {
     }
 
     res.render("landing", {
+      title: "MicroMobile",
       user: req.session.user,
       showTermsModal,
     });

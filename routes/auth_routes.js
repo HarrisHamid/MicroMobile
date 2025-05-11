@@ -11,7 +11,7 @@ router
   .route("/register")
   .get(async (req, res) => {
     try {
-      res.render("register");
+      res.render("register", { title: "Register" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -308,7 +308,7 @@ router
     try {
       // const showTermsModal = req.session.showTerms === true;
       // req.session.showTerms = false;
-      res.render("loginPage");
+      res.render("loginPage", { title: "Login" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -320,7 +320,7 @@ router
 
       // trimminging the inputs
       const trimmedUserId = userId.trim();
-      const trimmedPassword = password; //remove the .trim() because lab10 had us not trim passwords 
+      const trimmedPassword = password; //remove the .trim() because lab10 had us not trim passwords
 
       // Check if all fields are filled
       if (!trimmedUserId || !trimmedPassword) {
@@ -375,7 +375,9 @@ router
 
       // Check if userId and password match
       const userCollection = await users();
-      const tempUser = await userCollection.findOne({userId: { $regex: new RegExp(userId, 'i') }});
+      const tempUser = await userCollection.findOne({
+        userId: { $regex: new RegExp(userId, "i") },
+      });
       if (
         !tempUser ||
         !(await bcrypt.compare(trimmedPassword, tempUser.password))
