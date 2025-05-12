@@ -35,6 +35,7 @@
   let maxRentalDays = document.getElementById("maxRentalDays");
   let hourlyCost = document.getElementById("hourlyCost");
   let dailyCost = document.getElementById("dailyCost");
+  let location = document.getElementById("location");
   let imageInput = document.getElementById("image");
 
   //All vehicle details inputs
@@ -694,6 +695,15 @@ if (createListingForm) {
       }
       if (isNaN(condition) || condition < 1 || condition > 5) {
         accumulatedErrors.push("Vehicle condition must be between 1.0 and 5.0");
+      }
+
+      // location validation
+      const vlocation = location.value.trim();
+      if (vlocation.length === 0) {
+        accumulatedErrors.push("You must provide a pickup/dropoff location.");
+      }
+      if (vlocation.length < 2) {
+        accumulatedErrors.push("Pickup/dropoff location must be at least 2 characters.")
       }
 
       // Image validation

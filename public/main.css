@@ -584,6 +584,7 @@ h1 {
   grid-template-columns: repeat(7, 1fr); 
   grid-auto-flow: column;
   column-gap: 50px; /* Space between checkboxes */
+  padding-bottom: 10px;
 }
 
 .dayDisplay{
@@ -845,3 +846,48 @@ h1 {
   width: 48%;
 }
 
+/* Taken Periods Styling */
+.listing-taken-periods {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.taken-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+}
+
+.taken-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.taken-item:last-child {
+  border-bottom: none;
+}
+
+.taken-period {
+  font-weight: bold;
+  color: #212529;
+}
+
+.taken-requester {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+.no-taken-periods {
+  color: #6c757d;
+  font-style: italic;
+  margin: 1rem 0 0 0;
+}
+
+.location-value {
+  color: #000000;
+  font-weight: bold;
+}
