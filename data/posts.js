@@ -14,6 +14,7 @@ const createPost = async (
     maxRentalDays,
     hourlyCost,
     dailyCost,
+    location,
     image, // expects a path string
     whenAvailable
 ) => {
@@ -28,6 +29,7 @@ const createPost = async (
     posterName = checkPosterName(posterName, 'Poster Name')
     [maxRentalHours, maxRentalDays] = checkMaxRental(maxRentalHours, maxRentalDays)
     [hourlyCost, dailyCost] = checkCost(hourlyCost, dailyCost)
+    location = checkString(location, 'Location')
     image = checkImage(image)
     whenAvailable = checkWhenAvailable(whenAvailable, 'When Available')
 
@@ -44,6 +46,7 @@ const createPost = async (
         maxRentalDays: maxRentalDays,
         hourlyCost: hourlyCost,
         dailyCost: dailyCost,
+        location: location,
         image: image,
         whenAvailable: whenAvailable,
         requests: [], //this is an array of objects containing extraComments, startDate, endDate, and the Id of the requester

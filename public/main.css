@@ -96,8 +96,8 @@ button[type="submit"] {
 }
 
 #createListingForm button[type="submit"] {
-  width: 200px; /* Shrink */
-  margin: 20px auto 0 auto; /* Center */
+  width: 200px;
+  margin: 20px auto 0 auto;
   display: block;
   padding: 10px;
   background-color: #3db0d3;
@@ -107,7 +107,6 @@ button[type="submit"] {
   border-radius: 4px;
   cursor: pointer;
 }
-
 button[type="submit"]:hover {
   background-color: #1a748f;
 }
@@ -881,5 +880,102 @@ h1 {
 .left-comment-form,
 .right-rating-form {
   width: 48%;
+}
+
+/* Taken Periods Styling */
+.listing-taken-periods {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.taken-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+}
+
+.taken-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.taken-item:last-child {
+  border-bottom: none;
+}
+
+.taken-period {
+  font-weight: bold;
+  color: #212529;
+}
+
+.taken-requester {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+.no-taken-periods {
+  color: #6c757d;
+  font-style: italic;
+  margin: 1rem 0 0 0;
+}
+
+.location-value {
+  color: #000000;
+  font-weight: bold;
+}
+
+.timeGridWrapper {
+  display: flex;
+  gap: 10px;
+  margin-top: 1rem;
+  align-items: flex-start;
+}
+
+.hourLabels {
+  display: grid;
+  grid-template-rows: repeat(24, 30px); 
+  gap: 4px; 
+  text-align: right;
+  font-size: 12px;
+  padding-right: 10px;
+  line-height: 30px;
+  margin-top: 42px; 
+}
+
+.whenAvailableGridWrapper {
+  display: flex;
+  margin-top: 48px;
+  flex-direction: column;
+  overflow-x: auto;
+}
+
+.dayLabels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 8px;
+  gap: 10px;
+  padding: 0 5px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.whenAvailableGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(24, 30px);
+  gap: 4px;
+}
+
+.whenAvailableGrid input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: auto;
+  display: block;
 }
 

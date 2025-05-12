@@ -40,6 +40,7 @@
       </div>
 
       <div class="listing-pricing">
+        <h3>Pricing and Location</h3>
         <div class="price-option">
           <span class="price-label">Hourly Rate:</span>
           <span class="price-value">${{post.hourlyCost}}/hr</span>
@@ -48,16 +49,17 @@
           <span class="price-label">Daily Rate:</span>
           <span class="price-value">${{post.dailyCost}}/day</span>
         </div>
+        <div class="price-option">
+          <span class="price-label">Pickup/Dropoff Location:</span>
+          <span class="location-value">{{post.location}}</span>
+        </div>
       </div>
 
       <div class="listing-availability">
         <h3>Availability</h3>
-        <p>Max Rental:
-          {{post.maxRentalHours}}
-          hours or
-          {{post.maxRentalDays}}
-          days</p>
+        <p>Max Rental: {{post.maxRentalHours}} hours or {{post.maxRentalDays}} days</p>
           
+
           <div class="listing-availability">
                 <h3>Availability</h3>
                 <p>Max Rental: {{post.maxRentalHours}} hours or {{post.maxRentalDays}} days</p>
@@ -138,6 +140,26 @@
       <p class="no-comments">This post has no comments yet</p>
     {{/if}}
 
+  </div>
+
+    <div class="listing-taken-periods">
+    <h3>Booked Periods</h3>
+    {{#if post.taken.length}}
+    <ol class="taken-list">
+      {{#each post.taken}}
+      <li class="taken-item">
+        <span class="taken-period">
+          {{this.startDate}} to {{this.endDate}}
+        </span>
+        {{#if ../isOwner}}
+        <span class="taken-requester">(Booked by user: {{this.requestingUser}})</span>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ol>
+    {{else}}
+    <p class="no-taken-periods">No bookings yet</p>
+    {{/if}}
   </div>
 
   {{! Div for Add comments and rating user }}

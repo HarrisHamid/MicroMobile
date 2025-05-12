@@ -96,208 +96,1327 @@ registration handelbars
         value="{{data.vehicleCondition}}"
       />
 
+      <label for="maxRentalHours">Max Rental Hours</label>
+      <br />
+      <input
+        type="number"
+        name="maxRentalHours"
+        id="maxRentalHours"
+        value="{{data.maxRentalHours}}"
+      />
+      <br />
+      <label for="maxRentalDays">Max Rental Days</label>
+      <br />
+      <input
+        type="number"
+        name="maxRentalDays"
+        id="maxRentalDays"
+        value="{{data.maxRentalDays}}"
+      />
+      <br />
+      <label for="hourlyCost">Cost Per Hour</label>
+      <br />
+      <input
+        type="number"
+        step="0.01"
+        name="hourlyCost"
+        id="hourlyCost"
+        value="{{data.hourlyCost}}"
+      />
+      <br />
+      <label for="dailyCost">Cost Per Day</label>
+      <br />
+      <input
+        type="number"
+        step="0.01"
+        name="dailyCost"
+        id="dailyCost"
+        value="{{data.dailyCost}}"
+      />
+      <br />
+      <label for="image">Image</label>
+      <br />
+      <input
+        type="file"
+        id="image"
+        name="image"
+        accept="image/png, image/jpeg"
+        value="{{data.image}}"
+      />
+
     <label for="maxRentalHours">Max Rental Hours</label>
-    <br>
     <input type="number" name="maxRentalHours" id="maxRentalHours" value="{{data.maxRentalHours}}">
-    <br>
     <label for="maxRentalDays">Max Rental Days</label>
-    <br>
     <input type="number" name="maxRentalDays" id="maxRentalDays" value="{{data.maxRentalDays}}">
-    <br>
     <label for="hourlyCost">Cost Per Hour</label>
-    <br>
     <input type="number" step="0.01" name="hourlyCost" id="hourlyCost" value="{{data.hourlyCost}}">
-    <br>
+    
     <label for="dailyCost">Cost Per Day</label>
-    <br>
     <input type="number" step="0.01" name="dailyCost" id="dailyCost" value="{{data.dailyCost}}">
-    <br>
+
+    <label for="location">Pickup/Dropoff Location</label>
+    <input type="text" name="location" id="location" value="{{data.location}}">
+    
     <label for="image">Image</label>
-    <br>
     <input type="file" id="image" name='image' accept="image/png, image/jpeg" value="{{data.image}}">
 
-    {{!-- add usually availible bit here --}}
+      {{! add usually availible bit here }}
 
-    {{!--<label for="whenAvailable1">When Available</label>--}}
-    <div class="whenAvailableGrid">
-        <input type="checkbox" class = "whenAvailable"id="m0" name = "whenAvailable[]" value = "m0">
-        <input type="checkbox" class = "whenAvailable"id="m1" name = "whenAvailable[]" value = "m1">
-        <input type="checkbox" class = "whenAvailable"id="m2" name = "whenAvailable[]" value = "m2">
-        <input type="checkbox" class = "whenAvailable"id="m3" name = "whenAvailable[]" value = "m3">
-        <input type="checkbox" class = "whenAvailable"id="m4" name = "whenAvailable[]" value = "m4">
-        <input type="checkbox" class = "whenAvailable"id="m5" name = "whenAvailable[]" value = "m5">
-        <input type="checkbox" class = "whenAvailable"id="m6" name = "whenAvailable[]" value = "m6">
-        <input type="checkbox" class = "whenAvailable"id="m7" name = "whenAvailable[]" value = "m7">
-        <input type="checkbox" class = "whenAvailable"id="m8" name = "whenAvailable[]" value = "m8">
-        <input type="checkbox" class = "whenAvailable"id="m9" name = "whenAvailable[]" value = "m9">
-        <input type="checkbox" class = "whenAvailable"id="m10" name = "whenAvailable[]"value = "m10">
-        <input type="checkbox" class = "whenAvailable"id="m11" name = "whenAvailable[]"value = "m11">
-        <input type="checkbox" class = "whenAvailable"id="m12" name = "whenAvailable[]"value = "m12">
-        <input type="checkbox" class = "whenAvailable"id="m13" name = "whenAvailable[]"value = "m13">
-        <input type="checkbox" class = "whenAvailable"id="m14" name = "whenAvailable[]"value = "m14">
-        <input type="checkbox" class = "whenAvailable"id="m15" name = "whenAvailable[]"value = "m15">
-        <input type="checkbox" class = "whenAvailable"id="m16" name = "whenAvailable[]"value = "m16">
-        <input type="checkbox" class = "whenAvailable"id="m17" name = "whenAvailable[]"value = "m17">
-        <input type="checkbox" class = "whenAvailable"id="m18" name = "whenAvailable[]"value = "m18">
-        <input type="checkbox" class = "whenAvailable"id="m19" name = "whenAvailable[]"value = "m19">
-        <input type="checkbox" class = "whenAvailable"id="m20" name = "whenAvailable[]"value = "m20">
-        <input type="checkbox" class = "whenAvailable"id="m21" name = "whenAvailable[]"value = "m21">
-        <input type="checkbox" class = "whenAvailable"id="m22" name = "whenAvailable[]"value = "m22">
-        <input type="checkbox" class = "whenAvailable"id="m23" name = "whenAvailable[]"value = "m23">
+      {{! <label for="whenAvailable1">When Available</label> }}
 
-        <input type="checkbox" class = "whenAvailable"id="t0" name = "whenAvailable[]" value = "t0">
-        <input type="checkbox" class = "whenAvailable"id="t1" name = "whenAvailable[]" value = "t1">
-        <input type="checkbox" class = "whenAvailable"id="t2" name = "whenAvailable[]" value = "t2">
-        <input type="checkbox" class = "whenAvailable"id="t3" name = "whenAvailable[]" value = "t3">
-        <input type="checkbox" class = "whenAvailable"id="t4" name = "whenAvailable[]" value = "t4">
-        <input type="checkbox" class = "whenAvailable"id="t5" name = "whenAvailable[]" value = "t5">
-        <input type="checkbox" class = "whenAvailable"id="t6" name = "whenAvailable[]" value = "t6">
-        <input type="checkbox" class = "whenAvailable"id="t7" name = "whenAvailable[]" value = "t7">
-        <input type="checkbox" class = "whenAvailable"id="t8" name = "whenAvailable[]" value = "t8">
-        <input type="checkbox" class = "whenAvailable"id="t9" name = "whenAvailable[]" value = "t9">
-        <input type="checkbox" class = "whenAvailable"id="t10" name = "whenAvailable[]"value = "t10">
-        <input type="checkbox" class = "whenAvailable"id="t11" name = "whenAvailable[]"value = "t11">
-        <input type="checkbox" class = "whenAvailable"id="t12" name = "whenAvailable[]"value = "t12">
-        <input type="checkbox" class = "whenAvailable"id="t13" name = "whenAvailable[]"value = "t13">
-        <input type="checkbox" class = "whenAvailable"id="t14" name = "whenAvailable[]"value = "t14">
-        <input type="checkbox" class = "whenAvailable"id="t15" name = "whenAvailable[]"value = "t15">
-        <input type="checkbox" class = "whenAvailable"id="t16" name = "whenAvailable[]"value = "t16">
-        <input type="checkbox" class = "whenAvailable"id="t17" name = "whenAvailable[]"value = "t17">
-        <input type="checkbox" class = "whenAvailable"id="t18" name = "whenAvailable[]"value = "t18">
-        <input type="checkbox" class = "whenAvailable"id="t19" name = "whenAvailable[]"value = "t19">
-        <input type="checkbox" class = "whenAvailable"id="t20" name = "whenAvailable[]"value = "t20">
-        <input type="checkbox" class = "whenAvailable"id="t21" name = "whenAvailable[]"value = "t21">
-        <input type="checkbox" class = "whenAvailable"id="t22" name = "whenAvailable[]"value = "t22">
-        <input type="checkbox" class = "whenAvailable"id="t23" name = "whenAvailable[]"value = "t23">
+      <div class="timeGridWrapper">
+        <!-- Hour labels (0-23) -->
+        <div class="hourLabels">
+          <div> </div>
+          <div>1:00</div>
+          <div>2:00</div>
+          <div>3:00</div>
+          <div>4:00</div>
+          <div>5:00</div>
+          <div>6:00</div>
+          <div>7:00</div>
+          <div>8:00</div>
+          <div>9:00</div>
+          <div>10:00</div>
+          <div>11:00</div>
+          <div>12:00</div>
+          <div>13:00</div>
+          <div>14:00</div>
+          <div>15:00</div>
+          <div>16:00</div>
+          <div>17:00</div>
+          <div>18:00</div>
+          <div>19:00</div>
+          <div>20:00</div>
+          <div>21:00</div>
+          <div>22:00</div>
+          <div>23:00</div>
+          <div>24:00</div>
 
-        <input type="checkbox" class = "whenAvailable"id="w0" name = "whenAvailable[]" value = "w0">
-        <input type="checkbox" class = "whenAvailable"id="w1" name = "whenAvailable[]" value = "w1">
-        <input type="checkbox" class = "whenAvailable"id="w2" name = "whenAvailable[]" value = "w2">
-        <input type="checkbox" class = "whenAvailable"id="w3" name = "whenAvailable[]" value = "w3">
-        <input type="checkbox" class = "whenAvailable"id="w4" name = "whenAvailable[]" value = "w4">
-        <input type="checkbox" class = "whenAvailable"id="w5" name = "whenAvailable[]" value = "w5">
-        <input type="checkbox" class = "whenAvailable"id="w6" name = "whenAvailable[]" value = "w6">
-        <input type="checkbox" class = "whenAvailable"id="w7" name = "whenAvailable[]" value = "w7">
-        <input type="checkbox" class = "whenAvailable"id="w8" name = "whenAvailable[]" value = "w8">
-        <input type="checkbox" class = "whenAvailable"id="w9" name = "whenAvailable[]" value = "w9">
-        <input type="checkbox" class = "whenAvailable"id="w10" name = "whenAvailable[]"value = "w10">
-        <input type="checkbox" class = "whenAvailable"id="w11" name = "whenAvailable[]"value = "w11">
-        <input type="checkbox" class = "whenAvailable"id="w12" name = "whenAvailable[]"value = "w12">
-        <input type="checkbox" class = "whenAvailable"id="w13" name = "whenAvailable[]"value = "w13">
-        <input type="checkbox" class = "whenAvailable"id="w14" name = "whenAvailable[]"value = "w14">
-        <input type="checkbox" class = "whenAvailable"id="w15" name = "whenAvailable[]"value = "w15">
-        <input type="checkbox" class = "whenAvailable"id="w16" name = "whenAvailable[]"value = "w16">
-        <input type="checkbox" class = "whenAvailable"id="w17" name = "whenAvailable[]"value = "w17">
-        <input type="checkbox" class = "whenAvailable"id="w18" name = "whenAvailable[]"value = "w18">
-        <input type="checkbox" class = "whenAvailable"id="w19" name = "whenAvailable[]"value = "w19">
-        <input type="checkbox" class = "whenAvailable"id="w20" name = "whenAvailable[]"value = "w20">
-        <input type="checkbox" class = "whenAvailable"id="w21" name = "whenAvailable[]"value = "w21">
-        <input type="checkbox" class = "whenAvailable"id="w22" name = "whenAvailable[]"value = "w22">
-        <input type="checkbox" class = "whenAvailable"id="w23" name = "whenAvailable[]"value = "w23">
+        </div>
 
-        <input type="checkbox" class = "whenAvailable"id="h0" name = "whenAvailable[]" value = "h0">
-        <input type="checkbox" class = "whenAvailable"id="h1" name = "whenAvailable[]" value = "h1">
-        <input type="checkbox" class = "whenAvailable"id="h2" name = "whenAvailable[]" value = "h2">
-        <input type="checkbox" class = "whenAvailable"id="h3" name = "whenAvailable[]" value = "h3">
-        <input type="checkbox" class = "whenAvailable"id="h4" name = "whenAvailable[]" value = "h4">
-        <input type="checkbox" class = "whenAvailable"id="h5" name = "whenAvailable[]" value = "h5">
-        <input type="checkbox" class = "whenAvailable"id="h6" name = "whenAvailable[]" value = "h6">
-        <input type="checkbox" class = "whenAvailable"id="h7" name = "whenAvailable[]" value = "h7">
-        <input type="checkbox" class = "whenAvailable"id="h8" name = "whenAvailable[]" value = "h8">
-        <input type="checkbox" class = "whenAvailable"id="h9" name = "whenAvailable[]" value = "h9">
-        <input type="checkbox" class = "whenAvailable"id="h10" name = "whenAvailable[]"value = "h10">
-        <input type="checkbox" class = "whenAvailable"id="h11" name = "whenAvailable[]"value = "h11">
-        <input type="checkbox" class = "whenAvailable"id="h12" name = "whenAvailable[]"value = "h12">
-        <input type="checkbox" class = "whenAvailable"id="h13" name = "whenAvailable[]"value = "h13">
-        <input type="checkbox" class = "whenAvailable"id="h14" name = "whenAvailable[]"value = "h14">
-        <input type="checkbox" class = "whenAvailable"id="h15" name = "whenAvailable[]"value = "h15">
-        <input type="checkbox" class = "whenAvailable"id="h16" name = "whenAvailable[]"value = "h16">
-        <input type="checkbox" class = "whenAvailable"id="h17" name = "whenAvailable[]"value = "h17">
-        <input type="checkbox" class = "whenAvailable"id="h18" name = "whenAvailable[]"value = "h18">
-        <input type="checkbox" class = "whenAvailable"id="h19" name = "whenAvailable[]"value = "h19">
-        <input type="checkbox" class = "whenAvailable"id="h20" name = "whenAvailable[]"value = "h20">
-        <input type="checkbox" class = "whenAvailable"id="h21" name = "whenAvailable[]"value = "h21">
-        <input type="checkbox" class = "whenAvailable"id="h22" name = "whenAvailable[]"value = "h22">
-        <input type="checkbox" class = "whenAvailable"id="h23" name = "whenAvailable[]"value = "h23">
+        <!-- Grid containing days and checkboxes -->
+        <div class="whenAvailableGridWrapper">
+          <div class="dayLabels">
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+            <div>Sun</div>
+          </div>
+          <div class="whenAvailableGrid">
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m0"
+              name="whenAvailable[]"
+              value="m0"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m1"
+              name="whenAvailable[]"
+              value="m1"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m2"
+              name="whenAvailable[]"
+              value="m2"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m3"
+              name="whenAvailable[]"
+              value="m3"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m4"
+              name="whenAvailable[]"
+              value="m4"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m5"
+              name="whenAvailable[]"
+              value="m5"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m6"
+              name="whenAvailable[]"
+              value="m6"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m7"
+              name="whenAvailable[]"
+              value="m7"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m8"
+              name="whenAvailable[]"
+              value="m8"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m9"
+              name="whenAvailable[]"
+              value="m9"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m10"
+              name="whenAvailable[]"
+              value="m10"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m11"
+              name="whenAvailable[]"
+              value="m11"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m12"
+              name="whenAvailable[]"
+              value="m12"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m13"
+              name="whenAvailable[]"
+              value="m13"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m14"
+              name="whenAvailable[]"
+              value="m14"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m15"
+              name="whenAvailable[]"
+              value="m15"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m16"
+              name="whenAvailable[]"
+              value="m16"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m17"
+              name="whenAvailable[]"
+              value="m17"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m18"
+              name="whenAvailable[]"
+              value="m18"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m19"
+              name="whenAvailable[]"
+              value="m19"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m20"
+              name="whenAvailable[]"
+              value="m20"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m21"
+              name="whenAvailable[]"
+              value="m21"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m22"
+              name="whenAvailable[]"
+              value="m22"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="m23"
+              name="whenAvailable[]"
+              value="m23"
+            />
 
-        <input type="checkbox" class = "whenAvailable"id="f0" name = "whenAvailable[]" value = "f0">
-        <input type="checkbox" class = "whenAvailable"id="f1" name = "whenAvailable[]" value = "f1">
-        <input type="checkbox" class = "whenAvailable"id="f2" name = "whenAvailable[]" value = "f2">
-        <input type="checkbox" class = "whenAvailable"id="f3" name = "whenAvailable[]" value = "f3">
-        <input type="checkbox" class = "whenAvailable"id="f4" name = "whenAvailable[]" value = "f4">
-        <input type="checkbox" class = "whenAvailable"id="f5" name = "whenAvailable[]" value = "f5">
-        <input type="checkbox" class = "whenAvailable"id="f6" name = "whenAvailable[]" value = "f6">
-        <input type="checkbox" class = "whenAvailable"id="f7" name = "whenAvailable[]" value = "f7">
-        <input type="checkbox" class = "whenAvailable"id="f8" name = "whenAvailable[]" value = "f8">
-        <input type="checkbox" class = "whenAvailable"id="f9" name = "whenAvailable[]" value = "f9">
-        <input type="checkbox" class = "whenAvailable"id="f10" name = "whenAvailable[]"value = "f10">
-        <input type="checkbox" class = "whenAvailable"id="f11" name = "whenAvailable[]"value = "f11">
-        <input type="checkbox" class = "whenAvailable"id="f12" name = "whenAvailable[]"value = "f12">
-        <input type="checkbox" class = "whenAvailable"id="f13" name = "whenAvailable[]"value = "f13">
-        <input type="checkbox" class = "whenAvailable"id="f14" name = "whenAvailable[]"value = "f14">
-        <input type="checkbox" class = "whenAvailable"id="f15" name = "whenAvailable[]"value = "f15">
-        <input type="checkbox" class = "whenAvailable"id="f16" name = "whenAvailable[]"value = "f16">
-        <input type="checkbox" class = "whenAvailable"id="f17" name = "whenAvailable[]"value = "f17">
-        <input type="checkbox" class = "whenAvailable"id="f18" name = "whenAvailable[]"value = "f18">
-        <input type="checkbox" class = "whenAvailable"id="f19" name = "whenAvailable[]"value = "f19">
-        <input type="checkbox" class = "whenAvailable"id="f20" name = "whenAvailable[]"value = "f20">
-        <input type="checkbox" class = "whenAvailable"id="f21" name = "whenAvailable[]"value = "f21">
-        <input type="checkbox" class = "whenAvailable"id="f22" name = "whenAvailable[]"value = "f22">
-        <input type="checkbox" class = "whenAvailable"id="f23" name = "whenAvailable[]"value = "f23">
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t0"
+              name="whenAvailable[]"
+              value="t0"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t1"
+              name="whenAvailable[]"
+              value="t1"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t2"
+              name="whenAvailable[]"
+              value="t2"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t3"
+              name="whenAvailable[]"
+              value="t3"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t4"
+              name="whenAvailable[]"
+              value="t4"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t5"
+              name="whenAvailable[]"
+              value="t5"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t6"
+              name="whenAvailable[]"
+              value="t6"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t7"
+              name="whenAvailable[]"
+              value="t7"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t8"
+              name="whenAvailable[]"
+              value="t8"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t9"
+              name="whenAvailable[]"
+              value="t9"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t10"
+              name="whenAvailable[]"
+              value="t10"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t11"
+              name="whenAvailable[]"
+              value="t11"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t12"
+              name="whenAvailable[]"
+              value="t12"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t13"
+              name="whenAvailable[]"
+              value="t13"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t14"
+              name="whenAvailable[]"
+              value="t14"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t15"
+              name="whenAvailable[]"
+              value="t15"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t16"
+              name="whenAvailable[]"
+              value="t16"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t17"
+              name="whenAvailable[]"
+              value="t17"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t18"
+              name="whenAvailable[]"
+              value="t18"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t19"
+              name="whenAvailable[]"
+              value="t19"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t20"
+              name="whenAvailable[]"
+              value="t20"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t21"
+              name="whenAvailable[]"
+              value="t21"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t22"
+              name="whenAvailable[]"
+              value="t22"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="t23"
+              name="whenAvailable[]"
+              value="t23"
+            />
 
-        <input type="checkbox" class = "whenAvailable"id="s0" name = "whenAvailable[]" value = "s0">
-        <input type="checkbox" class = "whenAvailable"id="s1" name = "whenAvailable[]" value = "s1">
-        <input type="checkbox" class = "whenAvailable"id="s2" name = "whenAvailable[]" value = "s2">
-        <input type="checkbox" class = "whenAvailable"id="s3" name = "whenAvailable[]" value = "s3">
-        <input type="checkbox" class = "whenAvailable"id="s4" name = "whenAvailable[]" value = "s4">
-        <input type="checkbox" class = "whenAvailable"id="s5" name = "whenAvailable[]" value = "s5">
-        <input type="checkbox" class = "whenAvailable"id="s6" name = "whenAvailable[]" value = "s6">
-        <input type="checkbox" class = "whenAvailable"id="s7" name = "whenAvailable[]" value = "s7">
-        <input type="checkbox" class = "whenAvailable"id="s8" name = "whenAvailable[]" value = "s8">
-        <input type="checkbox" class = "whenAvailable"id="s9" name = "whenAvailable[]" value = "s9">
-        <input type="checkbox" class = "whenAvailable"id="s10" name = "whenAvailable[]"value = "s10">
-        <input type="checkbox" class = "whenAvailable"id="s11" name = "whenAvailable[]"value = "s11">
-        <input type="checkbox" class = "whenAvailable"id="s12" name = "whenAvailable[]"value = "s12">
-        <input type="checkbox" class = "whenAvailable"id="s13" name = "whenAvailable[]"value = "s13">
-        <input type="checkbox" class = "whenAvailable"id="s14" name = "whenAvailable[]"value = "s14">
-        <input type="checkbox" class = "whenAvailable"id="s15" name = "whenAvailable[]"value = "s15">
-        <input type="checkbox" class = "whenAvailable"id="s16" name = "whenAvailable[]"value = "s16">
-        <input type="checkbox" class = "whenAvailable"id="s17" name = "whenAvailable[]"value = "s17">
-        <input type="checkbox" class = "whenAvailable"id="s18" name = "whenAvailable[]"value = "s18">
-        <input type="checkbox" class = "whenAvailable"id="s19" name = "whenAvailable[]"value = "s19">
-        <input type="checkbox" class = "whenAvailable"id="s20" name = "whenAvailable[]"value = "s20">
-        <input type="checkbox" class = "whenAvailable"id="s21" name = "whenAvailable[]"value = "s21">
-        <input type="checkbox" class = "whenAvailable"id="s22" name = "whenAvailable[]"value = "s22">
-        <input type="checkbox" class = "whenAvailable"id="s23" name = "whenAvailable[]"value = "s23">
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w0"
+              name="whenAvailable[]"
+              value="w0"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w1"
+              name="whenAvailable[]"
+              value="w1"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w2"
+              name="whenAvailable[]"
+              value="w2"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w3"
+              name="whenAvailable[]"
+              value="w3"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w4"
+              name="whenAvailable[]"
+              value="w4"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w5"
+              name="whenAvailable[]"
+              value="w5"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w6"
+              name="whenAvailable[]"
+              value="w6"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w7"
+              name="whenAvailable[]"
+              value="w7"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w8"
+              name="whenAvailable[]"
+              value="w8"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w9"
+              name="whenAvailable[]"
+              value="w9"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w10"
+              name="whenAvailable[]"
+              value="w10"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w11"
+              name="whenAvailable[]"
+              value="w11"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w12"
+              name="whenAvailable[]"
+              value="w12"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w13"
+              name="whenAvailable[]"
+              value="w13"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w14"
+              name="whenAvailable[]"
+              value="w14"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w15"
+              name="whenAvailable[]"
+              value="w15"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w16"
+              name="whenAvailable[]"
+              value="w16"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w17"
+              name="whenAvailable[]"
+              value="w17"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w18"
+              name="whenAvailable[]"
+              value="w18"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w19"
+              name="whenAvailable[]"
+              value="w19"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w20"
+              name="whenAvailable[]"
+              value="w20"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w21"
+              name="whenAvailable[]"
+              value="w21"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w22"
+              name="whenAvailable[]"
+              value="w22"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="w23"
+              name="whenAvailable[]"
+              value="w23"
+            />
 
-        <input type="checkbox" class = "whenAvailable"id="u0" name = "whenAvailable[]" value = "u0">
-        <input type="checkbox" class = "whenAvailable"id="u1" name = "whenAvailable[]" value = "u1">
-        <input type="checkbox" class = "whenAvailable"id="u2" name = "whenAvailable[]" value = "u2">
-        <input type="checkbox" class = "whenAvailable"id="u3" name = "whenAvailable[]" value = "u3">
-        <input type="checkbox" class = "whenAvailable"id="u4" name = "whenAvailable[]" value = "u4">
-        <input type="checkbox" class = "whenAvailable"id="u5" name = "whenAvailable[]" value = "u5">
-        <input type="checkbox" class = "whenAvailable"id="u6" name = "whenAvailable[]" value = "u6">
-        <input type="checkbox" class = "whenAvailable"id="u7" name = "whenAvailable[]" value = "u7">
-        <input type="checkbox" class = "whenAvailable"id="u8" name = "whenAvailable[]" value = "u8">
-        <input type="checkbox" class = "whenAvailable"id="u9" name = "whenAvailable[]" value = "u9">
-        <input type="checkbox" class = "whenAvailable"id="u10" name = "whenAvailable[]"value = "u10">
-        <input type="checkbox" class = "whenAvailable"id="u11" name = "whenAvailable[]"value = "u11">
-        <input type="checkbox" class = "whenAvailable"id="u12" name = "whenAvailable[]"value = "u12">
-        <input type="checkbox" class = "whenAvailable"id="u13" name = "whenAvailable[]"value = "u13">
-        <input type="checkbox" class = "whenAvailable"id="u14" name = "whenAvailable[]"value = "u14">
-        <input type="checkbox" class = "whenAvailable"id="u15" name = "whenAvailable[]"value = "u15">
-        <input type="checkbox" class = "whenAvailable"id="u16" name = "whenAvailable[]"value = "u16">
-        <input type="checkbox" class = "whenAvailable"id="u17" name = "whenAvailable[]"value = "u17">
-        <input type="checkbox" class = "whenAvailable"id="u18" name = "whenAvailable[]"value = "u18">
-        <input type="checkbox" class = "whenAvailable"id="u19" name = "whenAvailable[]"value = "u19">
-        <input type="checkbox" class = "whenAvailable"id="u20" name = "whenAvailable[]"value = "u20">
-        <input type="checkbox" class = "whenAvailable"id="u21" name = "whenAvailable[]"value = "u21">
-        <input type="checkbox" class = "whenAvailable"id="u22" name = "whenAvailable[]"value = "u22">
-        <input type="checkbox" class = "whenAvailable"id="u23" name = "whenAvailable[]"value = "u23">
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h0"
+              name="whenAvailable[]"
+              value="h0"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h1"
+              name="whenAvailable[]"
+              value="h1"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h2"
+              name="whenAvailable[]"
+              value="h2"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h3"
+              name="whenAvailable[]"
+              value="h3"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h4"
+              name="whenAvailable[]"
+              value="h4"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h5"
+              name="whenAvailable[]"
+              value="h5"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h6"
+              name="whenAvailable[]"
+              value="h6"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h7"
+              name="whenAvailable[]"
+              value="h7"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h8"
+              name="whenAvailable[]"
+              value="h8"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h9"
+              name="whenAvailable[]"
+              value="h9"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h10"
+              name="whenAvailable[]"
+              value="h10"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h11"
+              name="whenAvailable[]"
+              value="h11"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h12"
+              name="whenAvailable[]"
+              value="h12"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h13"
+              name="whenAvailable[]"
+              value="h13"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h14"
+              name="whenAvailable[]"
+              value="h14"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h15"
+              name="whenAvailable[]"
+              value="h15"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h16"
+              name="whenAvailable[]"
+              value="h16"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h17"
+              name="whenAvailable[]"
+              value="h17"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h18"
+              name="whenAvailable[]"
+              value="h18"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h19"
+              name="whenAvailable[]"
+              value="h19"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h20"
+              name="whenAvailable[]"
+              value="h20"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h21"
+              name="whenAvailable[]"
+              value="h21"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h22"
+              name="whenAvailable[]"
+              value="h22"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="h23"
+              name="whenAvailable[]"
+              value="h23"
+            />
 
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f0"
+              name="whenAvailable[]"
+              value="f0"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f1"
+              name="whenAvailable[]"
+              value="f1"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f2"
+              name="whenAvailable[]"
+              value="f2"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f3"
+              name="whenAvailable[]"
+              value="f3"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f4"
+              name="whenAvailable[]"
+              value="f4"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f5"
+              name="whenAvailable[]"
+              value="f5"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f6"
+              name="whenAvailable[]"
+              value="f6"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f7"
+              name="whenAvailable[]"
+              value="f7"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f8"
+              name="whenAvailable[]"
+              value="f8"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f9"
+              name="whenAvailable[]"
+              value="f9"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f10"
+              name="whenAvailable[]"
+              value="f10"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f11"
+              name="whenAvailable[]"
+              value="f11"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f12"
+              name="whenAvailable[]"
+              value="f12"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f13"
+              name="whenAvailable[]"
+              value="f13"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f14"
+              name="whenAvailable[]"
+              value="f14"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f15"
+              name="whenAvailable[]"
+              value="f15"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f16"
+              name="whenAvailable[]"
+              value="f16"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f17"
+              name="whenAvailable[]"
+              value="f17"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f18"
+              name="whenAvailable[]"
+              value="f18"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f19"
+              name="whenAvailable[]"
+              value="f19"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f20"
+              name="whenAvailable[]"
+              value="f20"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f21"
+              name="whenAvailable[]"
+              value="f21"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f22"
+              name="whenAvailable[]"
+              value="f22"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="f23"
+              name="whenAvailable[]"
+              value="f23"
+            />
+
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s0"
+              name="whenAvailable[]"
+              value="s0"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s1"
+              name="whenAvailable[]"
+              value="s1"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s2"
+              name="whenAvailable[]"
+              value="s2"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s3"
+              name="whenAvailable[]"
+              value="s3"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s4"
+              name="whenAvailable[]"
+              value="s4"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s5"
+              name="whenAvailable[]"
+              value="s5"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s6"
+              name="whenAvailable[]"
+              value="s6"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s7"
+              name="whenAvailable[]"
+              value="s7"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s8"
+              name="whenAvailable[]"
+              value="s8"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s9"
+              name="whenAvailable[]"
+              value="s9"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s10"
+              name="whenAvailable[]"
+              value="s10"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s11"
+              name="whenAvailable[]"
+              value="s11"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s12"
+              name="whenAvailable[]"
+              value="s12"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s13"
+              name="whenAvailable[]"
+              value="s13"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s14"
+              name="whenAvailable[]"
+              value="s14"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s15"
+              name="whenAvailable[]"
+              value="s15"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s16"
+              name="whenAvailable[]"
+              value="s16"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s17"
+              name="whenAvailable[]"
+              value="s17"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s18"
+              name="whenAvailable[]"
+              value="s18"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s19"
+              name="whenAvailable[]"
+              value="s19"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s20"
+              name="whenAvailable[]"
+              value="s20"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s21"
+              name="whenAvailable[]"
+              value="s21"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s22"
+              name="whenAvailable[]"
+              value="s22"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="s23"
+              name="whenAvailable[]"
+              value="s23"
+            />
+
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u0"
+              name="whenAvailable[]"
+              value="u0"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u1"
+              name="whenAvailable[]"
+              value="u1"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u2"
+              name="whenAvailable[]"
+              value="u2"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u3"
+              name="whenAvailable[]"
+              value="u3"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u4"
+              name="whenAvailable[]"
+              value="u4"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u5"
+              name="whenAvailable[]"
+              value="u5"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u6"
+              name="whenAvailable[]"
+              value="u6"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u7"
+              name="whenAvailable[]"
+              value="u7"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u8"
+              name="whenAvailable[]"
+              value="u8"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u9"
+              name="whenAvailable[]"
+              value="u9"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u10"
+              name="whenAvailable[]"
+              value="u10"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u11"
+              name="whenAvailable[]"
+              value="u11"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u12"
+              name="whenAvailable[]"
+              value="u12"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u13"
+              name="whenAvailable[]"
+              value="u13"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u14"
+              name="whenAvailable[]"
+              value="u14"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u15"
+              name="whenAvailable[]"
+              value="u15"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u16"
+              name="whenAvailable[]"
+              value="u16"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u17"
+              name="whenAvailable[]"
+              value="u17"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u18"
+              name="whenAvailable[]"
+              value="u18"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u19"
+              name="whenAvailable[]"
+              value="u19"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u20"
+              name="whenAvailable[]"
+              value="u20"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u21"
+              name="whenAvailable[]"
+              value="u21"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u22"
+              name="whenAvailable[]"
+              value="u22"
+            />
+            <input
+              type="checkbox"
+              class="whenAvailable"
+              id="u23"
+              name="whenAvailable[]"
+              value="u23"
+            />
+
+          </div>
+        </div>
+      </div>
+
+      <label for="description">Description</label>
+      <textarea
+        name="description"
+        id="description"
+        rows="4"
+        cols="50"
+      >{{data.description}}</textarea>
+
+      <label for="location">Location</label>
+      <input
+        type="text"
+        name="location"
+        id="location"
+        value="{{data.location}}"
+      />
     </div>
+  </div>
+  <div class="form-submit-wrapper">
+    <button
+      type="submit"
+      name="submitButton"
+      id="submitButton"
+    >Register</button>
+  </div>
 
-
-
-  <button type="submit" name="submitButton" id="submitButton">Register</button>
 </form>
