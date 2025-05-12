@@ -161,6 +161,8 @@
     <p class="no-taken-periods">No bookings yet</p>
     {{/if}}
   </div>
+</div>
+
 
   {{! Div for Add comments and rating user }}
   <div class="comment-rating-container">
@@ -183,6 +185,7 @@
         </form>
       </div>
       <div class="right-rating-form">
+        {{#if allowRating}}
         <form
           method="POST"
           action="/vehicleListings/listingDetails/{{post._id}}/rate"
@@ -202,11 +205,10 @@
             <button type="submit">Submit</button>
           </div>
         </form>
+        {{/if}}
       </div>
     {{/if}}
   </div>
-
-</div>
 
 {{! It's fine if the user sees this. It's just hidden because there's no reason for them to see it }}
 <p id="hiddenPostId" hidden>{{postId}}</p>
