@@ -578,15 +578,52 @@ h1 {
   color: blue;
 }
 
+.vertTimeDisplay {
+  width: 3px;
+  height: 120px;
+  background-color: black;
+}
+
+.vertFullTimeText{
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+}
+
+.vertTimeText0 {
+  margin-left: 5px;
+  margin-top: -10 px;
+  font-size: 9px;
+}
+
+.vertTimeText1 {
+  margin-left: 5px;
+  margin-top: 12px;
+  font-size: 9px;
+}
+
+.vertTimeText2 {
+  margin-left: 5px;
+  margin-top: 14px;
+  font-size: 9px;
+}
+
+.vertTimeText3 {
+  margin-left: 5px;
+  margin-top: 13px;
+  font-size: 9px;
+}
+
 .whenAvailable{
   display: grid;
   grid-template-columns: repeat(7, 1fr); 
   grid-auto-flow: column;
-  column-gap: 50px; /* Space between checkboxes */
-  padding-bottom: 10px;
+  column-gap: 30px; /* Space between checkboxes */
 }
 
 .dayDisplay{
+  padding-left: 80px;
+  padding-right: 80px;
   display:flex;
   justify-content: space-between;
   text-align: center;
