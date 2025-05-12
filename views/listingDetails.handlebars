@@ -57,8 +57,22 @@
           hours or
           {{post.maxRentalDays}}
           days</p>
-        <!-- Availability calendar/schedule would go here -->
-      </div>
+          
+          <div class="listing-availability">
+                <h3>Availability</h3>
+                <p>Max Rental: {{post.maxRentalHours}} hours or {{post.maxRentalDays}} days</p>
+
+                <div class="whenAvailable">
+                    {{#each calendar}}
+                        <div class = day>
+                            {{#each this}}
+                                <div class="hour{{#if this}}active{{else}}inactive{{/if}}"></div>
+                            {{/each}}
+                        </div>
+                    {{/each}}
+                </div>
+                <!-- Availability calendar/schedule would go here -->
+            </div>
 
       {{#if user}}
         <a
