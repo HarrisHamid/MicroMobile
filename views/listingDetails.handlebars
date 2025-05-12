@@ -72,6 +72,13 @@
                     <p>SUN</p>
                 </div>
                 <div class="whenAvailable">
+                    <div class="vertTimeDisplay"></div>
+                    <div class="vertFullTimeText">
+                        <div class="vertTimeText0">12am</div>
+                        <div class="vertTimeText1">6am</div>
+                        <div class="vertTimeText2">noon</div>
+                        <div class="vertTimeText3">6pm</div>
+                    </div>
                     {{#each calendar}}
                         <div class = day>
                             {{#each this}}
@@ -79,6 +86,15 @@
                             {{/each}}
                         </div>
                     {{/each}}
+
+                        <div class="vertFullTimeText">
+                        <div class="vertTimeText0">12am</div>
+                        <div class="vertTimeText1">6am</div>
+                        <div class="vertTimeText2">noon</div>
+                        <div class="vertTimeText3">6pm</div>
+                    </div>
+                    <div class="vertTimeDisplay"></div>
+                    
                 </div>
                 <!-- Availability calendar/schedule would go here -->
             </div>

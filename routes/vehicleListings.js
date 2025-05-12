@@ -130,7 +130,7 @@ router.get("/vehicleListings", async (req, res) => {
   }
 });
 router
-  .post("/requestVehicleGET", async (req, res) => {
+  .post("/requestVehicleGet", async (req, res) => {
     //GET is done as a POST so I can have a req.body
     console.log(req);
     try {
