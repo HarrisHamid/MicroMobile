@@ -324,10 +324,11 @@ const createRequest = async(userId, postId, extraComments, startDate, endDate) =
     const vehicle = await postCollection.findOne(
         { _id: new ObjectId(postId) }
     );
+    let ownerId = vehicle.posterUsername 
     const userCollection = await users();
-    const owner = await userCollection.findOne(
-        {userId: { $regex: new RegExp(userId, 'i')}}
-    );
+    // const owner = await userCollection.findOne(
+    //     {userId: { $regex: new RegExp(ownerId, 'i')}}
+    // );
     if(!vehicle) throw "Could not find vehicle";
     if(!owner) throw "Could not find vehicle owner";
     let newRequest = {
@@ -387,8 +388,8 @@ const createRequest = async(userId, postId, extraComments, startDate, endDate) =
     }
 
     const updateInfo2 = await userCollection.updateOne(
-        {userId: { $regex: new RegExp(userId, 'i')}},
-        {$push: { requests: newRequest, clients: userId } }
+        {userId: { $regex: new RegExp(ownerId, 'i')}},
+        {$push: { requests: newRequest} }
     );
     if (!updateInfo2.acknowledged || updateInfo2.modifiedCount === 0) {
         throw 'Could not handle request. Please try again later.';
@@ -415,7 +416,7 @@ const emailFunc = async(userEmail, ownerEmail, isAccepted, startTime, endTime, p
     });
     let subject = "Accepted Vehicle Request"
     let text = `Your request for ${postTitle} from ${startTime} to ${endTime} was accepted. The owner's email is ${ownerEmail}. You may contact them for further arrangement if necessary.`
-    
+
     if(!isAccepted){subject = "Denied Vehicle Requests"; text = `Your request for ${postTitle} from ${startTime} to ${endTime} was denied.`}
     
     var mailOptions = {

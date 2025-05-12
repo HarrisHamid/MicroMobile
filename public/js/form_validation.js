@@ -136,7 +136,9 @@
         };
 
         $.ajax(requestConfig2).then(function (responseMessage) {
-            todoItem.replaceWith("<li><p>Denied</p></li>")
+            email = "does_not_exist"
+            if(responseMessage.email) email = responseMessage.email
+            todoItem.replaceWith(`<li><p>Request denied. If you need to specify any other details, their email is ${email}</p></li>`)
         });
       });
     }
