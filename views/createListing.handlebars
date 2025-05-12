@@ -97,23 +97,19 @@ registration handelbars
       />
 
     <label for="maxRentalHours">Max Rental Hours</label>
-    <br>
     <input type="number" name="maxRentalHours" id="maxRentalHours" value="{{data.maxRentalHours}}">
-    <br>
     <label for="maxRentalDays">Max Rental Days</label>
-    <br>
     <input type="number" name="maxRentalDays" id="maxRentalDays" value="{{data.maxRentalDays}}">
-    <br>
     <label for="hourlyCost">Cost Per Hour</label>
-    <br>
     <input type="number" step="0.01" name="hourlyCost" id="hourlyCost" value="{{data.hourlyCost}}">
-    <br>
+    
     <label for="dailyCost">Cost Per Day</label>
-    <br>
     <input type="number" step="0.01" name="dailyCost" id="dailyCost" value="{{data.dailyCost}}">
-    <br>
+
+    <label for="location">Pickup/Dropoff Location</label>
+    <input type="text" name="location" id="location" value="{{data.location}}">
+    
     <label for="image">Image</label>
-    <br>
     <input type="file" id="image" name='image' accept="image/png, image/jpeg" value="{{data.image}}">
 
     {{!-- add usually availible bit here --}}
