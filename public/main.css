@@ -571,6 +571,12 @@ h1 {
   gap: 5px; /* Space between checkboxes */
 }
 
+.dayDisplay{
+  display:flex;
+  justify-content: space-between;
+  text-align: center;
+}
+
 .hourinactive {
   width: 5px;
   height: 5px;
