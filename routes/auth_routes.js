@@ -36,6 +36,13 @@ router
         });
       }
 
+      // Check if terma and conditions are accepted
+      if (!req.body.termsAccepted) {
+        return res.status(400).render("register", {
+          error: "You must accept the terms and conditions",
+        });
+      }
+
       // trimminging the inputs
       const trimmedFirstName = firstName.trim();
       const trimmedLastName = lastName.trim();
@@ -306,8 +313,6 @@ router
   .route("/login")
   .get(async (req, res) => {
     try {
-      // const showTermsModal = req.session.showTerms === true;
-      // req.session.showTerms = false;
       res.render("loginPage", { title: "Login" });
     } catch (error) {
       res.status(500).json({ error: error.message });
