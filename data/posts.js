@@ -1,7 +1,8 @@
 import { checkStringIsGood, checkForNonSpace, checkExists, checkString, checkId, checkTitle, checkType, checkTags, checkCondition, checkAvailable, checkPosterUsername, checkPosterEmail,
     checkPosterName, checkMaxRental, checkCost, checkImage, checkWhenAvailable } from "../helpers.js"
-import { posts } from "../config/mongoCollections.js"
+import { users, posts } from "../config/mongoCollections.js"
 import { ObjectId } from 'mongodb'
+import nodemailer from "nodemailer"
 
 const createPost = async (
     postTitle,
@@ -237,7 +238,7 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
     const fullName = `${firstName} ${lastName}`;
 
     let newComment = { 
-        _id: (new ObjectId()).toString(),
+        _id: (new ObjectId()), //removed the .toString() bit because then it wouldn't be an ObjectId it'd be a string
         Username: userId,
         Name: fullName,
         commentDate: new Date().toLocaleDateString(),
@@ -318,18 +319,30 @@ const createRequest = async(userId, postId, extraComments, startDate, endDate) =
     if(typeof extraComments !== "string") throw "Extra Comments must be a string";
     startDate = checkString(startDate, "startDate");
     endDate = checkString(endDate, "endDate");
-    let newRequest = {
-        extraComments: extraComments,
-        startDate: startDate,
-        endDate: endDate,
-        requestingUser: userId
-    }
+    if(typeof postId !== "string" || !ObjectId.isValid(postId)) throw "invalid postId"
     const postCollection = await posts();
     const vehicle = await postCollection.findOne(
         { _id: new ObjectId(postId) }
     );
+    const userCollection = await users();
+    const owner = await userCollection.findOne(
+        {userId: { $regex: new RegExp(userId, 'i')}}
+    );
+    if(!vehicle) throw "Could not find vehicle";
+    if(!owner) throw "Could not find vehicle owner";
+    let newRequest = {
+        extraComments: extraComments,
+        startDate: startDate,
+        endDate: endDate,
+        requestingUser: userId,
+        title: vehicle.postTitle,
+        vehicleId: vehicle._id.toString()
+    }
     let startDate2 = new Date(startDate);
     let endDate2 = new Date(endDate);
+    if (startDate2 == "Invalid Date" || endDate2 == "Invalid Date") {
+        throw "Invalid start or end date";
+      }
     let now = new Date();
     let cost = 0;
     let millsInDay  = 86400000;
@@ -372,12 +385,194 @@ const createRequest = async(userId, postId, extraComments, startDate, endDate) =
     if (!updateInfo.acknowledged || updateInfo.modifiedCount === 0) {
         throw 'Could not handle request. Please try again later.';
     }
+
+    const updateInfo2 = await userCollection.updateOne(
+        {userId: { $regex: new RegExp(userId, 'i')}},
+        {$push: { requests: newRequest, clients: userId } }
+    );
+    if (!updateInfo2.acknowledged || updateInfo2.modifiedCount === 0) {
+        throw 'Could not handle request. Please try again later.';
+    }
+
+
+
     if(numHours){
         return {hours: numHours, costPerHour: vehicle.hourlyCost, cost: cost}
     }
     else{
         return {days: numDays, costPerDay: vehicle.dailyCost, cost: cost}
     }
+}
+
+const emailFunc = async(userEmail, ownerEmail, isAccepted, startTime, endTime, postTitle) =>{ //we use this to send the reply to the client after
+
+    var transporter = nodemailer.createTransport({ //general format gotten from w3 schools
+      service: 'gmail',
+      auth: {
+        user: 'noreplymicromobile@gmail.com',
+        pass: 'lohh vczi eyyk bmux'
+      }
+    });
+    let subject = "Accepted Vehicle Request"
+    let text = `Your request for ${postTitle} from ${startTime} to ${endTime} was accepted. The owner's email is ${ownerEmail}. You may contact them for further arrangement if necessary.`
+    
+    if(!isAccepted){subject = "Denied Vehicle Requests"; text = `Your request for ${postTitle} from ${startTime} to ${endTime} was denied.`}
+    
+    var mailOptions = {
+      from: 'noreplymicromobile@gmail.com',
+      to: userEmail,
+      subject: subject,
+      text: text
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+}
+
+const requestAccept = async(requestingUser, startDate, endDate, vehicleId) =>{
+    startDate = checkString(startDate, "startDate");
+    endDate = checkString(endDate, "endDate");
+    let startDate2 = new Date(startDate);
+    let endDate2 = new Date(endDate);
+    if (startDate2 == "Invalid Date" || endDate2 == "Invalid Date") {
+        throw "Invalid start or end date";
+    }
+    console.log(vehicleId)
+   if(typeof vehicleId !== "string" || !ObjectId.isValid(vehicleId)) throw "bad vehicleId";
+
+    const postCollection = await posts();
+    const vehicle = await postCollection.findOne(
+        { _id: new ObjectId(vehicleId) }
+    );
+    let userId = vehicle.posterUsername;
+    const userCollection = await users();
+    console.log(userId)
+    const owner = await userCollection.findOne(
+        {userId: { $regex: new RegExp(userId, 'i')}}
+    );
+    if(!vehicle) throw "Could not find vehicle";
+    if(!owner) throw "Could not find vehicle owner";
+
+    let y, z;
+    for(let x of owner.requests){
+        let requestStart = new Date(x.startDate);
+        let requestEnd = new Date(x.endDate);
+        if(startDate2.getTime() === requestStart.getTime() && endDate2.getTime() === requestEnd.getTime() && x.vehicleId === vehicleId){
+            y = x;
+        }
+    }
+    for(let x of vehicle.requests){
+        let requestStart = new Date(x.startDate);
+        let requestEnd = new Date(x.endDate);
+        if(startDate2.getTime() === requestStart.getTime() && endDate2.getTime() === requestEnd.getTime() && x.vehicleId === vehicleId){
+            z = x;
+        }
+    }
+    if(y === undefined || z === undefined) throw "Either the vehicle does not exist or the start and end dates are incorrect"
+    let newReqPerson = owner.requests.filter(x => x !== y);
+    let newReqVehicle = vehicle.requests.filter(x => x !== z);
+
+    let isUser = 0;
+    for(let x of owner.clients){
+        if (x === requestingUser){
+            isUser = 1;
+        }
+    }
+    let newClients = owner.clients;
+    console.log(owner.clients);
+    if(isUser === 0){
+        newClients.push(requestingUser);
+    }
+    console.log(vehicle.taken)
+    let newTaken = vehicle.taken;
+    newTaken.push(y);
+    console.log(newTaken);
+
+    const updateInfo = await postCollection.updateOne(
+        { _id: new ObjectId(vehicleId) },
+        { $set: { requests: newReqVehicle, taken: newTaken } }
+    );
+    if (!updateInfo.acknowledged || updateInfo.modifiedCount === 0) {
+        throw 'Could not handle request. Please try again later.';
+    }
+
+    const updateInfo2 = await userCollection.updateOne(
+        {userId: { $regex: new RegExp(userId, 'i')}},
+        {$set: { requests: newReqPerson, clients: newClients} }
+    );
+    if (!updateInfo2.acknowledged || updateInfo2.modifiedCount === 0) {
+        throw 'Could not handle request. Please try again later.';
+    }
+
+    const returnValue = await userCollection.findOne({userId: { $regex: new RegExp(requestingUser, 'i')}})
+    return returnValue.email
+
+}
+const requestDeny = async(requestingUser, startDate, endDate, vehicleId) =>{
+    startDate = checkString(startDate, "startDate");
+    endDate = checkString(endDate, "endDate");
+    let startDate2 = new Date(startDate);
+    let endDate2 = new Date(endDate);
+    if (startDate2 == "Invalid Date" || endDate2 == "Invalid Date") {
+        throw "Invalid start or end date";
+      }
+    if(typeof vehicleId !== "string" || !ObjectId.isValid(vehicleId)) throw "bad vehicleId";
+
+    const postCollection = await posts();
+    const vehicle = await postCollection.findOne(
+        { _id: new ObjectId(vehicleId) }
+    );
+    let userId = vehicle.posterUsername
+    const userCollection = await users();
+    const owner = await userCollection.findOne(
+        {userId: { $regex: new RegExp(userId, 'i')}}
+    );
+    if(!vehicle) throw "Could not find vehicle";
+    if(!owner) throw "Could not find vehicle owner";
+
+    let y, z;
+    for(let x of owner.requests){
+        let requestStart = new Date(x.startDate);
+        let requestEnd = new Date(x.endDate);
+        if(startDate2.getTime() === requestStart.getTime() && endDate2.getTime() === requestEnd.getTime() && x.vehicleId === vehicleId){
+            y = x;
+        }
+    }
+    for(let x of vehicle.requests){
+        let requestStart = new Date(x.startDate);
+        let requestEnd = new Date(x.endDate);
+        if(startDate2.getTime() === requestStart.getTime() && endDate2.getTime() === requestEnd.getTime() && x.vehicleId === vehicleId){
+            z = x;
+        }
+    }
+    if(y === undefined || z === undefined) throw "Either the vehicle does not exist or the start and end dates are incorrect"
+    let newReqPerson = owner.requests.filter(x => x !== y);
+    let newReqVehicle = vehicle.requests.filter(x => x !== z);
+ 
+    
+    console.log(vehicleId)
+    const updateInfo = await postCollection.updateOne(
+        { _id: new ObjectId(vehicleId) },
+        { $set: { requests: newReqVehicle } }
+    );
+    if (!updateInfo.acknowledged || updateInfo.modifiedCount === 0) {
+        throw 'Could not handle request. Please try again later. 1';
+    }
+    
+    const updateInfo2 = await userCollection.updateOne(
+        {userId: { $regex: new RegExp(userId, 'i')}},
+        {$set: { requests: newReqPerson} }
+    );
+    if (!updateInfo2.acknowledged || updateInfo2.modifiedCount === 0) {
+        throw 'Could not handle request. Please try again later. 2';
+    }
+    const returnValue = await userCollection.findOne({userId: { $regex: new RegExp(requestingUser, 'i')}})
+    return returnValue.email
 }
 
 export default {
@@ -389,5 +584,8 @@ export default {
     filterPostsByTitle,
     createComment,
     checkRequest,
-    createRequest
+    createRequest,
+    emailFunc,
+    requestAccept,
+    requestDeny
  }

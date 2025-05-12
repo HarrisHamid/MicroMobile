@@ -316,7 +316,9 @@ export const register = async (
     role: 'user', //middleware prints the role so I at least set it here. -Jack
     ratings: [],
     ratingAverage: 0,  
-    ratingCount: 0    
+    ratingCount: 0,
+    requests: [],
+    clients: []
   };
 
   // not in Hoboken check
@@ -519,3 +521,4 @@ export const getUserByUserId = async (userId) => {
   if (!user) throw "User not found";
   return user;
 };
+
