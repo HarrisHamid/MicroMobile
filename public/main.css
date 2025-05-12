@@ -320,10 +320,22 @@ h1 {
   border-radius: 8px;
 }
 
+#requestVehicleForm {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+#requestVehicleForm label {
+  font-size: 1.6rem;
+  text-align: center;
+  display: block;
+}
+
 .request-rental-btn,
 .login-to-rent-btn {
   padding: 0.75rem 1.5rem;
-  background-color: #0d6efd;
+  background-color: #3db0d3;
   color: white;
   border: none;
   border-radius: 4px;
@@ -335,9 +347,12 @@ h1 {
   transition: background-color 0.3s;
 }
 
+.label_color {
+  color: black;
+}
 .request-rental-btn:hover,
 .login-to-rent-btn:hover {
-  background-color: #0b5ed7;
+  background-color: #1a748f;
 }
 
 .return-to-all-listings-btn {
@@ -776,16 +791,29 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  
+}
+
 .add-rating-form .rating-row {
   display: flex;
-  align-items: center;   
-  flex-wrap: nowrap;   
-  gap: 0.75rem;           
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.75rem;
 }
 
 .add-rating-form .rating-row label {
-  white-space: nowrap;    
-  flex-shrink: 0;         
-  margin: 0;              
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.comment-rating-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.left-comment-form,
+.right-rating-form {
+  width: 48%;
 }
