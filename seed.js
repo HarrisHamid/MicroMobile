@@ -51,7 +51,7 @@ const seedDatabase = async () => {
                 ratingAverage: 3,  
                 ratingCount: 1,
                 requests: [],
-                taken: []
+                clients: []
               },
               {
                 firstName: "Micro",
@@ -67,7 +67,7 @@ const seedDatabase = async () => {
                 ratingAverage: 0,  
                 ratingCount: 0,
                 requests: [],
-                taken: []
+                clients: []
               }
         ];
 
