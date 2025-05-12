@@ -1,50 +1,64 @@
 {{#if requestSuccessful}}
-<p>Your vehicle request has been successfully submitted. You will be notified if the request is approved</p>
+  <p>Your vehicle request has been successfully submitted. You will be notified
+    if the request is approved</p>
 {{/if}}
 <div class="listing-details-container">
-    {{#if error}}
+  {{#if error}}
     <div class="error-message">{{error}}</div>
-    {{/if}}
+  {{/if}}
 
-    <div class="listing-header">
-        <h1 class="listing-title">{{post.postTitle}}</h1>
-        <div class="listing-meta">
-            <span class="listing-poster">Posted by {{post.posterName}}</span>
-            {{#if posterStats.ratingCount}}
-            <span class="listing-user-rating">
-              User Rating: ⭐ {{posterStats.ratingAverage}}/5
-            </span>
-          {{else}}
-            <span class="listing-user-rating">No ratings yet</span>
-          {{/if}}
-            <span class="listing-rating">Condition: {{post.vehicleCondition}}/5</span>
-        </div>
+  <div class="listing-header">
+    <h1 class="listing-title">{{post.postTitle}}</h1>
+    <div class="listing-meta">
+      <span class="listing-poster">Posted by {{post.posterName}}</span>
+      {{#if posterStats.ratingCount}}
+        <span class="listing-user-rating">
+          User Rating: ⭐
+          {{posterStats.ratingAverage}}/5
+        </span>
+      {{else}}
+        <span class="listing-user-rating">No ratings yet</span>
+      {{/if}}
+      <span class="listing-rating">Condition: {{post.vehicleCondition}}/5</span>
     </div>
+  </div>
 
-    <div class="listing-content">
-        <div class="listing-image-container">
-            <img src="{{post.image}}" alt="{{post.postTitle}}" class="listing-image">
+  <div class="listing-content">
+    <div class="listing-image-container">
+      <img
+        src="{{post.image}}"
+        alt="{{post.postTitle}}"
+        class="listing-image"
+      />
+    </div>
+    <div class="listing-info">
+      <div class="listing-type-tags">
+        <span class="vehicle-type">{{post.vehicleType}}</span>
+        {{#each post.vehicleTags}}
+          <span class="vehicle-tag">{{this}}</span>
+        {{/each}}
+      </div>
+
+      <div class="listing-pricing">
+        <div class="price-option">
+          <span class="price-label">Hourly Rate:</span>
+          <span class="price-value">${{post.hourlyCost}}/hr</span>
         </div>
-        <div class="listing-info">
-            <div class="listing-type-tags">
-                <span class="vehicle-type">{{post.vehicleType}}</span>
-                {{#each post.vehicleTags}}
-                <span class="vehicle-tag">{{this}}</span>
-                {{/each}}
-            </div>
+        <div class="price-option">
+          <span class="price-label">Daily Rate:</span>
+          <span class="price-value">${{post.dailyCost}}/day</span>
+        </div>
+      </div>
 
-            <div class="listing-pricing">
-                <div class="price-option">
-                <span class="price-label">Hourly Rate:</span>
-                <span class="price-value">${{post.hourlyCost}}/hr</span>
-                </div>
-                <div class="price-option">
-                <span class="price-label">Daily Rate:</span>
-                <span class="price-value">${{post.dailyCost}}/day</span>
-                </div>
-            </div>
-
-            <div class="listing-availability">
+      <div class="listing-availability">
+        <h3>Availability</h3>
+        <p>Max Rental:
+          {{post.maxRentalHours}}
+          hours or
+          {{post.maxRentalDays}}
+          days</p>
+          
+          <div class="listing-availability">
                 <h3>Availability</h3>
                 <p>Max Rental: {{post.maxRentalHours}} hours or {{post.maxRentalDays}} days</p>
 
@@ -69,68 +83,92 @@
                 <!-- Availability calendar/schedule would go here -->
             </div>
 
-            {{#if user}}
-            <div class="request-rental-btn">
-            <button class="request-rental-btn" data-post-id="{{post._id}}" id="reqVehicleButton">Request Rental</button>
-            </div>
-            {{else}}
-            <a href="/auth/login?returnTo=/vehicleListings/listingDetails/{{post._id}}" class="login-to-rent-btn">Login to Request Rental</a>
-            {{/if}}
+      {{#if user}}
+        <a
+          href="/vehicleListings/requestRental/{{post._id}}"
+          class="request-rental-btn"
+          id="reqVehicleButton"
+          data-post-id="{{post._id}}"
+        >Request Rental</a>
+      {{else}}
+        <a
+          href="/auth/login?returnTo=/vehicleListings/listingDetails/{{post._id}}"
+          class="login-to-rent-btn"
+        >Login to Request Rental</a>
+      {{/if}}
 
-            <a href="/vehicleListings/vehicleListings" class="return-to-all-listings-btn">Return to All Listings</a>
-        </div>
+      <a
+        href="/vehicleListings/vehicleListings"
+        class="return-to-all-listings-btn"
+      >Return to All Listings</a>
     </div>
+  </div>
 
-    <div class="listing-rating-form">
+  <div class="listing-comments">
+    <h2>Comments</h2>
+    {{#if post.vehicleComments.length}}
+      <div class="comments-list">
+        {{#each post.vehicleComments}}
+          <div class="comment">
+            <div class="comment-header">
+              <span class="comment-author">{{this.Name}}</span>
+              <span class="comment-date">{{this.commentDate}}</span>
+            </div>
+            <div class="comment-body">{{this.Body}}</div>
+          </div>
+        {{/each}}
+      </div>
+    {{else}}
+      <p class="no-comments">This post has no comments yet</p>
+    {{/if}}
+
+  </div>
+
+  {{! Div for Add comments and rating user }}
+  <div class="comment-rating-container">
     {{#if user}}
-        <form 
-        method="POST" 
-        action="/vehicleListings/listingDetails/{{post._id}}/rate"
-        class="add-rating-form"
-        id="ratingForm"
+      <div class="left-comment-form">
+        <form
+          class="add-comment-form"
+          id="commentForm"
+          data-post-id="{{post._id}}"
+          method="POST"
+          action="/vehicleListings/listingDetails/{{post._id}}"
         >
-            <div class="rating-row">
+          <textarea
+            name="comment"
+            id="commentInput"
+            placeholder="Add your comment..."
+            required
+          ></textarea>
+          <button type="submit">Post Comment</button>
+        </form>
+      </div>
+      <div class="right-rating-form">
+        <form
+          method="POST"
+          action="/vehicleListings/listingDetails/{{post._id}}/rate"
+          class="add-rating-form"
+          id="ratingForm"
+        >
+          <div class="rating-row">
             <label for="ratingInput">Rate this user:</label>
             <select name="ratingInput" id="ratingInput" required>
-                <option value="" disabled selected>Choose…</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
+              <option value="" disabled selected>Choose…</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
             </select>
             <button type="submit">Submit</button>
-            </div>
+          </div>
         </form>
+      </div>
     {{/if}}
-    </div>
+  </div>
 
-    <div class="listing-comments">
-        <h2>Comments</h2>
-        {{#if post.vehicleComments.length}}
-        <div class="comments-list">
-            {{#each post.vehicleComments}}
-            <div class="comment">
-                <div class="comment-header">
-                    <span class="comment-author">{{this.Name}}</span>
-                    <span class="comment-date">{{this.commentDate}}</span>
-                </div>
-                <div class="comment-body">{{this.Body}}</div>
-            </div>
-            {{/each}}
-        </div>
-        {{else}}
-        <p class="no-comments">This post has no comments yet</p>
-        {{/if}}
-
-        {{#if user}}
-        <form class="add-comment-form" id="commentForm" data-post-id="{{post._id}}" method="POST" action="/vehicleListings/listingDetails/{{post._id}}">
-            <textarea name="comment" id="commentInput" placeholder="Add your comment..." required></textarea>
-            <button type="submit">Post Comment</button>
-        </form>
-        {{/if}}
-    </div>
 </div>
 
-{{!-- It's fine if the user sees this. It's just hidden because there's no reason for them to see it --}}
+{{! It's fine if the user sees this. It's just hidden because there's no reason for them to see it }}
 <p id="hiddenPostId" hidden>{{postId}}</p>

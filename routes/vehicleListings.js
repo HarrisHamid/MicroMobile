@@ -134,7 +134,6 @@ router
     //GET is done as a POST so I can have a req.body
     console.log(req);
     try {
-      console.log("GOOD");
       if (!req.session.user) throw "You must be logged in to see this page";
       let postId = xss(req.body.postId);
       if (!ObjectId.isValid(postId)) {
@@ -230,7 +229,6 @@ router
     }
   })
   .post("/payment", async (req, res) => {
-    console.log("SUPRISEbamPoof");
     console.log(req);
     try {
       let a = req.body;
@@ -255,6 +253,139 @@ router
       if (startDate == "Invalid Date" || endDate == "Invalid Date") {
         throw "Invalid start or end date";
       }
+      //=======================
+      // firstName validation
+      //=======================
+      const firstName = a.firstName;
+
+      // Check if firstName is empty
+      if (firstName.length === 0) {
+        throw "First name cannot be empty";
+      }
+      // Regex check for lettters only
+      if (!/^[a-zA-Z]+$/.test(firstName)) {
+        throw "First name can only contain letters";
+      }
+      // Check length
+      if (firstName.length < 2 || firstName.length > 20) {
+        throw "First name must be between 2-20 characters";
+      }
+
+      //=======================
+      // lastName validation
+      //=======================
+      const lastName = a.lastName;
+      // Check if lastName is empty
+      if (lastName.length === 0) {
+        throw "Last name cannot be empty";
+      }
+      // Regex check for lettters only
+      if (!/^[a-zA-Z]+$/.test(lastName)) {
+        throw "Last name can only contain letters";
+      }
+      // Check length
+      if (lastName.length < 2 || lastName.length > 20) {
+        throw "Last name must be between 2-20 characters";
+      }
+
+      //=======================
+      // address validation
+      //=======================
+      const address = a.address;
+      // Check if favoriteQuote is empty
+      if (address.length === 0) {
+        throw "Address cannot be empty";
+      }
+      // Lenght check
+      if (address.length < 10) {
+        throw "Address must be at least 10 characters long";
+      }
+
+      //=======================
+      // city validation
+      //=======================
+      const city = a.city;
+      // Check if city is empty
+      if (city.length === 0) {
+        throw "City cannot be empty";
+      }
+      // Regex check for lettters only
+      if (!/^[a-zA-Z]+$/.test(city)) {
+        throw "City can only contain letters";
+      }
+
+      //=======================
+      // state validation
+      //=======================
+      const state = a.state;
+      // Check if state is empty
+      if (state.length === 0) {
+        throw "State cannot be empty";
+      }
+      // Regex check for lettters only
+      if (!/^[a-zA-Z]+$/.test(state)) {
+        throw "State can only contain letters";
+      }
+      //=======================
+      // zipCode validation
+      //=======================
+      const zipCode = a.zipCode;
+      // Check if zipCode is empty
+      if (zipCode.length === 0) {
+        throw "Zip Code cannot be empty";
+      }
+      // Regex check for 5 digits
+      if (!/^\d{5}$/.test(zipCode)) {
+        throw "Zip Code must be 5 digits";
+      }
+      //=======================
+      // nameOnCard validation
+      //=======================
+      const nameOnCard = a.nameOnCard;
+      // Check if nameOnCard is empty
+      if (nameOnCard.length === 0) {
+        throw "Name on Card cannot be empty";
+      }
+      // Regex check for lettters and spaces only
+      if (!/^[a-zA-Z\s]+$/.test(nameOnCard)) {
+        throw "Name on Card can only contain letters and spaces";
+      }
+      //=======================
+      // cardNumber validation
+      //=======================
+      const cardNumber = a.cardNumber;
+      // Check if cardNumber is empty
+      if (cardNumber.length === 0) {
+        throw "Card Number cannot be empty";
+      }
+      // Regex check for 15 or 16 digits
+      if (!/^\d{15,16}$/.test(cardNumber)) {
+        throw "Card Number must be 15 or 16 digits";
+      }
+      //=======================
+      // expirationDate validation
+      //=======================
+      const expirationDate = a.formExpiration;
+      // Check if expirationDate is empty
+      if (expirationDate.length === 0) {
+        throw "Expiration Date cannot be empty";
+      }
+      // Regex check for MM/YY format
+      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expirationDate)) {
+        throw "Expiration Date must be in MM/YY format";
+      }
+      //=======================
+      // CVV validation
+      //=======================
+      const cvv = a.CVV
+      // Check if CVV is empty
+      if (cvv.length === 0) {
+        throw "CVV cannot be empty";
+      }
+      // Regex check for 3 or 4 digits
+      if (!/^\d{3,4}$/.test(cvv)) {
+        throw "CVV must be 3 or 4 digits";
+      }
       let createRequest = await posts.createRequest(
         req.session.user.userId,
         vehicleId,
@@ -271,14 +402,12 @@ router
       // });
     } catch (e) {
       console.log(e);
-      res
-        .status(400)
-        .render("payment", {
-          layout: null,
-          error: e,
-          title: "Payment",
-          data: req.body,
-        });
+      res.status(400).render("payment", {
+        layout: null,
+        error: e,
+        title: "Payment",
+        data: req.body,
+      });
     }
   });
 
