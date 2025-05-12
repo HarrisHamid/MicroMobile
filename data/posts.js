@@ -31,6 +31,7 @@ const createPost = async (
     [maxRentalHours, maxRentalDays] = checkMaxRental(maxRentalHours, maxRentalDays)
     [hourlyCost, dailyCost] = checkCost(hourlyCost, dailyCost)
     location = checkString(location, 'Location')
+    console.log(image);
     image = checkImage(image)
     whenAvailable = checkWhenAvailable(whenAvailable, 'When Available')
 
