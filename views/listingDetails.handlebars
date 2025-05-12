@@ -183,6 +183,7 @@
         </form>
       </div>
       <div class="right-rating-form">
+        {{#if allowRating}}
         <form
           method="POST"
           action="/vehicleListings/listingDetails/{{post._id}}/rate"
@@ -202,6 +203,7 @@
             <button type="submit">Submit</button>
           </div>
         </form>
+        {{/if}}
       </div>
     {{/if}}
   </div>

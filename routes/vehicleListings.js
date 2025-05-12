@@ -713,12 +713,14 @@ router.get("/listingDetails/:id", async (req, res) => {
   }
   try {
     const post = await posts.getPostById(xss(req.params.id));
-    console.log(post.whenAvailable);
+    //console.log(post.whenAvailable);
 
     let posterStats = { ratingAverage: 0, ratingCount: 0 };
+    let allowRating = false;
     try {
       posterStats = await getUserByUserId(post.posterUsername);
       posterStats.ratingAverage = Number(posterStats.ratingAverage.toFixed(1));
+      allowRating = req.session.user && posterStats.clients.includes(req.session.user.userId);
     } catch (e) {
       console.warn("Couldn’t fetch poster ratings:", e);
     }
@@ -737,7 +739,8 @@ router.get("/listingDetails/:id", async (req, res) => {
       post: post,
       user: req.session.user,
       posterStats,
-      calendar: calendar
+      calendar: calendar,
+      allowRating
     });
   } catch (e) {
     res.status(400).render("listingDetails"),
@@ -760,7 +763,6 @@ router.post("/listingDetails/:id", async (req, res) => {
     res.redirect(req.originalUrl); // refresh page
   } catch (e) {
     res.status(400).render("listingDetails", {
-      post, ///////////////////////////////////////////////wwwwwwwwwwwwwwwhhhhhhhhhhhhhaaaaaaaaaatttttt
       user: req.session.user,
       posterStats,
       error: e.toString(),
