@@ -325,6 +325,9 @@ export const register = async (
   if (inHoboken === "no") {
     newUser.state = state;
   }
+  else {
+    newUser.state = "NJ"; // default to NJ if in Hoboken
+  }
   // Add user to DB
   const usersCollection = await users(); // reference to the collection
   const insertInfo = await usersCollection.insertOne(newUser);
