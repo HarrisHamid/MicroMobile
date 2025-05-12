@@ -437,6 +437,7 @@ router
       let maxRentalDays = xss(req.body.maxRentalDays);
       let hourlyCost = xss(req.body.hourlyCost);
       let dailyCost = xss(req.body.dailyCost);
+      let location = xss(req.body.location);
       let whenAvailableFake = xss(req.body.whenAvailable);
       whenAvailableFake = whenAvailableFake.split(",");
 
@@ -687,6 +688,7 @@ router
         maxRentalDays,
         hourlyCost,
         dailyCost,
+        location, //WE NEED THE LOCATION HERE I THINK
         imagePath,
         whenAvailable
       ); //need to implement when availible array
