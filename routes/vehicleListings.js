@@ -402,14 +402,12 @@ router
       // });
     } catch (e) {
       console.log(e);
-      res
-        .status(400)
-        .render("payment", {
-          layout: null,
-          error: e,
-          title: "Payment",
-          data: req.body,
-        });
+      res.status(400).render("payment", {
+        layout: null,
+        error: e,
+        title: "Payment",
+        data: req.body,
+      });
     }
   });
 
