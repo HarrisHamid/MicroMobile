@@ -100,7 +100,6 @@
                 }),
                 url: "/vehicleListings/requestVehicle",
               };
-              console.log("test")
               $.ajax(requestConfig).then(function (responseMessage) {
                 $("#main").replaceWith(responseMessage); //CHANGE THIS TO GO TO THE VEHICLE'S PAGE
               });
@@ -117,7 +116,6 @@
 
 
   if (requestVehicleForm) {
-    console.log("test");
     $(function () {
       $("#datetimepicker1").datetimepicker();
       $("#datetimepicker2").datetimepicker();

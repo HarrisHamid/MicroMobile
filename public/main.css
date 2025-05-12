@@ -776,7 +776,8 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  
+}
+
 .add-rating-form .rating-row {
   display: flex;
   align-items: center;   
