@@ -330,7 +330,7 @@ const createRequest = async(userId, postId, extraComments, startDate, endDate) =
     //     {userId: { $regex: new RegExp(ownerId, 'i')}}
     // );
     if(!vehicle) throw "Could not find vehicle";
-    if(!owner) throw "Could not find vehicle owner";
+    //if(!owner) throw "Could not find vehicle owner";
     let newRequest = {
         extraComments: extraComments,
         startDate: startDate,
