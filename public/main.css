@@ -96,8 +96,8 @@ button[type="submit"] {
 }
 
 #createListingForm button[type="submit"] {
-  width: 200px; /* Shrink */
-  margin: 20px auto 0 auto; /* Center */
+  width: 200px;
+  margin: 20px auto 0 auto;
   display: block;
   padding: 10px;
   background-color: #3db0d3;
@@ -107,7 +107,6 @@ button[type="submit"] {
   border-radius: 4px;
   cursor: pointer;
 }
-
 button[type="submit"]:hover {
   background-color: #1a748f;
 }
@@ -320,10 +319,22 @@ h1 {
   border-radius: 8px;
 }
 
+#requestVehicleForm {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+#requestVehicleForm label {
+  font-size: 1.6rem;
+  text-align: center;
+  display: block;
+}
+
 .request-rental-btn,
 .login-to-rent-btn {
   padding: 0.75rem 1.5rem;
-  background-color: #0d6efd;
+  background-color: #3db0d3;
   color: white;
   border: none;
   border-radius: 4px;
@@ -335,9 +346,12 @@ h1 {
   transition: background-color 0.3s;
 }
 
+.label_color {
+  color: black;
+}
 .request-rental-btn:hover,
 .login-to-rent-btn:hover {
-  background-color: #0b5ed7;
+  background-color: #1a748f;
 }
 
 .return-to-all-listings-btn {
@@ -552,6 +566,81 @@ h1 {
   background-color: #1a748f;
 }
 
+#whenAvailable1 {
+  color: red;
+}
+
+.whenAvailableGrid {
+  display: grid;
+  grid-template-rows: repeat(24, 1fr);
+  grid-auto-flow: column;
+  gap: 5px; /* Space between checkboxes */
+  color: blue;
+}
+
+.vertTimeDisplay {
+  width: 3px;
+  height: 120px;
+  background-color: black;
+}
+
+.vertFullTimeText{
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+}
+
+.vertTimeText0 {
+  margin-left: 5px;
+  margin-top: -10 px;
+  font-size: 9px;
+}
+
+.vertTimeText1 {
+  margin-left: 5px;
+  margin-top: 12px;
+  font-size: 9px;
+}
+
+.vertTimeText2 {
+  margin-left: 5px;
+  margin-top: 14px;
+  font-size: 9px;
+}
+
+.vertTimeText3 {
+  margin-left: 5px;
+  margin-top: 13px;
+  font-size: 9px;
+}
+
+.whenAvailable{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); 
+  grid-auto-flow: column;
+  column-gap: 30px; /* Space between checkboxes */
+}
+
+.dayDisplay{
+  padding-left: 80px;
+  padding-right: 80px;
+  display:flex;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.hourinactive {
+  width: 25px;
+  height: 5px;
+  background-color : rgb(63, 63, 72)
+  
+}
+.houractive {
+  width: 25px;
+  height: 5px;
+  background-color: rgb(0, 255, 0)
+}
+
 /* Listing page search bar */
 .search-create-container {
   display: flex;
@@ -627,7 +716,7 @@ h1 {
   padding: 10px;
   width: 200px;
   z-index: 100;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .tags-dropdown.show {
@@ -709,7 +798,7 @@ h1 {
   padding: 10px;
   width: 200px;
   z-index: 100;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .tags-dropdown.show {
@@ -733,7 +822,8 @@ h1 {
   margin-left: 8px;
 }
 
-.apply-tags-btn, .clear-tags-btn {
+.apply-tags-btn,
+.clear-tags-btn {
   display: block;
   width: 100%;
   padding: 8px;
@@ -746,7 +836,8 @@ h1 {
   font-size: 14px;
 }
 
-.apply-tags-btn:hover, .clear-tags-btn:hover {
+.apply-tags-btn:hover,
+.clear-tags-btn:hover {
   background-color: #1a748f;
 }
 
@@ -758,15 +849,133 @@ h1 {
   background-color: #5a6268;
 }
 
+#signout-image {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+
+
 .add-rating-form .rating-row {
   display: flex;
-  align-items: center;   
-  flex-wrap: nowrap;   
-  gap: 0.75rem;           
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.75rem;
 }
 
 .add-rating-form .rating-row label {
-  white-space: nowrap;    
-  flex-shrink: 0;         
-  margin: 0;              
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin: 0;
 }
+
+.comment-rating-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.left-comment-form,
+.right-rating-form {
+  width: 48%;
+}
+
+/* Taken Periods Styling */
+.listing-taken-periods {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.taken-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+}
+
+.taken-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.taken-item:last-child {
+  border-bottom: none;
+}
+
+.taken-period {
+  font-weight: bold;
+  color: #212529;
+}
+
+.taken-requester {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+.no-taken-periods {
+  color: #6c757d;
+  font-style: italic;
+  margin: 1rem 0 0 0;
+}
+
+.location-value {
+  color: #000000;
+  font-weight: bold;
+}
+
+.timeGridWrapper {
+  display: flex;
+  gap: 10px;
+  margin-top: 1rem;
+  align-items: flex-start;
+}
+
+.hourLabels {
+  display: grid;
+  grid-template-rows: repeat(24, 30px); 
+  gap: 4px; 
+  text-align: right;
+  font-size: 12px;
+  padding-right: 10px;
+  line-height: 30px;
+  margin-top: 42px; 
+}
+
+.whenAvailableGridWrapper {
+  display: flex;
+  margin-top: 48px;
+  flex-direction: column;
+  overflow-x: auto;
+}
+
+.dayLabels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 8px;
+  gap: 10px;
+  padding: 0 5px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.whenAvailableGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(24, 30px);
+  gap: 4px;
+}
+
+.whenAvailableGrid input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: auto;
+  display: block;
+}
+

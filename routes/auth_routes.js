@@ -11,7 +11,7 @@ router
   .route("/register")
   .get(async (req, res) => {
     try {
-      res.render("register");
+      res.render("register", { title: "Register" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -30,11 +30,11 @@ router
       let state = xss(req.body.state || "");
 
       //Age check cause you never know
-     if (!req.body.isAdult) {
-       return res.status(400).render("register", {
-         error: "You must confirm you are 18 years of age or older"
-       });
-     }
+      if (!req.body.isAdult) {
+        return res.status(400).render("register", {
+          error: "You must confirm you are 18 years of age or older",
+        });
+      }
 
       // trimminging the inputs
       const trimmedFirstName = firstName.trim();
@@ -260,6 +260,17 @@ router
         }
       }
 
+      //Check is userId already exists
+      const userCollection = await users();
+      const existingUser = await userCollection.findOne({
+        userId: trimmedUserId.toLowerCase(),
+      });
+      if (existingUser) {
+        return res.status(400).render("register", {
+          error: "userId already exists. Please choose a different one.",
+        });
+      }
+
       // Register the user
       const newUser = await register(
         trimmedFirstName,
@@ -274,8 +285,8 @@ router
 
       // Check if registration was successful
       if (newUser.registrationCompleted === true) {
-        const user = await login(userId, password)
-        req.session.user = user
+        const user = await login(userId, password);
+        req.session.user = user;
         req.session.showTerms = true;
         return res.redirect("/");
       } else {
@@ -295,9 +306,9 @@ router
   .route("/login")
   .get(async (req, res) => {
     try {
-      const showTermsModal = req.session.showTerms === true;
-      req.session.showTerms = false;
-      res.render("loginPage", { showTermsModal });
+      // const showTermsModal = req.session.showTerms === true;
+      // req.session.showTerms = false;
+      res.render("loginPage", { title: "Login" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -309,7 +320,7 @@ router
 
       // trimminging the inputs
       const trimmedUserId = userId.trim();
-      const trimmedPassword = password; //remove the .trim() because lab10 had us not trim passwords 
+      const trimmedPassword = password; //remove the .trim() because lab10 had us not trim passwords
 
       // Check if all fields are filled
       if (!trimmedUserId || !trimmedPassword) {
@@ -364,7 +375,9 @@ router
 
       // Check if userId and password match
       const userCollection = await users();
-      const tempUser = await userCollection.findOne({userId: { $regex: new RegExp(userId, 'i') }});
+      const tempUser = await userCollection.findOne({
+        userId: { $regex: new RegExp(userId, "i") },
+      });
       if (
         !tempUser ||
         !(await bcrypt.compare(trimmedPassword, tempUser.password))
@@ -386,7 +399,7 @@ router
         address: user.address,
         inHoboken: user.inHoboken,
         state: user.state,
-        role: user.role //same as above, I include the role here so our middleware can print it. -Jack
+        role: user.role, //same as above, I include the role here so our middleware can print it. -Jack
       };
       return res.redirect("/");
     } catch (error) {

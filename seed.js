@@ -104,6 +104,7 @@ const seedDatabase = async () => {
                 maxRentalDays: 2,
                 hourlyCost: 1.5,
                 dailyCost: 10,
+                location: "1 Castle Point Terrace",
                 image: "/public/uploads/seed1.png",
                 whenAvailable: [
                   [0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,1,0,0,0,0],
@@ -145,6 +146,7 @@ const seedDatabase = async () => {
                 maxRentalDays: 5,
                 hourlyCost: 0,
                 dailyCost: 15,
+                location: "Hoboken Terminal",
                 image: "/public/uploads/seed2.jpg",
                 whenAvailable: [
                   [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],
