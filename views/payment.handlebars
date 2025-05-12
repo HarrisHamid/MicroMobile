@@ -4,10 +4,11 @@
     <div class="col-md-8 mb-4">
       <div class="card mb-4">
         <div class="card-header py-3">
-          <h5 class="mb-0">Biling details</h5>
+          <h5 class="mb-0">Billing details</h5>
         </div>
         <div class="card-body">
-          <form action="/vehicleListings/payment" method="POST">
+          <form id="paymentForm" action="/vehicleListings/payment" method="POST">
+          <ul id="error-model" class="text-danger"></ul>
             <!-- 2 column grid layout with text inputs for the first and last names -->
             <div class="row mb-4">
               <div class="col">
@@ -164,9 +165,9 @@
             </li>
           </ul>
         </div>
-        </form>
       </div>
     </div>
   </div>
 </section>
+<script src="/public/js/form_validation.js" defer></script>
 <!-- Credit card form -->
