@@ -579,6 +579,7 @@ router.get("/listingDetails/:id", async (req, res) => {
   }
   try {
     const post = await posts.getPostById(req.params.id);
+    console.log(post.whenAvailable);
     let posterStats = { ratingAverage: 0, ratingCount: 0 };
     try {
       posterStats = await getUserByUserId(post.posterUsername);
@@ -586,10 +587,22 @@ router.get("/listingDetails/:id", async (req, res) => {
     } catch (e) {
       console.warn("Couldn’t fetch poster ratings:", e);
     }
+    let calendar = []; //the whenAvailable array in an easily parsable format for handlbars
+    let i = 0;
+    for(let j = 0; j < 7; j++){
+      let the = [];
+      for(let x = 0; x < 24; x++){
+        the.push(post.whenAvailable[i]);
+        i++;
+      }
+      calendar.push(the);
+    }
+    //console.log(calendar);
     res.render("listingDetails", {
       post: post,
       user: req.session.user,
       posterStats,
+      calendar: calendar
     });
   } catch (e) {
     res.status(400).render("listingDetails"),
@@ -622,7 +635,6 @@ router.post("/listingDetails/:id/rate", async (req, res) => {
     const listingId = checkId(req.params.id);
     const score = Number(req.body.ratingInput);
     const post = await posts.getPostById(listingId);
-
     const toUser = await getUserByUserId(post.posterUsername);
     const fromUser = await getUserByUserId(req.session.user.userId);
     if (!toUser || !fromUser) {

@@ -564,34 +564,26 @@ if (createListingForm) {
   boxes.forEach(checkbox => {
     checkbox.addEventListener("change", function() {
       if(tail == -1){ //DO NOT DELETE!!! YOU NEED THIS LINE!!! When we change other boxes state we will set off their change event too you will get stuck in an infinite loop. -Jack
-        console.log("awoba");
         if(flip == 0){ //select head
           head = idMap[this.id];
           flip = 1;
           if(this.checked){
             headState = 1;
-            console.log("headstate true");
           } else {
             headState = 0;
-            console.log("headstate false");
           }        
         } else { //select tail
           tail = idMap[this.id];
           flip = 0;
-          console.log("headstate: "+ headState);
           if(head < tail){
-            console.log("head start");
             for(let i = head; i < tail+1; i++){ 
               if(headState == 1){          
                 boxes[i].checked = true;
-                console.log("pured");
               } else {
                 boxes[i].checked = false;
-                console.log("damned");
               }
             }
           } else {
-            console.log("tail start");
             for(let i = tail; i < head+1; i++){
               //boxes[i].checked = boxes[tail].checked;
               if(headState == 1){          
@@ -615,7 +607,8 @@ if (createListingForm) {
 
       //good type
       const type = vehicleType.value.trim();
-      let vehicleList = ["scooter", "skateboard", "bicycle", "other"];
+      console.log(type);
+      let vehicleList = ["Scooter", "Skateboard", "Bicycle", "Other"];
       if (!vehicleList.includes(type)) {
         accumulatedErrors.push(
           "Please use the form submission on /createlisting instead of submitting your own."
@@ -626,12 +619,15 @@ if (createListingForm) {
       const tag1 = vehicleTags1.value.trim(),
         tag2 = vehicleTags2.value.trim(),
         tag3 = vehicleTags3.value.trim();
+      console.log(tag1);
+      console.log(tag2);
+      console.log(tag3);
       let validTagList = [
         "None",
         "Off Road",
         "Electric",
-        "Two Wheel",
-        "Four Wheel",
+        "Two Wheels",
+        "Four Wheels",
         "New",
         "Modded",
         "Snow Gear",
@@ -652,9 +648,12 @@ if (createListingForm) {
       if (protInclude !== "yes" && protInclude !== "no") {
         accumulatedErrors.push("protectionIncluded must be yes or no");
       }
-
-      maxRentalDays = maxRentalDays.value.trim();
-      maxRentalHours = maxRentalHours.value.trim();
+      console.log(maxRentalDays);
+      console.log(typeof maxRentalDays)
+      maxRentalDays = maxRentalDays.value;
+      maxRentalHours = maxRentalHours.value;
+      console.log(typeof maxRentalDays);
+      console.log(maxRentalDays);
       if (typeof maxRentalHours !== "number") {
         if (typeof maxRentalHours === "string") {
           maxRentalHours = Number(maxRentalHours.trim());
