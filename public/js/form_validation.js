@@ -35,6 +35,7 @@
   let maxRentalDays = document.getElementById("maxRentalDays");
   let hourlyCost = document.getElementById("hourlyCost");
   let dailyCost = document.getElementById("dailyCost");
+  let location = document.getElementById("location");
   let imageInput = document.getElementById("image");
 
   //All vehicle details inputs
@@ -100,7 +101,6 @@
                 }),
                 url: "/vehicleListings/requestVehicle",
               };
-              console.log("test")
               $.ajax(requestConfig).then(function (responseMessage) {
                 $("#main").replaceWith(responseMessage); //CHANGE THIS TO GO TO THE VEHICLE'S PAGE
               });
@@ -117,7 +117,6 @@
 
 
   if (requestVehicleForm) {
-    console.log("test");
     $(function () {
       $("#datetimepicker1").datetimepicker();
       $("#datetimepicker2").datetimepicker();
@@ -583,16 +582,28 @@ if (createListingForm) {
             headState = 1;
           } else {
             headState = 0;
-          }
-        
+          }        
         } else { //select tail
           tail = idMap[this.id];
           flip = 0;
-          for(let i = head + 1; i < tail; i++){
-            if(boxes[i].checked){
-            } else {
+          if(head < tail){
+            for(let i = head; i < tail+1; i++){ 
+              if(headState == 1){          
+                boxes[i].checked = true;
+              } else {
+                boxes[i].checked = false;
+              }
             }
-            boxes[i].checked = boxes[head].checked;
+          } else {
+            for(let i = tail; i < head+1; i++){
+              //boxes[i].checked = boxes[tail].checked;
+              if(headState == 1){          
+                //boxes[i].checked = boxes[head].checked;
+                boxes[i].checked = true;
+              } else {
+                boxes[i].checked = false;
+              }
+            }
           }
           head = -1;
           tail = -1;
@@ -607,7 +618,8 @@ if (createListingForm) {
 
       //good type
       const type = vehicleType.value.trim();
-      let vehicleList = ["scooter", "skateboard", "bicycle", "other"];
+      console.log(type);
+      let vehicleList = ["Scooter", "Skateboard", "Bicycle", "Other"];
       if (!vehicleList.includes(type)) {
         accumulatedErrors.push(
           "Please use the form submission on /createlisting instead of submitting your own."
@@ -618,12 +630,15 @@ if (createListingForm) {
       const tag1 = vehicleTags1.value.trim(),
         tag2 = vehicleTags2.value.trim(),
         tag3 = vehicleTags3.value.trim();
+      console.log(tag1);
+      console.log(tag2);
+      console.log(tag3);
       let validTagList = [
         "None",
         "Off Road",
         "Electric",
-        "Two Wheel",
-        "Four Wheel",
+        "Two Wheels",
+        "Four Wheels",
         "New",
         "Modded",
         "Snow Gear",
@@ -644,9 +659,12 @@ if (createListingForm) {
       if (protInclude !== "yes" && protInclude !== "no") {
         accumulatedErrors.push("protectionIncluded must be yes or no");
       }
-
-      maxRentalDays = maxRentalDays.value.trim();
-      maxRentalHours = maxRentalHours.value.trim();
+      console.log(maxRentalDays);
+      console.log(typeof maxRentalDays)
+      maxRentalDays = maxRentalDays.value;
+      maxRentalHours = maxRentalHours.value;
+      console.log(typeof maxRentalDays);
+      console.log(maxRentalDays);
       if (typeof maxRentalHours !== "number") {
         if (typeof maxRentalHours === "string") {
           maxRentalHours = Number(maxRentalHours.trim());
@@ -679,6 +697,15 @@ if (createListingForm) {
         accumulatedErrors.push("Vehicle condition must be between 1.0 and 5.0");
       }
 
+      // location validation
+      const vlocation = location.value.trim();
+      if (vlocation.length === 0) {
+        accumulatedErrors.push("You must provide a pickup/dropoff location.");
+      }
+      if (vlocation.length < 2) {
+        accumulatedErrors.push("Pickup/dropoff location must be at least 2 characters.")
+      }
+
       // Image validation
       if (imageInput.files.length === 0) {
         accumulatedErrors.push("Please select an image");
@@ -703,6 +730,7 @@ if (createListingForm) {
       if (title.length < 2) {
         accumulatedErrors.push("Post title must be at least 2 characters");
       }
+
 
       // Cost validation
       const hourly = hourlyCost.value.trim();
