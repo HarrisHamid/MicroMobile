@@ -405,7 +405,7 @@ router
         inHoboken: user.inHoboken,
         state: user.state,
         role: user.role, //same as above, I include the role here so our middleware can print it. -Jack
-        ratingAverage: user.ratingAverage
+        ratingAverage: user.ratingAverage,
       };
       return res.redirect("/");
     } catch (error) {
@@ -425,6 +425,8 @@ router.route("/signout").post(async (req, res) => {
       }
       res.clearCookie("AuthenticationState");
       res.render("signout", {
+        title: "Signout",
+        user: null,
         message: "You have been logged out successfully.",
       });
     });

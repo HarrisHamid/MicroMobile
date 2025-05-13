@@ -10,6 +10,7 @@ import { ObjectId } from "mongodb";
 import { all } from "axios";
 import { getUserByUserId } from "../data/users.js";
 import { addRating } from "../data/users.js";
+import { title } from "process";
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -134,14 +135,12 @@ router
     //GET is done as a POST so I can have a req.body
     console.log(req);
     try {
-
       if (!req.session.user) throw "You must be logged in to see this page";
       let postId = xss(req.body.postId);
       if (!ObjectId.isValid(postId)) {
         throw "Error with getting post ID";
       }
       res.render("requestVehicle", { layout: null, postId: postId }); //maybe this should be done as a partial on the vehicleDetails page
-
     } catch (e) {
       console.log(e);
       res.status(400).render("requestVehicle", {
@@ -380,7 +379,7 @@ router
       //=======================
       // CVV validation
       //=======================
-      const cvv = a.CVV
+      const cvv = a.CVV;
       // Check if CVV is empty
       if (cvv.length === 0) {
         throw "CVV cannot be empty";
@@ -726,15 +725,17 @@ router.get("/listingDetails/:id", async (req, res) => {
     try {
       posterStats = await getUserByUserId(post.posterUsername);
       posterStats.ratingAverage = Number(posterStats.ratingAverage.toFixed(1));
-      allowRating = req.session.user && posterStats.clients.includes(req.session.user.userId);
+      allowRating =
+        req.session.user &&
+        posterStats.clients.includes(req.session.user.userId);
     } catch (e) {
       console.warn("Couldn’t fetch poster ratings:", e);
     }
     let calendar = []; //the whenAvailable array in an easily parsable format for handlbars
     let i = 0;
-    for(let j = 0; j < 7; j++){
+    for (let j = 0; j < 7; j++) {
       let the = [];
-      for(let x = 0; x < 24; x++){
+      for (let x = 0; x < 24; x++) {
         the.push(post.whenAvailable[i]);
         i++;
       }
@@ -742,11 +743,12 @@ router.get("/listingDetails/:id", async (req, res) => {
     }
     //console.log(calendar);
     res.render("listingDetails", {
+      title: post.postTitle + " Details",
       post: post,
       user: req.session.user,
       posterStats,
       calendar: calendar,
-      allowRating
+      allowRating,
     });
   } catch (e) {
     res.status(400).render("listingDetails"),
@@ -758,13 +760,12 @@ router.get("/listingDetails/:id", async (req, res) => {
 router.post("/listingDetails/:id", async (req, res) => {
   try {
     await posts.createComment(
-
       xss(req.params.id),
       xss(req.session.user.userId),
       xss(req.session.user.firstName),
       xss(req.session.user.lastName),
       xss(req.body.comment)
-    ); 
+    );
 
     res.redirect(req.originalUrl); // refresh page
   } catch (e) {
@@ -777,13 +778,12 @@ router.post("/listingDetails/:id", async (req, res) => {
 });
 router.post("/listingDetails/:id/rate", async (req, res) => {
   try {
+    const listingId = checkId(xss(req.params.id));
+    const score = Number(xss(req.body.ratingInput));
+    const post = await posts.getPostById(listingId);
 
-    const listingId    = checkId(xss(req.params.id));
-    const score        = Number(xss(req.body.ratingInput));
-    const post         = await posts.getPostById(listingId);
-
-    const toUser       = await getUserByUserId(post.posterUsername);
-    const fromUser     = await getUserByUserId(req.session.user.userId);
+    const toUser = await getUserByUserId(post.posterUsername);
+    const fromUser = await getUserByUserId(req.session.user.userId);
 
     if (!toUser || !fromUser) {
       throw "User not found";
