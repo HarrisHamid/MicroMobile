@@ -85,8 +85,10 @@
           if(Number(hours) > 12) {hours = `${Number(hours) - 12}`; amPM = "PM"}
           let minutes = date.getMinutes()
           if(minutes.length === 1) minutes = ` ${minutes}`
+          if(minutes == 0) minutes = "00"
+          if(hours == 0) hours = "00"
         
-          x.startDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
+         let newStartDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
 
           date = new Date(x.endDate);
           month = date.getMonth();
@@ -101,10 +103,12 @@
           if(Number(hours) > 12) {hours = `${Number(hours) - 12}`; amPM = "PM"}
           minutes = date.getMinutes()
           if(minutes.length === 1) minutes = ` ${minutes}`
+          if(minutes == 0) minutes = "00"
+          if(hours == 0) hours = "00"
         
-          x.endDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
+          let newEndDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
           //console.log(x);
-          let li = `<li>${x.requestingUser} is requesting ${x.title} from ${x.startDate} to ${x.endDate}<br> ${x.extraComments}<br> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="accept">Accept</button> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="deny">Deny</button> </li>`;
+          let li = `<li>${x.requestingUser} is requesting ${x.title} from ${newStartDate} to ${newEndDate}<br> ${x.extraComments}<br> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="accept">Accept</button> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="deny">Deny</button> </li>`;
           //console.log(charList)
           profileList2.append(li);
         }

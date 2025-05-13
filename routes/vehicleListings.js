@@ -764,6 +764,8 @@ router.get("/listingDetails/:id", async (req, res) => {
       if(Number(hours) > 12) {hours = `${Number(hours) - 12}`; amPM = "PM"}
       let minutes = date.getMinutes()
       if(minutes.length === 1) minutes = ` ${minutes}`
+      if(minutes == 0) minutes = "00"
+      if(hours == 0) hours = "00"
     
       post.taken[x].startDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
 
@@ -780,6 +782,8 @@ router.get("/listingDetails/:id", async (req, res) => {
           if(Number(hours) > 12) {hours = `${Number(hours) - 12}`; amPM = "PM"}
           minutes = date.getMinutes()
           if(minutes.length === 1) minutes = ` ${minutes}`
+          if(minutes == 0) minutes = "00"
+          if(hours == 0) hours = "00"
           post.taken[x].endDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
     }
     //console.log(calendar);
