@@ -114,12 +114,11 @@
 
             <div data-mdb-input-init class="form-outline mb-4">
               <input
-                type="number"
+                type="text"
                 id="zipCode"
                 name="zipCode"
                 class="form-control"
-                minlength="5"
-                maxlength="5"
+                pattern="\d{5}"
                 required
               />
               <label class="form-label" for="zipCode">Zip code</label>
@@ -217,8 +216,8 @@
                     id="CVV"
                     name="CVV"
                     class="form-control"
-                    maxlength="3"
-                    minlength="3"
+                    maxlength="4"
+                    minlength="4"
                     required
                   />
                   <label class="form-label" for="CVV">CVV</label>
