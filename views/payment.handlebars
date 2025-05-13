@@ -7,34 +7,79 @@
           <h5 class="mb-0">Billing details</h5>
         </div>
         <div class="card-body">
-          <form id="paymentForm" action="/vehicleListings/payment" method="POST">
-          <ul id="error-model" class="text-danger"></ul>
+          <form
+            id="paymentForm"
+            action="/vehicleListings/payment"
+            method="POST"
+          >
+            <ul id="error-model" class="text-danger"></ul>
             <!-- 2 column grid layout with text inputs for the first and last names -->
             <div class="row mb-4">
               <div class="col">
                 <div data-mdb-input-init class="form-outline">
-                  <input type="text" id="firstName" name="firstName" class="form-control" />
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    class="form-control"
+                  />
                   <label class="form-label" for="firstName">First name</label>
                 </div>
               </div>
               <div class="col">
                 <div data-mdb-input-init class="form-outline">
-                  <input type="text" id="lastName" name="lastName" class="form-control" />
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    class="form-control"
+                  />
                   <label class="form-label" for="lastName">Last name</label>
                 </div>
               </div>
             </div>
 
-
-
-            <input type="text" id="startDate" name="startDate" class="form-control" value="{{data.startDate}}" hidden/>
-            <input type="text" id="endDate" name="endDate" class="form-control" value="{{data.endDate}}" hidden/>
-            <input type="text" id="extraComments" name="extraComments" class="form-control" value="{{data.extraComments}}" hidden/>
-            <input type="text" id="vehicleId" name="vehicleId" class="form-control" value="{{data.vehicleId}}" hidden/>
+            <input
+              type="text"
+              id="startDate"
+              name="startDate"
+              class="form-control"
+              value="{{data.startDate}}"
+              hidden
+            />
+            <input
+              type="text"
+              id="endDate"
+              name="endDate"
+              class="form-control"
+              value="{{data.endDate}}"
+              hidden
+            />
+            <input
+              type="text"
+              id="extraComments"
+              name="extraComments"
+              class="form-control"
+              value="{{data.extraComments}}"
+              hidden
+            />
+            <input
+              type="text"
+              id="vehicleId"
+              name="vehicleId"
+              class="form-control"
+              value="{{data.vehicleId}}"
+              hidden
+            />
 
             <!-- Text input -->
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="text" id="address" name="address" class="form-control" />
+              <input
+                type="text"
+                id="address"
+                name="address"
+                class="form-control"
+              />
               <label class="form-label" for="address">Address</label>
             </div>
 
@@ -46,18 +91,32 @@
 
             <!-- Number input -->
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="text" id="state" name="state" class="form-control" minlength="2" maxlength="2"/>
+              <input
+                type="text"
+                id="state"
+                name="state"
+                class="form-control"
+                minlength="2"
+                maxlength="2"
+              />
               <label class="form-label" for="state">State</label>
             </div>
 
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="number" id="zipCode" name="zipCode" class="form-control" minlength="5" maxlength="5"/>
+              <input
+                type="number"
+                id="zipCode"
+                name="zipCode"
+                class="form-control"
+                minlength="5"
+                maxlength="5"
+              />
               <label class="form-label" for="zipCode">Zip code</label>
             </div>
 
             <hr class="my-4" />
 
-            {{!-- <div class="form-check">
+            {{! <div class="form-check">
               <input class="form-check-input" type="checkbox" value="" id="checkoutForm1" />
               <label class="form-check-label" for="checkoutForm1">
                 Shipping address is the same as my billing address
@@ -69,13 +128,13 @@
               <label class="form-check-label" for="checkoutForm2">
                 Save this information for next time
               </label>
-            </div> --}}
+            </div> }}
 
             <hr class="my-4" />
 
             <h5 class="mb-4">Payment</h5>
 
-            {{!-- <div class="form-check">
+            {{! <div class="form-check">
               <input class="form-check-input" type="radio" name="flexRadioDefault" id="checkoutForm3"
                 checked />
               <label class="form-check-label" for="checkoutForm3">
@@ -95,18 +154,28 @@
               <label class="form-check-label" for="checkoutForm5">
                 Paypal
               </label>
-            </div> --}}
+            </div> }}
 
             <div class="row mb-4">
               <div class="col">
                 <div data-mdb-input-init class="form-outline">
-                  <input type="text" id="nameOnCard" name="nameOnCard" class="form-control" />
+                  <input
+                    type="text"
+                    id="nameOnCard"
+                    name="nameOnCard"
+                    class="form-control"
+                  />
                   <label class="form-label" for="nameOnCard">Name on card</label>
                 </div>
               </div>
               <div class="col">
                 <div data-mdb-input-init class="form-outline">
-                  <input type="text" id="cardNumber" name="cardNumber" class="form-control" />
+                  <input
+                    type="text"
+                    id="cardNumber"
+                    name="cardNumber"
+                    class="form-control"
+                  />
                   <label class="form-label" for="cardNumber">Credit card number</label>
                 </div>
               </div>
@@ -115,19 +184,39 @@
             <div class="row mb-4">
               <div class="col-3">
                 <div data-mdb-input-init class="form-outline">
-                  <input type="text" id="formExpiration" class="form-control" name="formExpiration"/>
-                  <label class="form-label" for="formExpiration">Expiration</label>
+                  <input
+                    type="text"
+                    id="formExpiration"
+                    class="form-control"
+                    name="formExpiration"
+                  />
+                  <label
+                    class="form-label"
+                    for="formExpiration"
+                  >Expiration</label>
                 </div>
               </div>
               <div class="col-3">
                 <div data-mdb-input-init class="form-outline">
-                  <input type="text" id="CVV" name="CVV" class="form-control" maxlength="3" minlength="3"/>
+                  <input
+                    type="text"
+                    id="CVV"
+                    name="CVV"
+                    class="form-control"
+                    maxlength="3"
+                    minlength="3"
+                  />
                   <label class="form-label" for="CVV">CVV</label>
                 </div>
               </div>
             </div>
 
-            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block" type="submit">
+            <button
+              data-mdb-button-init
+              data-mdb-ripple-init
+              class="btn btn-primary btn-lg btn-block"
+              type="submit"
+            >
               Submit
             </button>
           </form>
@@ -142,24 +231,30 @@
         </div>
         <div class="card-body">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0"
+            >
               Calculation
               {{#if hours}}
-                <span>{{data.hours}} hours  *  ${{data.costPerHour}} per hour</span>
+                <span>{{data.hours}}
+                  hours * ${{data.costPerHour}}
+                  per hour</span>
               {{else}}
-                <span>{{data.days}} days  *  ${{data.costPerDay}} per day</span>
+                <span>{{data.days}} days * ${{data.costPerDay}} per day</span>
               {{/if}}
             </li>
             {{!-- <li class="list-group-item d-flex justify-content-between align-items-center px-0">
               Cost
               <span>${{cost}}</span>
             </li> --}}
-            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"
+            >
               <div>
                 <strong>Total amount</strong>
-                {{!-- <strong>
+                {{! <strong>
                   <p class="mb-0">(including VAT)</p>
-                </strong> --}}
+                </strong> }}
               </div>
               <span><strong>${{data.cost}}</strong></span>
             </li>
