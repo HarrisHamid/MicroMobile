@@ -22,8 +22,9 @@
                     id="firstName"
                     name="firstName"
                     class="form-control"
+                    required
                   />
-                  <label class="form-label" for="firstName">First name</label>
+                  <label class="form-label" for="firstName">First name </label>
                 </div>
               </div>
               <div class="col">
@@ -33,6 +34,7 @@
                     id="lastName"
                     name="lastName"
                     class="form-control"
+                    required
                   />
                   <label class="form-label" for="lastName">Last name</label>
                 </div>
@@ -79,13 +81,20 @@
                 id="address"
                 name="address"
                 class="form-control"
+                required
               />
               <label class="form-label" for="address">Address</label>
             </div>
 
             <!-- Email input -->
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="text" id="city" name="city" class="form-control" />
+              <input
+                type="text"
+                id="city"
+                name="city"
+                class="form-control"
+                required
+              />
               <label class="form-label" for="city">City</label>
             </div>
 
@@ -98,6 +107,7 @@
                 class="form-control"
                 minlength="2"
                 maxlength="2"
+                required
               />
               <label class="form-label" for="state">State</label>
             </div>
@@ -110,6 +120,7 @@
                 class="form-control"
                 minlength="5"
                 maxlength="5"
+                required
               />
               <label class="form-label" for="zipCode">Zip code</label>
             </div>
@@ -164,6 +175,7 @@
                     id="nameOnCard"
                     name="nameOnCard"
                     class="form-control"
+                    required
                   />
                   <label class="form-label" for="nameOnCard">Name on card</label>
                 </div>
@@ -175,6 +187,7 @@
                     id="cardNumber"
                     name="cardNumber"
                     class="form-control"
+                    required
                   />
                   <label class="form-label" for="cardNumber">Credit card number</label>
                 </div>
@@ -189,6 +202,7 @@
                     id="formExpiration"
                     class="form-control"
                     name="formExpiration"
+                    required
                   />
                   <label
                     class="form-label"
@@ -205,6 +219,7 @@
                     class="form-control"
                     maxlength="3"
                     minlength="3"
+                    required
                   />
                   <label class="form-label" for="CVV">CVV</label>
                 </div>
