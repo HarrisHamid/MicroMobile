@@ -108,7 +108,7 @@
         
           let newEndDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
           //
-          let li = `<li>${x.requestingUser} is requesting ${x.title} from ${newStartDate} to ${newEndDate}<br> ${x.extraComments}<br> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="accept">Accept</button> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="deny">Deny</button> </li>`;
+          let li = `<li>${x.requestingUser} is requesting ${x.title} from ${newStartDate} to ${newEndDate}<br> ${x.extraComments}<br> <button type="button" data-postTitle="${x.title}" data-requestingUser="${x.requestingUser}" data-vehicleId="${x.vehicleId}" data-startDate="${x.startDate}" data-endDate="${x.endDate}" class="accept">Accept</button> <button type="button" data-postTitle="${x.title}" data-requestingUser="${x.requestingUser}" data-vehicleId="${x.vehicleId}" data-startDate="${x.startDate}" data-endDate="${x.endDate}" class="deny">Deny</button> </li>`;
           //
           profileList2.append(li);
         }
@@ -120,13 +120,12 @@
         profileList2.show();
       });
       function bindEventsToTodoItem(todoItem) {
+        
         todoItem.find(".accept").on("click", function (event) {
           event.preventDefault();
           let currentLink = $(this);
           
           let atts = currentLink.context.attributes;
-
-          
 
           let requestConfig2 = {
             method: "POST",
@@ -134,11 +133,11 @@
             contentType: "application/json",
             data: JSON.stringify({
               test: "test",
-              requestingUser: atts.requestingUser.value,
-              startDate: atts.startDate.value,
-              endDate: atts.endDate.value,
-              vehicleId: atts.vehicleId.value,
-              postTitle: atts.postTitle.value,
+              requestingUser: atts.getNamedItem("data-requestinguser").value,
+              startDate: atts.getNamedItem("data-startdate").value,
+              endDate: atts.getNamedItem("data-enddate").value,
+              vehicleId: atts.getNamedItem("data-vehicleid").value,
+              postTitle: atts.getNamedItem("data-posttitle").value,
             }),
           };
 
@@ -169,11 +168,11 @@
             contentType: "application/json",
             data: JSON.stringify({
               test: "test",
-              requestingUser: atts.requestingUser.value,
-              startDate: atts.startDate.value,
-              endDate: atts.endDate.value,
-              vehicleId: atts.vehicleId.value,
-              postTitle: atts.postTitle.value,
+              requestingUser: atts.getNamedItem("data-requestinguser").value,
+              startDate: atts.getNamedItem("data-startdate").value,
+              endDate: atts.getNamedItem("data-enddate").value,
+              vehicleId: atts.getNamedItem("data-vehicleid").value,
+              postTitle: atts.getNamedItem("data-posttitle").value,
             }),
           };
 
