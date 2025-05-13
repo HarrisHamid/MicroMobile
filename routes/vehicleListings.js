@@ -688,9 +688,8 @@ router
       for (let i in whenAvailableFake) {
         whenAvailable[idMap[whenAvailableFake[i]]] = 1;
       }
-
       let newPost = await posts.createPost(
-        //postTitle,
+        postTitle,
         vehicleType,
         vehicleTags,
         vehicleCondition,
