@@ -45,8 +45,9 @@
         <button id="clear-tags-btn" class="clear-tags-btn">Clear Filter</button>
       </div>
     </div>
-    <a href="/vehicleListings/createListing" class="create-listing-btn">Create
-      Listing</a>
+    {{#ifEquals user.inHoboken "yes"}}
+      <a href="/vehicleListings/createListing" class="create-listing-btn">Create Listing</a>
+    {{/ifEquals}}
   </div>
 
   <h1 class="vehicle-lisitings-title">{{this.title}}</h1>
