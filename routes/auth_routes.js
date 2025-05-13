@@ -278,6 +278,16 @@ router
         });
       }
 
+      // Check if email already exists
+      const existingEmail = await userCollection.findOne({
+        email: trimmedEmail.toLowerCase(),
+      });
+      if (existingEmail) {
+        return res.status(400).render("register", {
+          error: "Email already exists. Please choose a different one.",
+        });
+      }
+
       // Register the user
       const newUser = await register(
         trimmedFirstName,

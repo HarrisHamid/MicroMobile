@@ -443,8 +443,9 @@ router
       let description = xss(req.body.description);
 
       let posterUsername = xss(req.session.user.userId);
-      let posterName = `${xss(req.session.user.firstName)} ${xss(req.session.user.lastName)}`;
-
+      let posterName = `${xss(req.session.user.firstName)} ${xss(
+        req.session.user.lastName
+      )}`;
 
       postTitle = help.checkString(postTitle, "post title");
       if (postTitle.length < 2) {
@@ -791,10 +792,10 @@ router.get("/listingDetails/:id", async (req, res) => {
       allowRating,
     });
   } catch (e) {
-    res.status(400).render("listingDetails"),
-      {
-        error: e.toString(),
-      };
+    return res.status(500).render("error", {
+      title: "Error",
+      error: "A surprise error occurred",
+    });
   }
 });
 router.post("/listingDetails/:id", async (req, res) => {
