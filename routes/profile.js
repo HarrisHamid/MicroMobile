@@ -27,7 +27,11 @@ router.get("/", async (req, res) => {
     });
   } catch (error) {
     console.error("Error rendering profile page:", error);
-    res.status(500).send("Internal Server Error");
+    //res.status(500).send("Internal Server Error");
+    res.status(500).render("error", {
+      title: "Error",
+      error: "Error rendering profile page:"
+    });
   }
 });
 router.post("/:id/rate", async (req, res) => {

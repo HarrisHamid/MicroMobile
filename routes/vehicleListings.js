@@ -690,7 +690,7 @@ router
       }
 
       let newPost = await posts.createPost(
-        postTitle,
+        //postTitle,
         vehicleType,
         vehicleTags,
         vehicleCondition,

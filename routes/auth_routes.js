@@ -314,7 +314,10 @@ router
 
       //========================================
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      //res.status(500).json({ error: error.message });
+      return res.status(400).render("register", {
+          error: error,
+        });
     }
   });
 
@@ -431,7 +434,11 @@ router.route("/signout").post(async (req, res) => {
   try {
     req.session.destroy((err) => {
       if (err) {
-        return res.status(500).send("Error while logging out.");
+        //return res.status(500).send("Error while logging out.");
+        res.status(500).render("error", {
+        title: "Error",
+        error: "Error while logging out.",
+      });
       }
       res.clearCookie("AuthenticationState");
       res.render("signout", {
@@ -441,7 +448,11 @@ router.route("/signout").post(async (req, res) => {
       });
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    //res.status(500).json({ error: error.message });
+    res.status(500).render("error", {
+      title: "Error",
+      error: error,
+    });
   }
 });
 
