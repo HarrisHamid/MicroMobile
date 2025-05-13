@@ -239,7 +239,7 @@ const createComment = async (postId, posterUsername, posterFirstName, posterLast
     const fullName = `${firstName} ${lastName}`;
 
     let newComment = { 
-        _id: (new ObjectId()), //removed the .toString() bit because then it wouldn't be an ObjectId it'd be a string
+        _id: (new ObjectId()).toString(), //removed the .toString() bit because then it wouldn't be an ObjectId it'd be a string
         Username: userId,
         Name: fullName,
         commentDate: new Date().toLocaleDateString(),
