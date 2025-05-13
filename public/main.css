@@ -978,3 +978,17 @@ h1 {
 .locationLabel {
   margin-top: 30px;
 }
+
+.accept {
+  background-color: #02b955;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+
+.deny {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
