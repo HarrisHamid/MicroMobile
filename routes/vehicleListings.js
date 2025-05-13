@@ -480,6 +480,7 @@ router
         throw "Vehicle tags must be among: None, Off Road, Electric, Two Wheels, Four Wheels, New, Modded, Snow Gear, Beach Gear";
       }
       let vehicleTags = [vehicleTags1, vehicleTags2, vehicleTags3];
+      vehicleTags = vehicleTags.filter((tag) => tag !== "None");
 
       if (protectionIncluded !== "yes" && protectionIncluded !== "no") {
         throw "protectionIncluded must be yes or no";
