@@ -445,9 +445,11 @@ router
       let location = xss(req.body.location);
       let whenAvailableFake = xss(req.body.whenAvailable);
       whenAvailableFake = whenAvailableFake.split(",");
+      let description = xss(req.body.description);
 
       let posterUsername = xss(req.session.user.userId);
       let posterName = `${xss(req.session.user.firstName)} ${xss(req.session.user.lastName)}`;
+
 
       postTitle = help.checkString(postTitle, "post title");
       if (postTitle.length < 2) {
@@ -481,6 +483,14 @@ router
 
       if (protectionIncluded !== "yes" && protectionIncluded !== "no") {
         throw "protectionIncluded must be yes or no";
+      }
+
+      //check description
+      if (description.length === 0) {
+        accumulatedErrors.push("Make and model cannot be empty");
+      }
+      if (description.length < 2) {
+        accumulatedErrors.push("Make and model must be at least 2 characters");
       }
 
       // vehicleCondition = help.checkCondition(vehicleCondition);
@@ -695,7 +705,9 @@ router
         dailyCost,
         location, //WE NEED THE LOCATION HERE I THINK
         imagePath,
-        whenAvailable
+        whenAvailable,
+        protectionIncluded,
+        description
       ); //need to implement when availible array
       return res.redirect(`/vehicleListings/listingDetails/${newPost._id}`); // redirect to the new post
     } catch (e) {
@@ -718,7 +730,7 @@ router.get("/listingDetails/:id", async (req, res) => {
   }
   try {
     const post = await posts.getPostById(xss(req.params.id));
-    //console.log(post.whenAvailable);
+    console.log(post);
 
     let posterStats = { ratingAverage: 0, ratingCount: 0 };
     let allowRating = false;
