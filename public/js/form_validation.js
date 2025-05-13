@@ -24,18 +24,18 @@
   let loginPasswordInput = document.getElementById("password");
 
   // All createListing inputs
-  let postTitle = document.getElementById("postTitle");
-  let vehicleType = document.getElementById("vehicleType");
-  let vehicleTags1 = document.getElementById("vehicleTags1");
-  let vehicleTags2 = document.getElementById("vehicleTags2");
-  let vehicleTags3 = document.getElementById("vehicleTags3");
-  let protectionIncluded = document.getElementById("protectionIncluded");
-  let vehicleCondition = document.getElementById("vehicleCondition");
-  let maxRentalHours = document.getElementById("maxRentalHours");
-  let maxRentalDays = document.getElementById("maxRentalDays");
-  let hourlyCost = document.getElementById("hourlyCost");
-  let dailyCost = document.getElementById("dailyCost");
-  let location = document.getElementById("location");
+  let postTitleInput = document.getElementById("postTitle");
+  let vehicleTypeInput = document.getElementById("vehicleType");
+  let vehicleTags1Input = document.getElementById("vehicleTags1");
+  let vehicleTags2Input = document.getElementById("vehicleTags2");
+  let vehicleTags3Input = document.getElementById("vehicleTags3");
+  let protectionIncludedInput = document.getElementById("protectionIncluded");
+  let vehicleConditionInput = document.getElementById("vehicleCondition");
+  let maxRentalHoursInput = document.getElementById("maxRentalHours");
+  let maxRentalDaysInput = document.getElementById("maxRentalDays");
+  let hourlyCostInput = document.getElementById("hourlyCost");
+  let dailyCostInput = document.getElementById("dailyCost");
+  let locationInput = document.getElementById("location");
   let imageInput = document.getElementById("image");
 
   //All vehicle details inputs
@@ -727,12 +727,9 @@
       }
 
       //good tags
-      const tag1 = vehicleTags1.value.trim(),
-        tag2 = vehicleTags2.value.trim(),
-        tag3 = vehicleTags3.value.trim();
-      console.log(tag1);
-      console.log(tag2);
-      console.log(tag3);
+      const tag1 = vehicleTags1Input.value.trim(),
+        tag2 = vehicleTags2Input.value.trim(),
+        tag3 = vehicleTags3Input.value.trim();
       let validTagList = [
         "None",
         "Off Road",
@@ -755,16 +752,12 @@
       }
 
       //good protectionIncluded
-      const protInclude = protectionIncluded.value.trim();
+      const protInclude = protectionIncludedInput.value.trim();
       if (protInclude !== "yes" && protInclude !== "no") {
         accumulatedErrors.push("protectionIncluded must be yes or no");
       }
-      console.log(maxRentalDays);
-      console.log(typeof maxRentalDays);
-      maxRentalDays = maxRentalDays.value;
-      maxRentalHours = maxRentalHours.value;
-      console.log(typeof maxRentalDays);
-      console.log(maxRentalDays);
+      maxRentalDays = maxRentalDaysInput.value;
+      maxRentalHours = maxRentalHoursInput.value;
       if (typeof maxRentalHours !== "number") {
         if (typeof maxRentalHours === "string") {
           maxRentalHours = Number(maxRentalHours.trim());
@@ -789,7 +782,7 @@
         );
 
       // Vehicle condition validation
-      const condition = vehicleCondition.value.trim();
+      const condition = vehicleConditionInput.value.trim();
       if (condition.length === 0) {
         accumulatedErrors.push("Vehicle condition cannot be empty");
       }
@@ -798,7 +791,7 @@
       }
 
       // location validation
-      const vlocation = location.value.trim();
+      const vlocation = locationInput.value.trim();
       if (vlocation.length === 0) {
         accumulatedErrors.push("You must provide a pickup/dropoff location.");
       }
@@ -825,7 +818,7 @@
       }
 
       // Post title validation
-      const title = postTitle.value.trim();
+      const title = postTitleInput.value.trim();
       if (title.length === 0) {
         accumulatedErrors.push("Post title cannot be empty");
       }
@@ -834,8 +827,8 @@
       }
 
       // Cost validation
-      const hourly = hourlyCost.value.trim();
-      const daily = dailyCost.value.trim();
+      const hourly = hourlyCostInput.value.trim();
+      const daily = dailyCostInput.value.trim();
       if (hourly.length === 0 || daily.length === 0) {
         accumulatedErrors.push("Cost fields cannot be empty");
       }
