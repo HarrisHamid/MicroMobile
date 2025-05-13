@@ -4,6 +4,9 @@ import { users, posts } from "../config/mongoCollections.js"
 import { ObjectId } from 'mongodb'
 import nodemailer from "nodemailer"
 
+let validTypes = ['Scooter', 'Skateboard', 'Bicycle', 'Other'];
+let validTags = ['None', 'Electric', 'Off Road', 'Two Wheels', 'Four Wheels', 'New', 'Modded', 'Snow Gear', 'Beach Gear'];
+
 const createPost = async (
     postTitle,
     vehicleType,
@@ -19,21 +22,57 @@ const createPost = async (
     image, // expects a path string
     whenAvailable
 ) => {
-    // I believe many of these are called incorrectly - for example, checkPosterUsername currently only has one input... unless there's some sort of 496-esque overflow mechanic in JS so that the string will apply for a string check function within chckPosterUsername? 
-    //also, I think posterUsername and posterName will come from their account information, which we'll get from cookies, and since it's our internal info and not something the user submits, I don't think we need to check it? Something to ask him about. They'll still be passed into this function from the route but I don't think we need to check them.
-    //I agree that they are being called wrong. Removing the second 'Vehicle Type' field from the checkType call still works, though. Strange. Leaving as is since it functions but keeping checkType changed so we know it works. -Jack
-    postTitle = checkTitle(postTitle, 'Post Title')
-    vehicleType = checkType(vehicleType)
-    vehicleTags = checkTags(vehicleTags, 'Vehicle Tags')
-    vehicleCondition = checkCondition(vehicleCondition, 'Vehicle Condition')
-    posterUsername = checkPosterUsername(posterUsername, 'Poster Username') 
-    posterName = checkPosterName(posterName, 'Poster Name')
-    [maxRentalHours, maxRentalDays] = checkMaxRental(maxRentalHours, maxRentalDays)
-    [hourlyCost, dailyCost] = checkCost(hourlyCost, dailyCost)
-    location = checkString(location, 'Location')
-    console.log(image);
-    image = checkImage(image)
-    whenAvailable = checkWhenAvailable(whenAvailable, 'When Available')
+    // check Title
+    postTitle = checkString(postTitle, 'postTitle');
+    if (postTitle.length < 2) {
+        throw 'Title must be at least 2 characters';
+    }
+
+    // check vehicle type
+    vehicleType = checkString(vehicleType, 'vehicleType');
+    if (!validTypes.includes(vehicleType)) {
+        throw `${vehicleType} is not a valid vehicle type.`;
+    }
+
+    // check tags
+    if (!vehicleTags || !Array.isArray(vehicleTags)) {
+        throw 'vehicleTags is not an array!';
+    }
+    if (!vehicleTags.every(tag => (typeof tag === 'string') && validTags.includes(tag))) {
+        throw 'at least one vehicle tag is incorrect';
+    }
+
+    // check condition
+    vehicleCondition = checkCondition(vehicleCondition);
+
+    // check userId
+    posterUsername = checkString(posterUsername, 'posterUsername');
+    const userCollection = await users();
+    const isTaken = await userCollection.findOne({userId: `/^${posterUsername}$/i`});
+    if (isTaken !== null) {
+        throw 'That username is already taken, please choose another.'
+    }
+
+    // check name
+    posterName = checkString(posterName, 'posterName');
+
+    // check rental times and cost
+    const rentalData = [maxRentalDays, maxRentalHours, dailyCost, hourlyCost];
+    if (!rentalData.every(data => (typeof data === 'number'))) {
+        throw 'All rental times and cost must be a number'
+    }
+    if(maxRentalHours > 24 || maxRentalHours < 0) throw "Max Rental Hours must be between 0 and 24";
+    if(maxRentalDays > 365 || maxRentalDays < 0) throw "Max Rental Days must be between 0 and 365";
+    if (maxRentalHours === 0 && maxRentalDays === 0) throw `Max Rental Hours and Max Rental Days cannot both be 0`;
+    if (hourlyCost < 0) throw `Hourly Cost cannot be negative`;
+    if (dailyCost < 0) throw `Daily Cost cannot be negative`;
+    if (hourlyCost === 0 && dailyCost === 0) throw `Hourly Cost and Daily Cost cannot both be 0`;
+
+    // check location
+    location = checkString(location, 'Location');
+
+    // check image
+    image = checkImage(image);
 
     let newPost = {
         postTitle: postTitle,
