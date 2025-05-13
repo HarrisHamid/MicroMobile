@@ -327,6 +327,11 @@ const checkRequest = async(userId, postId, extraComments, startDate, endDate) =>
     const vehicle = await postCollection.findOne(
         { _id: new ObjectId(postId) }
     );
+    if(!vehicle) throw "Could not find vehicle";
+    if(userId === vehicle.posterUsername) throw "you cannot request from yourself"
+    console.log(startDate);
+    console.log(startDate);
+    const dateFixer = new Date("2025-05-13T17:13:53.059Z") 
     let startDate2 = new Date(startDate);
     let endDate2 = new Date(endDate);
     let now = new Date();
@@ -336,17 +341,19 @@ const checkRequest = async(userId, postId, extraComments, startDate, endDate) =>
     let difference = 0;
     let numHours = undefined;
     let numDays = undefined;
-    if(endDate2.getTime() <= startDate2.getTime()) throw "Invalid end Time"
-    if(startDate2.getTime() <= now.getTime()) throw "Invalid Start Time"
-    if((difference = endDate2.getTime() - startDate2.getTime()) < millsInDay){ // if time is less than a day
-        if(vehicle.hourlyCost === 0)throw "This vehicle cannot be rented for more than a day"
-        numHours = Math.ceil(difference / millsInHour);
+    let endDateTime = endDate2.getTime() - dateFixer.getTime();
+    let startDateTime = startDate2.getTime() - dateFixer.getTime();
+    if(endDateTime <= startDateTime) throw "End time cannot be less than or equal to start time"
+    if(startDate2.getTime() <= now.getTime()) throw "Start time cannot be less than or equal to now"
+    if((difference = endDateTime - startDateTime) < millsInDay){ // if time is less than a day
+        if(vehicle.hourlyCost === 0)throw "This vehicle cannot be rented for less than 24 hours"
+        numHours = Math.ceil((difference / millsInHour).toFixed(2));
         if (numHours > vehicle.maxRentalHours) throw `This vehicle cannot be rented for more than ${vehicle.maxRentalHours} hours`
         cost = vehicle.hourlyCost * numHours;
     }
     else{
-        if(vehicle.dailyCost === 0)throw "This vehicle cannot be rented for more than 24 hours"
-        numDays = Math.ceil(difference / millsInDay);
+        if(vehicle.dailyCost === 0)throw `This vehicle cannot be rented for more than ${vehicle.maxRentalHours} hours`
+        numDays = Math.ceil((difference / millsInDay).toFixed(3));
         if (numDays > vehicle.maxRentalDays) throw `This vehicle cannot be rented for more than ${vehicle.maxRentalDays} days`
         cost = vehicle.dailyCost * numDays;
     };
@@ -388,6 +395,7 @@ const createRequest = async(userId, postId, extraComments, startDate, endDate) =
     //     {userId: { $regex: new RegExp(ownerId, 'i')}}
     // );
     if(!vehicle) throw "Could not find vehicle";
+    if(userId === ownerId) throw "you cannot request from yourself"
     //if(!owner) throw "Could not find vehicle owner";
     let newRequest = {
         extraComments: extraComments,
@@ -405,21 +413,21 @@ const createRequest = async(userId, postId, extraComments, startDate, endDate) =
     let now = new Date();
     let cost = 0;
     let millsInDay  = 86400000;
-    let millsInHour = 86400000 / 24;
+    let millsInHour = 3600000;
     let difference = 0;
     let numHours = undefined;
     let numDays = undefined;
-    if(endDate2.getTime() <= startDate2.getTime()) throw "Invalid end Time"
-    if(startDate2.getTime() <= now.getTime()) throw "Invalid Start Time"
+    if(endDate2.getTime() <= startDate2.getTime()) throw "End time cannot be less than or equal to start time"
+    if(startDate2.getTime() <= now.getTime()) throw "Start time cannot be less than or equal to now"
     if((difference = endDate2.getTime() - startDate2.getTime()) < millsInDay){ // if time is less than a day
-        if(vehicle.hourlyCost === 0)throw "This vehicle cannot be rented for more than a day"
-        numHours = Math.ceil(difference / millsInHour);
+        if(vehicle.hourlyCost === 0)throw "This vehicle cannot be rented for less than 24 hours"
+        numHours = Math.ceil((difference / millsInHour).toFixed(2));
         if (numHours > vehicle.maxRentalHours) throw `This vehicle cannot be rented for more than ${vehicle.maxRentalHours} hours`
         cost = vehicle.hourlyCost * numHours;
     }
     else{
-        if(vehicle.dailyCost === 0)throw "This vehicle cannot be rented for more than 24 hours"
-        numDays = Math.ceil(difference / millsInDay);
+        if(vehicle.dailyCost === 0)throw `This vehicle cannot be rented for more than ${vehicle.maxRentalHours} hours`
+        numDays = Math.ceil((difference / millsInDay).toFixed(3));
         if (numDays > vehicle.maxRentalDays) throw `This vehicle cannot be rented for more than ${vehicle.maxRentalDays} days`
         cost = vehicle.dailyCost * numDays;
     };

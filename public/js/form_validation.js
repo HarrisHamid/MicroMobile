@@ -72,6 +72,37 @@
         let dataArray = $(responseMessage.requests);
         console.log(dataArray);
         for (let x of dataArray) {
+          let date = new Date(x.startDate);
+          let month = date.getMonth();
+          month = (Number(month) + 1).toString();
+          if(month.length === 1) month = ` ${month}`
+          let day = date.getDate()
+          if(day.length === 1) day = ` ${day}`
+          let year = date.getFullYear()
+          let hours = date.getHours()
+          if(hours.length === 1) hours = ` ${hours}`
+          let amPM = "AM";
+          if(Number(hours) > 12) {hours = `${Number(hours) - 12}`; amPM = "PM"}
+          let minutes = date.getMinutes()
+          if(minutes.length === 1) minutes = ` ${minutes}`
+        
+          x.startDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
+
+          date = new Date(x.endDate);
+          month = date.getMonth();
+          month = (Number(month) + 1).toString();
+          if(month.length === 1) month = ` ${month}`
+          day = date.getDate()
+          if(day.length === 1) day = ` ${day}`
+          year = date.getFullYear()
+          hours = date.getHours()
+          if(hours.length === 1) hours = ` ${hours}`
+          amPM = "AM";
+          if(Number(hours) > 12) {hours = `${Number(hours) - 12}`; amPM = "PM"}
+          minutes = date.getMinutes()
+          if(minutes.length === 1) minutes = ` ${minutes}`
+        
+          x.endDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
           //console.log(x);
           let li = `<li>${x.requestingUser} is requesting ${x.title} from ${x.startDate} to ${x.endDate}<br> ${x.extraComments}<br> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="accept">Accept</button> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="deny">Deny</button> </li>`;
           //console.log(charList)
@@ -195,7 +226,14 @@
                   url: "/vehicleListings/requestVehicle",
                 };
                 $.ajax(requestConfig).then(function (responseMessage) {
-                  $("#main").replaceWith(responseMessage); //CHANGE THIS TO GO TO THE VEHICLE'S PAGE
+                  if(typeof(responseMessage) === "string"){
+                    $("#main").replaceWith(responseMessage); }
+                  else {
+                    $("#hiddenErrorShower").show()
+                    let temp = document.getElementById("hiddenErrorShower");
+                    temp.hidden = false;
+                    $("#hiddenErrorShower").html(responseMessage.error)
+                  }
                 });
               })(window.jQuery);
             });

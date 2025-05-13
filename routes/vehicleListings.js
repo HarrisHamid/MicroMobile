@@ -163,7 +163,7 @@ router
       )
         throw "Must have all inputs";
       if (!req.session.user) throw "You must be logged in to use see this page";
-      let vehicleId = xss(req.body.vehicleId);
+      var vehicleId = xss(req.body.vehicleId);
       if (!ObjectId.isValid(vehicleId)) {
         throw "Error with getting post id";
       }
@@ -221,12 +221,7 @@ router
       //   requestSuccessful: true
       // });
     } catch (e) {
-      console.log(e);
-      res.status(400).render("requestVehicle", {
-        title: "Request Vehicle",
-        error: e,
-        data: req.body,
-      });
+      res.json({error: e});
     }
   })
   .post("/payment", async (req, res) => {
@@ -753,6 +748,38 @@ router.get("/listingDetails/:id", async (req, res) => {
         i++;
       }
       calendar.push(the);
+    }
+    for(let x in post.taken){
+      let date = new Date(post.taken[x].startDate);
+      let month = date.getMonth();
+      month = (Number(month) + 1).toString();
+      if(month.length === 1) month = ` ${month}`
+      let day = date.getDate()
+      if(day.length === 1) day = ` ${day}`
+      let year = date.getFullYear()
+      let hours = date.getHours()
+      if(hours.length === 1) hours = ` ${hours}`
+      let amPM = "AM";
+      if(Number(hours) > 12) {hours = `${Number(hours) - 12}`; amPM = "PM"}
+      let minutes = date.getMinutes()
+      if(minutes.length === 1) minutes = ` ${minutes}`
+    
+      post.taken[x].startDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
+
+          date = new Date(post.taken[x].endDate);
+          month = date.getMonth();
+          month = (Number(month) + 1).toString();
+          if(month.length === 1) month = ` ${month}`
+          day = date.getDate()
+          if(day.length === 1) day = ` ${day}`
+          year = date.getFullYear()
+          hours = date.getHours()
+          if(hours.length === 1) hours = ` ${hours}`
+          amPM = "AM";
+          if(Number(hours) > 12) {hours = `${Number(hours) - 12}`; amPM = "PM"}
+          minutes = date.getMinutes()
+          if(minutes.length === 1) minutes = ` ${minutes}`
+          post.taken[x].endDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
     }
     //console.log(calendar);
     res.render("listingDetails", {
