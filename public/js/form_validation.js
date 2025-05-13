@@ -37,6 +37,7 @@
   let dailyCostInput = document.getElementById("dailyCost");
   let locationInput = document.getElementById("location");
   let imageInput = document.getElementById("image");
+  let descriptionInput = document.getElementById("description");
 
   //All vehicle details inputs
   let requestVehicleButton = document.getElementById("reqVehicleButton");
@@ -824,6 +825,15 @@
       }
       if (title.length < 2) {
         accumulatedErrors.push("Post title must be at least 2 characters");
+      }
+
+      //description validation
+      const desc = descriptionInput.value.trim();
+      if (desc.length === 0) {
+        accumulatedErrors.push("Make and model cannot be empty");
+      }
+      if (desc.length < 2) {
+        accumulatedErrors.push("Make and model must be at least 2 characters");
       }
 
       // Cost validation

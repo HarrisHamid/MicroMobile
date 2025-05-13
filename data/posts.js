@@ -20,7 +20,9 @@ const createPost = async (
     dailyCost,
     location,
     image, // expects a path string
-    whenAvailable
+    whenAvailable,
+    protectionIncluded,
+    description
 ) => {
     // check Title
     postTitle = checkString(postTitle, 'postTitle');
@@ -73,8 +75,20 @@ const createPost = async (
     // check location
     location = checkString(location, 'Location');
 
+    //check description
+    if (description.length === 0) {
+        accumulatedErrors.push("Make and model cannot be empty");
+      }
+    if (description.length < 2) {
+    accumulatedErrors.push("Make and model must be at least 2 characters");
+    }
+
     // check image
     image = checkImage(image);
+
+    if (protectionIncluded !== "yes" && protectionIncluded !== "no") {
+        throw "protectionIncluded must be yes or no";
+      }
 
     let newPost = {
         postTitle: postTitle,
@@ -92,6 +106,8 @@ const createPost = async (
         location: location,
         image: image,
         whenAvailable: whenAvailable,
+        protection: protectionIncluded,
+        description: description,
         requests: [], //this is an array of objects containing extraComments, startDate, endDate, and the Id of the requester
         taken: [] // this is an array of starDate, endDate, and Id of requester
     }
