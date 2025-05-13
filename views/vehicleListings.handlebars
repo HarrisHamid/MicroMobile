@@ -1,64 +1,87 @@
 {{#if error}}
-<p>{{error}}</p>
+  <p class="text-danger">{{error}}</p>
 {{/if}}
 
 <div class="vehicle-listings-container">
-    <div class="search-create-container">
-        <form action="search" method="GET" class="search-form">
-            <input type="text" name="searchTerm" placeholder="Search by vehicle name..." class="search-input">
-            <input type="hidden" name="clearFilters" value="true">
-            <button type="submit" class="search-btn">Search</button>
-        </form>
-        <div class="filter-tags-container">
-            <button id="filter-toggle-btn" class="filter-toggle-btn">Filter by Tag</button>
-            <div id="tags-dropdown" class="tags-dropdown">
-                <h4>Vehicle Types</h4>
-                {{#each vehicleTypes}}
-                <label class="tag-checkbox-label">
-                    <input type="radio" name="tagFilter" value="{{this}}" class="tag-checkbox">
-                    <span class="tag-checkbox-text">{{this}}</span>
-                </label>
-                {{/each}}
-                <h4>Tags</h4>
-                {{#each otherTags}}
-                <label class="tag-checkbox-label">
-                    <input type="radio" name="tagFilter" value="{{this}}" class="tag-checkbox">
-                    <span class="tag-checkbox-text">{{this}}</span>
-                </label>
-                {{/each}}
-                <button id="apply-tags-btn" class="apply-tags-btn">Apply Filter</button>
-                <button id="clear-tags-btn" class="clear-tags-btn">Clear Filter</button>
-            </div>
-        </div>
-        <a href="/vehicleListings/createListing" class="create-listing-btn">Create Listing</a>
-    </div>
-
-    <h1 class="vehicle-lisitings-title">{{this.title}}</h1>
-    <div class="vehicle-listings-grid">
-        {{#each posts}}
-        <div class="vehicle-card">
-            <img src="{{this.image}}" class="vehicle-image" alt="{{this.postTitle}}">
-            <div class="vehicle-card-body">
-                <h5 class="vehicle-title">{{this.postTitle}}</h5>
-                <div class="vehicle-tags">
-                    <span class="vehicle-type">{{this.vehicleType}}</span>
-                    {{#each this.vehicleTags}}
-                        <span class="vehicle-tag">{{this}}</span>
-                    {{/each}}
-                </div>
-                <div class="vehicle-condition">
-                    <span class="condition-icon"></span>
-                    <span>Condition: {{this.vehicleCondition}}/5</span>
-                </div>
-                <div class="vehicle-pricing">
-                    <span><strong>${{this.hourlyCost}}/hr</strong></span>
-                    <span><strong>${{this.dailyCost}}/day</strong></span>
-                </div>
-            </div>
-            <div class="vehicle-card-footer">
-                <a href="/vehicleListings/listingDetails/{{this._id}}" class="view-details-btn">View Details</a>
-            </div>
-        </div>
+  <div class="search-create-container">
+    <form action="search" method="GET" class="search-form">
+      <input
+        type="text"
+        name="searchTerm"
+        placeholder="Search by vehicle name..."
+        class="search-input"
+      />
+      <input type="hidden" name="clearFilters" value="true" />
+      <button type="submit" class="search-btn">Search</button>
+    </form>
+    <div class="filter-tags-container">
+      <button id="filter-toggle-btn" class="filter-toggle-btn">Filter by Tag</button>
+      <div id="tags-dropdown" class="tags-dropdown">
+        <h4>Vehicle Types</h4>
+        {{#each vehicleTypes}}
+          <label class="tag-checkbox-label">
+            <input
+              type="radio"
+              name="tagFilter"
+              value="{{this}}"
+              class="tag-checkbox"
+            />
+            <span class="tag-checkbox-text">{{this}}</span>
+          </label>
         {{/each}}
+        <h4>Tags</h4>
+        {{#each otherTags}}
+          <label class="tag-checkbox-label">
+            <input
+              type="radio"
+              name="tagFilter"
+              value="{{this}}"
+              class="tag-checkbox"
+            />
+            <span class="tag-checkbox-text">{{this}}</span>
+          </label>
+        {{/each}}
+        <button id="apply-tags-btn" class="apply-tags-btn">Apply Filter</button>
+        <button id="clear-tags-btn" class="clear-tags-btn">Clear Filter</button>
+      </div>
     </div>
+    <a href="/vehicleListings/createListing" class="create-listing-btn">Create
+      Listing</a>
+  </div>
+
+  <h1 class="vehicle-lisitings-title">{{this.title}}</h1>
+  <div class="vehicle-listings-grid">
+    {{#each posts}}
+      <div class="vehicle-card">
+        <img
+          src="{{this.image}}"
+          class="vehicle-image"
+          alt="{{this.postTitle}}"
+        />
+        <div class="vehicle-card-body">
+          <h5 class="vehicle-title">{{this.postTitle}}</h5>
+          <div class="vehicle-tags">
+            <span class="vehicle-type">{{this.vehicleType}}</span>
+            {{#each this.vehicleTags}}
+              <span class="vehicle-tag">{{this}}</span>
+            {{/each}}
+          </div>
+          <div class="vehicle-condition">
+            <span class="condition-icon"></span>
+            <span>Condition: {{this.vehicleCondition}}/5</span>
+          </div>
+          <div class="vehicle-pricing">
+            <span><strong>${{this.hourlyCost}}/hr</strong></span>
+            <span><strong>${{this.dailyCost}}/day</strong></span>
+          </div>
+        </div>
+        <div class="vehicle-card-footer">
+          <a
+            href="/vehicleListings/listingDetails/{{this._id}}"
+            class="view-details-btn"
+          >View Details</a>
+        </div>
+      </div>
+    {{/each}}
+  </div>
 </div>
