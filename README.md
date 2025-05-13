@@ -12,3 +12,4 @@ As students, we are usually on a tight schedule and budget. Our app will provide
 5. Run ```npm run seed``` to seed the database.
 6. Run ```npm start``` to start the application.
 7. Go to ```http://localhost:3000``` to view the application.
+8. To sign into the Colby account, use the username ```foster``` and the password ```Qwerty123!```.
