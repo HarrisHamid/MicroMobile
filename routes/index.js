@@ -10,7 +10,10 @@ const constructorMethod = (app) => {
   app.use("/auth", authRoutes);
 
   app.use("*", (req, res) => {
-    res.status(404).render("error", { error: "Page Not Found" });
+    res.status(404).render("error", {
+      title: "Something Went Wrong",
+      error: "Page Not Found",
+    });
   });
 };
 
