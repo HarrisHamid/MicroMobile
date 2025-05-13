@@ -72,7 +72,7 @@
         console.log(dataArray);
         for (let x of dataArray) {
           //console.log(x);
-          let li = `<li>Requesting ${x.title} from ${x.startDate} to ${x.endDate}<br> ${x.extraComments}<br> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="accept">Accept</button> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="deny">Deny</button> </li>`;
+          let li = `<li>${x.requestingUser} is requesting ${x.title} from ${x.startDate} to ${x.endDate}<br> ${x.extraComments}<br> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="accept">Accept</button> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="deny">Deny</button> </li>`;
           //console.log(charList)
           profileList2.append(li);
         }
