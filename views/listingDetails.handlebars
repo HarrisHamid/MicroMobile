@@ -56,50 +56,45 @@
       </div>
 
       <div class="listing-availability">
-        <h3>Availability</h3>
-        <p>Max Rental: {{post.maxRentalHours}} hours or {{post.maxRentalDays}} days</p>
-          
+          <h3>Availability</h3>
+          <p>Max Rental: {{post.maxRentalHours}} hours or {{post.maxRentalDays}} days</p>
 
-          <div class="listing-availability">
-                <h3>Availability</h3>
-                <p>Max Rental: {{post.maxRentalHours}} hours or {{post.maxRentalDays}} days</p>
+          <div class="dayDisplay">
+              <p>MON</p>
+              <p>TUE</p>
+              <p>WED</p>
+              <p>THU</p>
+              <p>FRI</p>
+              <p>SAT</p>
+              <p>SUN</p>
+          </div>
+          <div class="whenAvailable">
+              <div class="vertTimeDisplay"></div>
+              <div class="vertFullTimeText">
+                  <div class="vertTimeText0">12am</div>
+                  <div class="vertTimeText1">6am</div>
+                  <div class="vertTimeText2">noon</div>
+                  <div class="vertTimeText3">6pm</div>
+              </div>
+              {{#each calendar}}
+                  <div class = day>
+                      {{#each this}}
+                          <div class="hour{{#if this}}active{{else}}inactive{{/if}}"></div>
+                      {{/each}}
+                  </div>
+              {{/each}}
 
-                <div class="dayDisplay">
-                    <p>MON</p>
-                    <p>TUE</p>
-                    <p>WED</p>
-                    <p>THU</p>
-                    <p>FRI</p>
-                    <p>SAT</p>
-                    <p>SUN</p>
-                </div>
-                <div class="whenAvailable">
-                    <div class="vertTimeDisplay"></div>
-                    <div class="vertFullTimeText">
-                        <div class="vertTimeText0">12am</div>
-                        <div class="vertTimeText1">6am</div>
-                        <div class="vertTimeText2">noon</div>
-                        <div class="vertTimeText3">6pm</div>
-                    </div>
-                    {{#each calendar}}
-                        <div class = day>
-                            {{#each this}}
-                                <div class="hour{{#if this}}active{{else}}inactive{{/if}}"></div>
-                            {{/each}}
-                        </div>
-                    {{/each}}
-
-                        <div class="vertFullTimeText">
-                        <div class="vertTimeText0">12am</div>
-                        <div class="vertTimeText1">6am</div>
-                        <div class="vertTimeText2">noon</div>
-                        <div class="vertTimeText3">6pm</div>
-                    </div>
-                    <div class="vertTimeDisplay"></div>
-                    
-                </div>
-                <!-- Availability calendar/schedule would go here -->
-            </div>
+                  <div class="vertFullTimeText">
+                  <div class="vertTimeText0">12am</div>
+                  <div class="vertTimeText1">6am</div>
+                  <div class="vertTimeText2">noon</div>
+                  <div class="vertTimeText3">6pm</div>
+              </div>
+              <div class="vertTimeDisplay"></div>
+              
+          </div>
+          <!-- Availability calendar/schedule would go here -->
+      </div>
 
       {{#if user}}
         <a
