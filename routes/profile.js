@@ -23,7 +23,7 @@ router.get("/", async (req, res) => {
       inHoboken: req.session.user.inHoboken,
       state: req.session.user.state,
       ratingAverage:
-        req.session.user.ratingAverage?.toFixed(2) || "No Ratings Yet",
+        req.session.user.ratingAverage?.toFixed(1) || "No Ratings Yet",
     });
   } catch (error) {
     console.error("Error rendering profile page:", error);

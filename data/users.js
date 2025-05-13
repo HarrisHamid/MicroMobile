@@ -456,10 +456,14 @@ export const login = async (userId, password) => {
     signupDate: user.signupDate,
     lastLogin: lastLogin,
     role: user.role,
+    ratingAverage: user.ratingAverage
   };
   // not in Hoboken check
   if (user.inHoboken === "no") {
     userData.state = user.state;
+  }
+  else {
+    userData.state = "NJ"; // default to NJ if in Hoboken
   }
 
   return userData;

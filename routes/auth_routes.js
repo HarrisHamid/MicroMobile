@@ -405,6 +405,7 @@ router
         inHoboken: user.inHoboken,
         state: user.state,
         role: user.role, //same as above, I include the role here so our middleware can print it. -Jack
+        ratingAverage: user.ratingAverage
       };
       return res.redirect("/");
     } catch (error) {
