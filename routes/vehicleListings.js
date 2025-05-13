@@ -447,8 +447,8 @@ router
       let whenAvailableFake = xss(req.body.whenAvailable);
       whenAvailableFake = whenAvailableFake.split(",");
 
-      let posterUsername = "Jack1!"; //xss(req.session.user.posterUserame);
-      let posterName = "Jack"; //xss(req.session.user.posterName);
+      let posterUsername = xss(req.session.user.userId);
+      let posterName = `${xss(req.session.user.firstName)} ${xss(req.session.user.lastName)}`;
 
       postTitle = help.checkString(postTitle, "post title");
       if (postTitle.length < 2) {

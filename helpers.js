@@ -117,7 +117,7 @@ const checkPosterEmail = async (posterEmail) => { //checks if the email is avail
     }
     return posterEmail
 }
-const checkPosterName = async (posterName) => { //checks if the name is available for account creation - it only has to be a non-trivial string so this functions is simple
+const checkPosterName = (posterName) => { //checks if the name is available for account creation - it only has to be a non-trivial string so this functions is simple
     posterName = checkString(posterName);
     return posterName
 }
