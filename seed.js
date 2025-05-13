@@ -26,8 +26,13 @@ const seedDatabase = async () => {
                 ],
                 ratingAverage: 3.5,
                 ratingCount: 2,
-                requests: [],
-                clients: []
+                requests: [{extraComments: "I would like to rent this.",
+                    startDate: "2025-05-15T02:00:00.000Z",
+                    endDate: "2025-05-17T02:00:00.000Z",
+                    requestingUser: "DarklightNinja",
+                    title: "Segway Ninebot ES4",
+                    vehicleId: "68221d78e3075c435680c814"}],
+                clients: ["ajfra", "DarklightNinja", "harrishamid"]
             },
             {
                 _id: new ObjectId("60f5a3b8e1d3f2a5b8c9d002"),
@@ -47,7 +52,7 @@ const seedDatabase = async () => {
                 ratingAverage: 5,
                 ratingCount: 1,
                 requests: [],
-                clients: []
+                clients: ["foster", "DarklightNinja", "harrishamid"]
             },
             {
                 _id: new ObjectId("60f5a3b8e1d3f2a5b8c9d003"),
@@ -65,7 +70,7 @@ const seedDatabase = async () => {
                 ratingAverage: 0,
                 ratingCount: 0,
                 requests: [],
-                clients: []
+                clients: ["foster", "ajfra", "harrishamid"]
             },
             {
                 _id: new ObjectId("60f5a3b8e1d3f2a5b8c9d004"),
@@ -85,7 +90,7 @@ const seedDatabase = async () => {
                 ratingAverage: 4,
                 ratingCount: 1,
                 requests: [],
-                clients: []
+                clients: ["foster", "ajfra", "DarklightNinja"]
             }
         ];
         await db.collection('users').insertMany(users);
@@ -146,7 +151,12 @@ const seedDatabase = async () => {
                   [], [], [], [], [], [1], [1], [1], [1], [1], [1], [1], 
                   [1], [1], [1], [1], [1], [1], [1], [1], [1], [], [], [],
                 ],
-                requests: [],
+                requests: [{extraComments: "I would like to rent this.",
+                    startDate: "2025-05-15T02:00:00.000Z",
+                    endDate: "2025-05-17T02:00:00.000Z",
+                    requestingUser: "DarklightNinja",
+                    title: "Segway Ninebot ES4",
+                    vehicleId: "68221d78e3075c435680c814"}],
                 taken: []
             },
             {
