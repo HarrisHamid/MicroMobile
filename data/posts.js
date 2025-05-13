@@ -329,8 +329,8 @@ const checkRequest = async(userId, postId, extraComments, startDate, endDate) =>
     );
     if(!vehicle) throw "Could not find vehicle";
     if(userId === vehicle.posterUsername) throw "you cannot request from yourself"
-    console.log(startDate);
-    console.log(startDate);
+    
+    
     const dateFixer = new Date("2025-05-13T17:13:53.059Z") 
     let startDate2 = new Date(startDate);
     let endDate2 = new Date(endDate);
@@ -494,9 +494,9 @@ const emailFunc = async(userEmail, ownerEmail, isAccepted, startTime, endTime, p
     
     transporter.sendMail(mailOptions, function(error, info){
       if (error) {
-        console.log(error);
+        throw "Error sending email"
       } else {
-        console.log('Email sent: ' + info.response);
+        return "Done"
       }
     });
 }
@@ -509,7 +509,7 @@ const requestAccept = async(requestingUser, startDate, endDate, vehicleId) =>{
     if (startDate2 == "Invalid Date" || endDate2 == "Invalid Date") {
         throw "Invalid start or end date";
     }
-    console.log(vehicleId)
+    
    if(typeof vehicleId !== "string" || !ObjectId.isValid(vehicleId)) throw "bad vehicleId";
 
     const postCollection = await posts();
@@ -518,7 +518,7 @@ const requestAccept = async(requestingUser, startDate, endDate, vehicleId) =>{
     );
     let userId = vehicle.posterUsername;
     const userCollection = await users();
-    console.log(userId)
+    
     const owner = await userCollection.findOne(
         {userId: { $regex: new RegExp(userId, 'i')}}
     );
@@ -551,14 +551,14 @@ const requestAccept = async(requestingUser, startDate, endDate, vehicleId) =>{
         }
     }
     let newClients = owner.clients;
-    console.log(owner.clients);
+    
     if(isUser === 0){
         newClients.push(requestingUser);
     }
-    console.log(vehicle.taken)
+    
     let newTaken = vehicle.taken;
     newTaken.push(y);
-    console.log(newTaken);
+    
 
     const updateInfo = await postCollection.updateOne(
         { _id: new ObjectId(vehicleId) },
@@ -622,7 +622,7 @@ const requestDeny = async(requestingUser, startDate, endDate, vehicleId) =>{
     let newReqVehicle = vehicle.requests.filter(x => x !== z);
  
     
-    console.log(vehicleId)
+    
     const updateInfo = await postCollection.updateOne(
         { _id: new ObjectId(vehicleId) },
         { $set: { requests: newReqVehicle } }

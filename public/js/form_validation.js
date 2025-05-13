@@ -68,9 +68,9 @@
       };
       $.ajax(requestConfig).then(function (responseMessage) {
         let profileList2 = $("#requestList");
-        console.log(responseMessage);
+        
         let dataArray = $(responseMessage.requests);
-        console.log(dataArray);
+        
         for (let x of dataArray) {
           let date = new Date(x.startDate);
           let month = date.getMonth();
@@ -107,14 +107,14 @@
           if(hours == 0) hours = "00"
         
           let newEndDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
-          //console.log(x);
+          //
           let li = `<li>${x.requestingUser} is requesting ${x.title} from ${newStartDate} to ${newEndDate}<br> ${x.extraComments}<br> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="accept">Accept</button> <button type="button" postTitle="${x.title}" requestingUser="${x.requestingUser}" vehicleId="${x.vehicleId}" startDate="${x.startDate}" endDate="${x.endDate}" class="deny">Deny</button> </li>`;
-          //console.log(charList)
+          //
           profileList2.append(li);
         }
         profileList2.children().each(function (index, element) {
           bindEventsToTodoItem($(element));
-          //console.log("test")
+          //
         });
         profileList.hidden = false;
         profileList2.show();
@@ -123,10 +123,10 @@
         todoItem.find(".accept").on("click", function (event) {
           event.preventDefault();
           let currentLink = $(this);
-          console.log(currentLink.context.attributes.requestingUser.value);
+          
           let atts = currentLink.context.attributes;
 
-          console.log("todoItem");
+          
 
           let requestConfig2 = {
             method: "POST",
@@ -144,18 +144,23 @@
 
           $.ajax(requestConfig2).then(function (responseMessage) {
             email = "does_not_exist";
-            if (responseMessage.email) email = responseMessage.email;
+            if (responseMessage.email){ email = responseMessage.email;
             todoItem.replaceWith(
               `<li><p>Accepted. Money transfered. If you need to specify any other details, their email is ${email}</p></li>`
-            );
+            );}
+            else{
+              todoItem.replaceWith(
+              `<li><p>ERROR: ${responseMessage.error}</li>`
+              );
+            }
           });
         });
 
         todoItem.find(".deny").on("click", function (event) {
           event.preventDefault();
           let currentLink = $(this);
-          console.log(currentLink);
-          console.log("todoItem");
+          
+          
           let atts = currentLink.context.attributes;
 
           let requestConfig2 = {
@@ -174,8 +179,14 @@
 
           $.ajax(requestConfig2).then(function (responseMessage) {
             email = "does_not_exist"
-            if(responseMessage.email) email = responseMessage.email
+          if(responseMessage.email){ email = responseMessage.email
             todoItem.replaceWith(`<li><p>Request denied. If you need to specify any other details, their email is ${email}</p></li>`)
+          }
+          else{
+            todoItem.replaceWith(
+            `<li><p>ERROR: ${responseMessage.error}</li>`
+            );
+          }
         });
         });
       }
@@ -199,12 +210,12 @@
           url: "/vehicleListings/requestVehicleGET",
         };
         $.ajax(requestConfigRV).then(function (responseMessage) {
-          console.log(responseMessage);
+          
           button.replaceWith(responseMessage);
           requestVehicleForm = document.getElementById("requestVehicleForm");
           if (requestVehicleForm) {
             (function ($) {
-              console.log($("#datetimepicker1"));
+              
               $("#datetimepicker1").datetimepicker();
               $("#datetimepicker2").datetimepicker();
             })(window.jQuery);

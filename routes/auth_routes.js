@@ -405,7 +405,7 @@ router
 
       // session stuff
       const user = await login(trimmedUserId.toLowerCase(), trimmedPassword);
-      console.log(user);
+      
       req.session.user = {
         userId: user.userId,
         firstName: user.firstName,
