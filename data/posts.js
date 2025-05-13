@@ -41,6 +41,8 @@ const createPost = async (
     if (!vehicleTags.every(tag => (typeof tag === 'string') && validTags.includes(tag))) {
         throw 'at least one vehicle tag is incorrect';
     }
+    const vehicleTagsSet = new Set(vehicleTags);
+    vehicleTags = Array.from(vehicleTagsSet);
 
     // check condition
     vehicleCondition = checkCondition(vehicleCondition);
