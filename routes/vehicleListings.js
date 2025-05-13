@@ -718,6 +718,7 @@ router.get("/listingDetails/:id", async (req, res) => {
     let posterStats = { ratingAverage: 0, ratingCount: 0 };
     let allowRating = false;
     console.log("test");
+    
     try {
       posterStats = await getUserByUserId(post.posterUsername);
       posterStats.ratingAverage = Number(posterStats.ratingAverage.toFixed(1));
