@@ -63,7 +63,7 @@ router
   }
 })
 .post('/acceptRequest', async (req, res) => {
-  console.log(req)
+  
   try{
   let requestingUser = xss(req.body.requestingUser);
   let startDate = xss(req.body.startDate);
@@ -81,12 +81,48 @@ router
     }
   if(typeof vehicleId !== "string" || !ObjectId.isValid(vehicleId)) throw "bad vehicleId";
   let requesterEmail = await postData.requestAccept(requestingUser, startDate, endDate, vehicleId)
-  await postData.emailFunc(requesterEmail, req.session.user.email, true, startDate, endDate, postTitle)
+ 
+  let date = new Date(startDate);
+  let month = date.getMonth();
+  month = (Number(month) + 1).toString();
+  if(month.length === 1) month = ` ${month}`
+  let day = date.getDate()
+  if(day.length === 1) day = ` ${day}`
+  let year = date.getFullYear()
+  let hours = date.getHours()
+  if(hours.length === 1) hours = ` ${hours}`
+  let amPM = "AM";
+  if(Number(hours) > 12) {hours = `${Number(hours) - 12}`; amPM = "PM"}
+  let minutes = date.getMinutes()
+  if(minutes.length === 1) minutes = ` ${minutes}`
+  if(minutes == 0) minutes = "00"
+  if(hours == 0) hours = "00"
+
+ let tempStartDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
+
+      date = new Date(endDate);
+      month = date.getMonth();
+      month = (Number(month) + 1).toString();
+      if(month.length === 1) month = ` ${month}`
+      day = date.getDate()
+      if(day.length === 1) day = ` ${day}`
+      year = date.getFullYear()
+      hours = date.getHours()
+      if(hours.length === 1) hours = ` ${hours}`
+      amPM = "AM";
+      if(Number(hours) > 12) {hours = `${Number(hours) - 12}`; amPM = "PM"}
+      minutes = date.getMinutes()
+      if(minutes.length === 1) minutes = ` ${minutes}`
+      if(minutes == 0) minutes = "00"
+      if(hours == 0) hours = "00"
+      let tempEndDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
+
+  await postData.emailFunc(requesterEmail, req.session.user.email, true, tempStartDate, tempEndDate, postTitle)
   res.json({email: requesterEmail}) //basically reload the page
-}catch (e) {console.log(e)}
+}catch (e) {res.json({error: e})}
 })
 .post('/denyRequest', async (req, res) => {
-  console.log(req)
+  
   try{
   let requestingUser = xss(req.body.requestingUser);
   let startDate = xss(req.body.startDate);
@@ -106,7 +142,7 @@ router
   let requesterEmail = await postData.requestDeny(requestingUser, startDate, endDate, vehicleId)
   await postData.emailFunc(requesterEmail, req.session.user.email, false, startDate, endDate, postTitle)
   res.json({email: requesterEmail}) //basically reload the page
-  }catch (e) {console.log(e)}
+  }catch (e) {res.json({error:e})}
 });
 
 export default router;

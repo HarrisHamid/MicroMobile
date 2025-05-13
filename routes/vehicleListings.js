@@ -133,7 +133,7 @@ router.get("/vehicleListings", async (req, res) => {
 router
   .post("/requestVehicleGet", async (req, res) => {
     //GET is done as a POST so I can have a req.body
-    console.log(req);
+    
     try {
       if (!req.session.user) throw "You must be logged in to see this page";
       let postId = xss(req.body.postId);
@@ -142,7 +142,7 @@ router
       }
       res.render("requestVehicle", { layout: null, postId: postId }); //maybe this should be done as a partial on the vehicleDetails page
     } catch (e) {
-      console.log(e);
+      
       res.status(400).render("requestVehicle", {
         layout: null,
         title: "Request Vehicle",
@@ -152,7 +152,7 @@ router
     }
   })
   .post("/requestVehicle", async (req, res) => {
-    console.log(req);
+    
     try {
       let a = req.body;
       if (
@@ -225,7 +225,7 @@ router
     }
   })
   .post("/payment", async (req, res) => {
-    console.log(req);
+    
     try {
       let a = req.body;
       if (a.extraComments === undefined || !a.startDate || !a.endDate)
@@ -398,7 +398,7 @@ router
       //   requestSuccessful: true
       // });
     } catch (e) {
-      console.log(e);
+      
       res.status(400).render("payment", {
         layout: null,
         error: e,
@@ -727,7 +727,7 @@ router.get("/listingDetails/:id", async (req, res) => {
   }
   try {
     const post = await posts.getPostById(xss(req.params.id));
-    console.log(post);
+    
 
     let posterStats = { ratingAverage: 0, ratingCount: 0 };
     let allowRating = false;
@@ -786,7 +786,7 @@ router.get("/listingDetails/:id", async (req, res) => {
           if(hours == 0) hours = "00"
           post.taken[x].endDate =  `${month}/${day}/${year} ${hours}:${minutes}${amPM}`;
     }
-    //console.log(calendar);
+    //
     res.render("listingDetails", {
       title: post.postTitle + " Details",
       post: post,

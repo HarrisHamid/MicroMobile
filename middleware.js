@@ -1,19 +1,13 @@
 let progressChecker = (req, res, next) => {
   //this is the first middleware from lab 10 - it should help out with tracking progress for development
-  let temp, temp2;
+  let temp;
   if (!req.session.user) {
     temp = "Not Authenticated";
   } else {
     temp = "Authenticated ";
-    console.log(req.session.user);
   }
-  if (!req.session.user) {
-    temp2 = "";
-  } else {
-    temp2 = req.session.user.role;
-  } //user or admin - we'll want admin stuff eventually
   console.log(
-    `${new Date().toUTCString()}: ${req.method} ${req.path} ${temp}${temp2}`
+    `${new Date().toUTCString()}: ${req.method} ${req.path} ${temp}`
   );
   next();
 };
