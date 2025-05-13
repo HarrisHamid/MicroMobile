@@ -760,8 +760,7 @@
       const accumulatedErrors = [];
 
       //good type
-      const type = vehicleType.value.trim();
-      console.log(type);
+      const type = vehicleTypeInput.value.trim();
       let vehicleList = ["Scooter", "Skateboard", "Bicycle", "Other"];
       if (!vehicleList.includes(type)) {
         accumulatedErrors.push(
