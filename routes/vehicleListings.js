@@ -416,9 +416,15 @@ router
 
 router
   .get("/createListing", async (req, res) => {
+    if (!req.session.user) {
+      return res.redirect("/auth/login");
+    }
     res.render("createListing", { title: "Create Listing" });
   })
   .post("/createListing", upload.single("image"), async (req, res) => {
+    if (!req.session.user) {
+      return res.redirect("/auth/login");
+    }
     try {
       if (!req.file) {
         throw "Image upload failed";
