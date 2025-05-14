@@ -142,7 +142,7 @@ router
       }
       res.render("requestVehicle", { layout: null, postId: postId }); //maybe this should be done as a partial on the vehicleDetails page
     } catch (e) {
-      
+      console.log(e)
       res.status(400).render("requestVehicle", {
         layout: null,
         title: "Request Vehicle",
@@ -188,16 +188,20 @@ router
         start,
         end
       );
+      console.log(checkReq)
       if (checkReq.hours) {
         res.render("payment", {
           layout: null,
-          vehicleId: vehicleId,
-          extraComments: extraComments,
-          startDate: start,
-          endDate: end,
-          hours: checkReq.hours,
-          costPerHour: checkReq.costPerHour,
-          cost: checkReq.cost,
+          title: "Payment",
+          data: {
+            vehicleId: vehicleId,
+            extraComments: extraComments,
+            startDate: start,
+            endDate: end,
+            hours: checkReq.hours, 
+            costPerHour: checkReq.costPerHour,
+            cost: checkReq.cost,
+          },
         });
       } else {
         res.render("payment", {
@@ -221,6 +225,7 @@ router
       //   requestSuccessful: true
       // });
     } catch (e) {
+      console.log(e)
       res.json({error: e});
     }
   })
@@ -390,6 +395,7 @@ router
         start,
         end
       );
+      
       res.redirect(`/vehicleListings/listingDetails/${vehicleId}`);
       // const post = await posts.getPostById(vehicleId);
       // res.render("listingDetails", {
@@ -398,7 +404,7 @@ router
       //   requestSuccessful: true
       // });
     } catch (e) {
-      
+      console.log(e)
       res.status(400).render("payment", {
         layout: null,
         error: e,
@@ -505,6 +511,12 @@ router
       let tempArr2 = help.checkCost(hourlyCost, dailyCost);
       hourlyCost = tempArr2[0];
       dailyCost = tempArr2[1];
+      if((maxRentalHours == 0 || hourlyCost == 0) && maxRentalHours != hourlyCost){
+        throw "if max rental hours or hourly cost are 0, the other must also be 0"
+      }
+      if((maxRentalDays == 0 || dailyCost == 0) && maxRentalDays != dailyCost){
+        throw "if max rental day or daily cost are 0, the other must also be 0"
+      }
 
       const idMap = {
         //lmfao the enumerator is back. remember to collapse this lol
@@ -708,6 +720,7 @@ router
       ); //need to implement when availible array
       return res.redirect(`/vehicleListings/listingDetails/${newPost._id}`); // redirect to the new post
     } catch (e) {
+      console.log(e)
       return res.status(400).render("createListing", {
         title: "Create Listing",
         error: e.toString(),
